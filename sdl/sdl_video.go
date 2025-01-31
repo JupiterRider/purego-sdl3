@@ -15,3 +15,8 @@ type WindowID uint32
 func DestroyWindow(window *Window) {
 	sdlDestroyWindow(window)
 }
+
+// Destroy destroys a window.
+func (window *Window) Destroy() {
+	DestroyWindow(window)
+}

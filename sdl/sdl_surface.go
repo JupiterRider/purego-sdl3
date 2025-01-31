@@ -32,3 +32,8 @@ func LoadBMPIO(src *IOStream, closeio bool) *Surface {
 func DestroySurface(surface *Surface) {
 	sdlDestroySurface(surface)
 }
+
+// Destroy frees a surface.
+func (surface *Surface) Destroy() {
+	DestroySurface(surface)
+}
