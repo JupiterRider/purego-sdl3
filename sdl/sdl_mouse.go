@@ -109,3 +109,8 @@ func ShowCursor() bool {
 func WarpMouseInWindow(window *Window, x float32, y float32) {
 	sdlWarpMouseInWindow(window, x, y)
 }
+
+// WarpMouseInWindow moves the mouse cursor to the given position within the window.
+func (window *Window) WarpMouseInWindow(x float32, y float32) {
+	WarpMouseInWindow(window, x, y)
+}
