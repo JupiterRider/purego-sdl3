@@ -88,6 +88,11 @@ func StartTextInput(window *Window) bool {
 	return sdlStartTextInput(window)
 }
 
+// StartTextInput starts accepting Unicode text input events in a window.
+func (window *Window) StartTextInput() bool {
+	return StartTextInput(window)
+}
+
 // func StartTextInputWithProperties(window *Window, props PropertiesID) bool {
 //	return sdlStartTextInputWithProperties(window, props)
 // }
@@ -95,6 +100,11 @@ func StartTextInput(window *Window) bool {
 // StopTextInput stops receiving any text input events in a window.
 func StopTextInput(window *Window) bool {
 	return sdlStopTextInput(window)
+}
+
+// StopTextInput stops receiving any text input events in a window.
+func (window *Window) StopTextInput() bool {
+	return StopTextInput(window)
 }
 
 // func TextInputActive(window *Window) bool {
