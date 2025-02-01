@@ -33,6 +33,11 @@ func DestroySurface(surface *Surface) {
 	sdlDestroySurface(surface)
 }
 
+// Destroy frees a surface.
+func (surface *Surface) Destroy() {
+	DestroySurface(surface)
+}
+
 // func AddSurfaceAlternateImage(surface *Surface, image *Surface) bool {
 //	return sdlAddSurfaceAlternateImage(surface, image)
 // }
@@ -40,6 +45,11 @@ func DestroySurface(surface *Surface) {
 // BlitSurface performs a fast blit from the source surface to the destination surface with clipping.
 func BlitSurface(src *Surface, srcrect *Rect, dst *Surface, dstrect *Rect) bool {
 	return sdlBlitSurface(src, srcrect, dst, dstrect)
+}
+
+// Blit performs a fast blit from the source surface to the destination surface with clipping.
+func (src *Surface) Blit(srcrect *Rect, dst *Surface, dstrect *Rect) bool {
+	return BlitSurface(src, srcrect, dst, dstrect)
 }
 
 // func BlitSurface9Grid(src *Surface, srcrect *Rect, left_width int32, right_width int32, top_height int32, bottom_height int32, scale float32, scaleMode ScaleMode, dst *Surface, dstrect *Rect) bool {
@@ -160,6 +170,11 @@ func LockSurface(surface *Surface) bool {
 	return sdlLockSurface(surface)
 }
 
+// Lock sets up a surface for directly accessing the pixels.
+func (surface *Surface) Lock() bool {
+	return LockSurface(surface)
+}
+
 // func MapSurfaceRGB(surface *Surface, r uint8, g uint8, b uint8) uint32 {
 //	return sdlMapSurfaceRGB(surface, r, g, b)
 // }
@@ -247,6 +262,11 @@ func LockSurface(surface *Surface) bool {
 // UnlockSurface releases a surface after directly accessing the pixels.
 func UnlockSurface(surface *Surface) {
 	sdlUnlockSurface(surface)
+}
+
+// Unlock releases a surface after directly accessing the pixels.
+func (surface *Surface) Unlock() {
+	UnlockSurface(surface)
 }
 
 // func WriteSurfacePixel(surface *Surface, x int32, y int32, r uint8, g uint8, b uint8, a uint8) bool {
