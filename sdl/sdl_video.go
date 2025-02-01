@@ -39,6 +39,11 @@ func DestroyWindow(window *Window) {
 	sdlDestroyWindow(window)
 }
 
+// Destroy destroys a window.
+func (window *Window) Destroy() {
+	DestroyWindow(window)
+}
+
 // func CreatePopupWindow(parent *Window, offset_x int32, offset_y int32, w int32, h int32, flags WindowFlags) *Window {
 //	return sdlCreatePopupWindow(parent, offset_x, offset_y, w, h, flags)
 // }
@@ -268,6 +273,11 @@ func GetWindowSurface(window *Window) *Surface {
 	return sdlGetWindowSurface(window)
 }
 
+// GetSurface gets the SDL surface associated with the window.
+func (window *Window) GetSurface() *Surface {
+	return GetWindowSurface(window)
+}
+
 // func GetWindowSurfaceVSync(window *Window, vsync *int32) bool {
 //	return sdlGetWindowSurfaceVSync(window, vsync)
 // }
@@ -339,6 +349,11 @@ func GetWindowSurface(window *Window) *Surface {
 // HideWindow hides a window.
 func HideWindow(window *Window) bool {
 	return sdlHideWindow(window)
+}
+
+// Hide hides a window.
+func (window *Window) Hide() bool {
+	return HideWindow(window)
 }
 
 // func MaximizeWindow(window *Window) bool {
@@ -454,6 +469,11 @@ func ShowWindow(window *Window) bool {
 	return sdlShowWindow(window)
 }
 
+// Show shows a window.
+func (window *Window) Show() bool {
+	return ShowWindow(window)
+}
+
 // func ShowWindowSystemMenu(window *Window, x int32, y int32) bool {
 //	return sdlShowWindowSystemMenu(window, x, y)
 // }
@@ -465,6 +485,11 @@ func ShowWindow(window *Window) bool {
 // UpdateWindowSurface copies the window surface to the screen.
 func UpdateWindowSurface(window *Window) bool {
 	return sdlUpdateWindowSurface(window)
+}
+
+// UpdateSurface copies the window surface to the screen.
+func (window *Window) UpdateSurface() bool {
+	return UpdateWindowSurface(window)
 }
 
 // func UpdateWindowSurfaceRects(window *Window, rects *Rect, numrects int32) bool {
