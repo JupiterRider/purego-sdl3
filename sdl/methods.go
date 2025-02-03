@@ -2,70 +2,106 @@
 
 package sdl
 
+// StartTextInput starts accepting Unicode text input events in a window.
 func (window *Window) StartTextInput() bool {
 	return StartTextInput(window)
 }
+
+// StopTextInput stops receiving any text input events in a window.
 func (window *Window) StopTextInput() bool {
 	return StopTextInput(window)
 }
 
+// WarpMouseInWindow moves the mouse cursor to the given position within the window.
 func (window *Window) WarpMouseInWindow(x float32, y float32) { WarpMouseInWindow(window, x, y) }
+
+// SetRenderDrawColor sets the color used for drawing operations.
 func (renderer *Renderer) SetDrawColor(r, g, b, a uint8) bool {
 	return SetRenderDrawColor(renderer, r, g, b, a)
 }
+
+// RenderPresent updates the screen with any rendering performed since the previous call.
 func (renderer *Renderer) Present() bool {
 	return RenderPresent(renderer)
 }
+
+// RenderClear clears the current rendering target with the drawing color.
 func (renderer *Renderer) Clear() bool {
 	return RenderClear(renderer)
 }
+
+// DestroyRenderer destroys the rendering context for a window and free all associated textures.
 func (renderer *Renderer) Destroy() {
 	DestroyRenderer(renderer)
 }
 
+// RenderRect draws a rectangle on the current rendering target at subpixel precision.
 func (renderer *Renderer) RenderRect(rect *FRect) bool { return RenderRect(renderer, rect) }
 
+// RenderFillRect fills a rectangle on the current rendering target with the drawing color at subpixel precision.
 func (renderer *Renderer) RenderFillRect(rect *FRect) bool { return RenderFillRect(renderer, rect) }
 
+// RenderDebugText draws debug text to a [Renderer].
 func (renderer *Renderer) RenderDebugText(x, y float32, str string) bool {
 	return RenderDebugText(renderer, x, y, str)
 }
 
+// CreateTextureFromSurface creates a texture from an existing surface.
 func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) *Texture {
 	return CreateTextureFromSurface(renderer, surface)
 }
 
+// RenderTexture copies a portion of the texture to the current rendering target at subpixel precision.
 func (renderer *Renderer) RenderTexture(texture *Texture, srcrect *FRect, dstrect *FRect) bool {
 	return RenderTexture(renderer, texture, srcrect, dstrect)
 }
+
+// DestroyTexture destroys the specified texture.
 func (texture *Texture) Destroy() {
 	DestroyTexture(texture)
 }
+
+// DestroySurface frees a surface.
 func (surface *Surface) Destroy() {
 	DestroySurface(surface)
 }
 
+// BlitSurface performs a fast blit from the source surface to the destination surface with clipping.
 func (src *Surface) Blit(srcrect *Rect, dst *Surface, dstrect *Rect) bool {
 	return BlitSurface(src, srcrect, dst, dstrect)
 }
+
+// LockSurface sets up a surface for directly accessing the pixels.
 func (surface *Surface) Lock() bool {
 	return LockSurface(surface)
 }
+
+// UnlockSurface releases a surface after directly accessing the pixels.
 func (surface *Surface) Unlock() {
 	UnlockSurface(surface)
 }
+
+// DestroyWindow destroys a window.
 func (window *Window) Destroy() {
 	DestroyWindow(window)
 }
+
+// GetWindowSurface gets the SDL surface associated with the window.
 func (window *Window) GetSurface() *Surface {
 	return GetWindowSurface(window)
 }
+
+// HideWindow hides a window.
 func (window *Window) Hide() bool {
 	return HideWindow(window)
 }
+
+// ShowWindow shows a window.
 func (window *Window) Show() bool {
 	return ShowWindow(window)
 }
+
+// UpdateWindowSurface copies the window surface to the screen.
 func (window *Window) UpdateSurface() bool {
 	return UpdateWindowSurface(window)
 }
