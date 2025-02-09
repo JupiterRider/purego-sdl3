@@ -4,6 +4,16 @@ package sdl
 
 import "unsafe"
 
+func (camera *Camera) AcquireFrame(timestampNS *uint64) *Surface {
+	return AcquireCameraFrame(camera, timestampNS)
+}
+
+func (camera *Camera) Close() {
+	CloseCamera(camera)
+}
+
+func (camera *Camera) ReleaseFrame(frame *Surface) { ReleaseCameraFrame(camera, frame) }
+
 // StartTextInput starts accepting Unicode text input events in a window.
 func (window *Window) StartTextInput() bool {
 	return StartTextInput(window)
