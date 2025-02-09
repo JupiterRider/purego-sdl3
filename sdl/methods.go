@@ -2,6 +2,8 @@
 
 package sdl
 
+import "unsafe"
+
 // StartTextInput starts accepting Unicode text input events in a window.
 func (window *Window) StartTextInput() bool {
 	return StartTextInput(window)
@@ -10,6 +12,26 @@ func (window *Window) StartTextInput() bool {
 // StopTextInput stops receiving any text input events in a window.
 func (window *Window) StopTextInput() bool {
 	return StopTextInput(window)
+}
+
+func (surface *Surface) CreateColorCursor(hotX int32, hotY int32) *Cursor {
+	return CreateColorCursor(surface, hotX, hotY)
+}
+
+func (cursor *Cursor) Destroy() {
+	DestroyCursor(cursor)
+}
+
+func (window *Window) GetWindowRelativeMouseMode() bool {
+	return GetWindowRelativeMouseMode(window)
+}
+
+func (cursor *Cursor) SetCursor() bool {
+	return SetCursor(cursor)
+}
+
+func (window *Window) SetWindowRelativeMouseMode(enabled bool) bool {
+	return SetWindowRelativeMouseMode(window, enabled)
 }
 
 // WarpMouseInWindow moves the mouse cursor to the given position within the window.
@@ -61,6 +83,21 @@ func (texture *Texture) Destroy() {
 	DestroyTexture(texture)
 }
 
+func (renderer *Renderer) CreateTexture(format PixelFormat, access TextureAccess, w int32, h int32) *Texture {
+	return CreateTexture(renderer, format, access, w, h)
+}
+
+// GetRendererName returns the name of the selected renderer, or "" on failure.
+func (renderer *Renderer) GetName() string {
+	return GetRendererName(renderer)
+}
+
+func (renderer *Renderer) SetVSync(vsync int32) bool { return SetRenderVSync(renderer, vsync) }
+
+func (texture *Texture) UpdateTexture(rect *Rect, pixels unsafe.Pointer, pitch int32) bool {
+	return UpdateTexture(texture, rect, pixels, pitch)
+}
+
 // DestroySurface frees a surface.
 func (surface *Surface) Destroy() {
 	DestroySurface(surface)
@@ -86,6 +123,8 @@ func (window *Window) Destroy() {
 	DestroyWindow(window)
 }
 
+func (window *Window) GetSize(w *int32, h *int32) bool { return GetWindowSize(window, w, h) }
+
 // GetWindowSurface gets the SDL surface associated with the window.
 func (window *Window) GetSurface() *Surface {
 	return GetWindowSurface(window)
@@ -96,9 +135,15 @@ func (window *Window) Hide() bool {
 	return HideWindow(window)
 }
 
+func (window *Window) SetSize(w int32, h int32) bool { return SetWindowSize(window, w, h) }
+
 // ShowWindow shows a window.
 func (window *Window) Show() bool {
 	return ShowWindow(window)
+}
+
+func (window *Window) SyncWindow() bool {
+	return SyncWindow(window)
 }
 
 // UpdateWindowSurface copies the window surface to the screen.
