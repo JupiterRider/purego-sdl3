@@ -42,10 +42,10 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("Hello, World!", 1280, 720, sdl.WindowResizable, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
-	defer sdl.DestroyWindow(window)
+	defer renderer.Destroy()
+	defer window.Destroy()
 
-	sdl.SetRenderDrawColor(renderer, 100, 150, 200, 255)
+	renderer.SetDrawColor(100, 150, 200, 255)
 
 Outer:
 	for {
@@ -60,8 +60,8 @@ Outer:
 				}
 			}
 		}
-		sdl.RenderClear(renderer)
-		sdl.RenderPresent(renderer)
+		renderer.Clear()
+		renderer.Present()
 	}
 }
 ```
