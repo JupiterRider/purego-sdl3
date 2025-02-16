@@ -15,10 +15,10 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("examples/camera", 640, 480, 0, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
-	defer sdl.DestroyWindow(window)
+	defer renderer.Destroy()
+	defer window.Destroy()
 
-	sdl.SetRenderVSync(renderer, 1)
+	renderer.SetVSync(1)
 
 	cameras := sdl.GetCameras()
 	if cameras == nil {
@@ -33,12 +33,12 @@ func main() {
 	if camera == nil {
 		panic(sdl.GetError())
 	}
-	defer sdl.CloseCamera(camera)
+	defer camera.Close()
 
 	var texture *sdl.Texture
 	defer func() {
 		if texture != nil {
-			sdl.DestroyTexture(texture)
+			texture.Destroy()
 		}
 	}()
 
@@ -57,25 +57,25 @@ Outer:
 		}
 
 		var timestampNS uint64
-		frame := sdl.AcquireCameraFrame(camera, &timestampNS)
+		frame := camera.AcquireFrame(&timestampNS)
 		if frame != nil {
 			if texture == nil {
-				sdl.SetWindowSize(window, frame.W, frame.H)
-				texture = sdl.CreateTexture(renderer, frame.Format, sdl.TextureAccessStreaming, frame.W, frame.H)
+				window.SetSize(frame.W, frame.H)
+				texture = renderer.CreateTexture(frame.Format, sdl.TextureAccessStreaming, frame.W, frame.H)
 			}
 
 			if texture != nil {
-				sdl.UpdateTexture(texture, nil, frame.Pixels, frame.Pitch)
+				texture.UpdateTexture(nil, frame.Pixels, frame.Pitch)
 			}
 
-			sdl.ReleaseCameraFrame(camera, frame)
+			camera.ReleaseFrame(frame)
 		}
 
-		sdl.SetRenderDrawColor(renderer, 0x99, 0x99, 0x99, 255)
-		sdl.RenderClear(renderer)
+		renderer.SetDrawColor(0x99, 0x99, 0x99, 255)
+		renderer.Clear()
 		if texture != nil {
-			sdl.RenderTexture(renderer, texture, nil, nil)
+			renderer.RenderTexture(texture, nil, nil)
 		}
-		sdl.RenderPresent(renderer)
+		renderer.Present()
 	}
 }
