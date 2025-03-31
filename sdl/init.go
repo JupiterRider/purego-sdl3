@@ -1,3 +1,6 @@
+//go:generate go run github.com/mewspring/genmethods@master -o methods.go
+//go:generate go run golang.org/x/tools/cmd/goimports@latest -w methods.go
+
 package sdl
 
 import (
