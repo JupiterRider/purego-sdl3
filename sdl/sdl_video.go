@@ -1,10 +1,14 @@
 package sdl
 
+import "unsafe"
+
 type DisplayID uint32
 
 type WindowID uint32
 
 type HitTestResult uint32
+
+type HitTest func(window *Window, point *Point, data unsafe.Pointer) HitTestResult
 
 const (
 	HitTestNormal HitTestResult = iota
@@ -470,9 +474,13 @@ func RestoreWindow(window *Window) bool {
 //	return sdlSetWindowFullscreenMode(window, mode)
 // }
 
-// func SetWindowHitTest(window *Window, callback HitTest, callback_data unsafe.Pointer) bool {
-//	return sdlSetWindowHitTest(window, callback, callback_data)
-// }
+func SetWindowHitTest(window *Window, callback HitTest, callback_data unsafe.Pointer) bool {
+	wrapper := func(win *Window, point *Point, data unsafe.Pointer) uintptr {
+		return uintptr(callback(win, point, data))
+	}
+
+	return sdlSetWindowHitTest(window, wrapper, callback_data)
+}
 
 func SetWindowIcon(window *Window, icon *Surface) bool {
 	return sdlSetWindowIcon(window, icon)
