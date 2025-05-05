@@ -52,7 +52,7 @@ var (
 	// sdlBindGPUFragmentSamplers               func(*GPURenderPass, uint32, *GPUTextureSamplerBinding, uint32)
 	// sdlBindGPUFragmentStorageBuffers         func(*GPURenderPass, uint32, **GPUBuffer, uint32)
 	// sdlBindGPUFragmentStorageTextures        func(*GPURenderPass, uint32, **GPUTexture, uint32)
-	// sdlBindGPUGraphicsPipeline               func(*GPURenderPass, *GPUGraphicsPipeline)
+	sdlBindGPUGraphicsPipeline func(*GPURenderPass, *GPUGraphicsPipeline)
 	// sdlBindGPUIndexBuffer                    func(*GPURenderPass, *GPUBufferBinding, GPUIndexElementSize)
 	// sdlBindGPUVertexBuffers                  func(*GPURenderPass, uint32, *GPUBufferBinding, uint32)
 	// sdlBindGPUVertexSamplers                 func(*GPURenderPass, uint32, *GPUTextureSamplerBinding, uint32)
@@ -125,9 +125,9 @@ var (
 	// sdlCreateGPUComputePipeline              func(*GPUDevice, *GPUComputePipelineCreateInfo) *GPUComputePipeline
 	sdlCreateGPUDevice func(GPUShaderFormat, bool, *byte) *GPUDevice
 	// sdlCreateGPUDeviceWithProperties         func(PropertiesID) *GPUDevice
-	// sdlCreateGPUGraphicsPipeline             func(*GPUDevice, *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline
+	sdlCreateGPUGraphicsPipeline func(*GPUDevice, *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline
 	// sdlCreateGPUSampler                      func(*GPUDevice, *GPUSamplerCreateInfo) *GPUSampler
-	// sdlCreateGPUShader                       func(*GPUDevice, *GPUShaderCreateInfo) *GPUShader
+	sdlCreateGPUShader func(*GPUDevice, *GPUShaderCreateInfo) *GPUShader
 	// sdlCreateGPUTexture                      func(*GPUDevice, *GPUTextureCreateInfo) *GPUTexture
 	// sdlCreateGPUTransferBuffer               func(*GPUDevice, *GPUTransferBufferCreateInfo) *GPUTransferBuffer
 	// sdlCreateHapticEffect                    func(*Haptic, *HapticEffect) int32
@@ -191,7 +191,7 @@ var (
 	// sdlDownloadFromGPUTexture                func(*GPUCopyPass, *GPUTextureRegion, *GPUTextureTransferInfo)
 	// sdlDrawGPUIndexedPrimitives              func(*GPURenderPass, uint32, uint32, uint32, int32, uint32)
 	// sdlDrawGPUIndexedPrimitivesIndirect      func(*GPURenderPass, *GPUBuffer, uint32, uint32)
-	// sdlDrawGPUPrimitives                     func(*GPURenderPass, uint32, uint32, uint32, uint32)
+	sdlDrawGPUPrimitives func(*GPURenderPass, uint32, uint32, uint32, uint32)
 	// sdlDrawGPUPrimitivesIndirect             func(*GPURenderPass, *GPUBuffer, uint32, uint32)
 	sdlDuplicateSurface func(*Surface) *Surface
 	// sdlEGL_GetCurrentConfig                  func() EGLConfig
@@ -362,9 +362,9 @@ var (
 	sdlGetGlobalMouseState func(*float32, *float32) MouseButtonFlags
 	sdlGetGlobalProperties func() PropertiesID
 	// sdlGetGPUDeviceDriver                    func(*GPUDevice) string
-	sdlGetGPUDriver func(int32) string
-	// sdlGetGPUShaderFormats                   func(*GPUDevice) GPUShaderFormat
-	// sdlGetGPUSwapchainTextureFormat          func(*GPUDevice, *Window) GPUTextureFormat
+	sdlGetGPUDriver                 func(int32) string
+	sdlGetGPUShaderFormats          func(*GPUDevice) GPUShaderFormat
+	sdlGetGPUSwapchainTextureFormat func(*GPUDevice, *Window) GPUTextureFormat
 	// sdlGetGrabbedWindow                      func() *Window
 	// sdlGetHapticEffectStatus                 func(*Haptic, int32) bool
 	// sdlGetHapticFeatures                     func(*Haptic) uint32
@@ -713,7 +713,7 @@ var (
 	// sdllltoa                                 func(int64, string, int32) string
 	sdlLoadBMP   func(string) *Surface
 	sdlLoadBMPIO func(*IOStream, bool) *Surface
-	// sdlLoadFile                              func(string, *uint64) unsafe.Pointer
+	sdlLoadFile  func(string, *uint64) unsafe.Pointer
 	// sdlLoadFile_IO                           func(*IOStream, *uint64, bool) unsafe.Pointer
 	// sdlLoadFileAsync                         func(string, *AsyncIOQueue, unsafe.Pointer) bool
 	// sdlLoadFunction                          func(*SharedObject, string) FunctionPointer
@@ -849,9 +849,9 @@ var (
 	// sdlReleaseGPUBuffer                      func(*GPUDevice, *GPUBuffer)
 	// sdlReleaseGPUComputePipeline             func(*GPUDevice, *GPUComputePipeline)
 	// sdlReleaseGPUFence                       func(*GPUDevice, *GPUFence)
-	// sdlReleaseGPUGraphicsPipeline            func(*GPUDevice, *GPUGraphicsPipeline)
+	sdlReleaseGPUGraphicsPipeline func(*GPUDevice, *GPUGraphicsPipeline)
 	// sdlReleaseGPUSampler                     func(*GPUDevice, *GPUSampler)
-	// sdlReleaseGPUShader                      func(*GPUDevice, *GPUShader)
+	sdlReleaseGPUShader func(*GPUDevice, *GPUShader)
 	// sdlReleaseGPUTexture                     func(*GPUDevice, *GPUTexture)
 	// sdlReleaseGPUTransferBuffer              func(*GPUDevice, *GPUTransferBuffer)
 	sdlReleaseWindowFromGPUDevice func(*GPUDevice, *Window)
@@ -956,11 +956,11 @@ var (
 	// sdlSetGPUAllowedFramesInFlight           func(*GPUDevice, uint32) bool
 	// sdlSetGPUBlendConstants                  func(*GPURenderPass, FColor)
 	// sdlSetGPUBufferName                      func(*GPUDevice, *GPUBuffer, string)
-	// sdlSetGPUScissor                         func(*GPURenderPass, *Rect)
+	sdlSetGPUScissor func(*GPURenderPass, *Rect)
 	// sdlSetGPUStencilReference                func(*GPURenderPass, uint8)
 	sdlSetGPUSwapchainParameters func(*GPUDevice, *Window, GPUSwapchainComposition, GPUPresentMode) bool
 	// sdlSetGPUTextureName                     func(*GPUDevice, *GPUTexture, string)
-	// sdlSetGPUViewport                        func(*GPURenderPass, *GPUViewport)
+	sdlSetGPUViewport func(*GPURenderPass, *GPUViewport)
 	// sdlSetHapticAutocenter                   func(*Haptic, int32) bool
 	// sdlSetHapticGain                         func(*Haptic, int32) bool
 	sdlSetHint             func(string, string) bool
@@ -1098,7 +1098,7 @@ var (
 	// sdlstrpbrk                               func(string, string) string
 	// sdlstrrchr                               func(string, int32) string
 	// sdlstrrev                                func(string) string
-	// sdlstrstr                                func(string, string) string
+	sdlstrstr func(string, string) string
 	// sdlstrtod                                func(string, **byte) float64
 	// sdlstrtok_r                              func(string, string, **byte) string
 	// sdlstrtol                                func(string, **byte, int32) int64
@@ -1279,7 +1279,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlBindGPUFragmentSamplers, lib, "SDL_BindGPUFragmentSamplers")
 	// purego.RegisterLibFunc(&sdlBindGPUFragmentStorageBuffers, lib, "SDL_BindGPUFragmentStorageBuffers")
 	// purego.RegisterLibFunc(&sdlBindGPUFragmentStorageTextures, lib, "SDL_BindGPUFragmentStorageTextures")
-	// purego.RegisterLibFunc(&sdlBindGPUGraphicsPipeline, lib, "SDL_BindGPUGraphicsPipeline")
+	purego.RegisterLibFunc(&sdlBindGPUGraphicsPipeline, lib, "SDL_BindGPUGraphicsPipeline")
 	// purego.RegisterLibFunc(&sdlBindGPUIndexBuffer, lib, "SDL_BindGPUIndexBuffer")
 	// purego.RegisterLibFunc(&sdlBindGPUVertexBuffers, lib, "SDL_BindGPUVertexBuffers")
 	// purego.RegisterLibFunc(&sdlBindGPUVertexSamplers, lib, "SDL_BindGPUVertexSamplers")
@@ -1352,9 +1352,9 @@ func init() {
 	// purego.RegisterLibFunc(&sdlCreateGPUComputePipeline, lib, "SDL_CreateGPUComputePipeline")
 	purego.RegisterLibFunc(&sdlCreateGPUDevice, lib, "SDL_CreateGPUDevice")
 	// purego.RegisterLibFunc(&sdlCreateGPUDeviceWithProperties, lib, "SDL_CreateGPUDeviceWithProperties")
-	// purego.RegisterLibFunc(&sdlCreateGPUGraphicsPipeline, lib, "SDL_CreateGPUGraphicsPipeline")
+	purego.RegisterLibFunc(&sdlCreateGPUGraphicsPipeline, lib, "SDL_CreateGPUGraphicsPipeline")
 	// purego.RegisterLibFunc(&sdlCreateGPUSampler, lib, "SDL_CreateGPUSampler")
-	// purego.RegisterLibFunc(&sdlCreateGPUShader, lib, "SDL_CreateGPUShader")
+	purego.RegisterLibFunc(&sdlCreateGPUShader, lib, "SDL_CreateGPUShader")
 	// purego.RegisterLibFunc(&sdlCreateGPUTexture, lib, "SDL_CreateGPUTexture")
 	// purego.RegisterLibFunc(&sdlCreateGPUTransferBuffer, lib, "SDL_CreateGPUTransferBuffer")
 	// purego.RegisterLibFunc(&sdlCreateHapticEffect, lib, "SDL_CreateHapticEffect")
@@ -1418,7 +1418,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlDownloadFromGPUTexture, lib, "SDL_DownloadFromGPUTexture")
 	// purego.RegisterLibFunc(&sdlDrawGPUIndexedPrimitives, lib, "SDL_DrawGPUIndexedPrimitives")
 	// purego.RegisterLibFunc(&sdlDrawGPUIndexedPrimitivesIndirect, lib, "SDL_DrawGPUIndexedPrimitivesIndirect")
-	// purego.RegisterLibFunc(&sdlDrawGPUPrimitives, lib, "SDL_DrawGPUPrimitives")
+	purego.RegisterLibFunc(&sdlDrawGPUPrimitives, lib, "SDL_DrawGPUPrimitives")
 	// purego.RegisterLibFunc(&sdlDrawGPUPrimitivesIndirect, lib, "SDL_DrawGPUPrimitivesIndirect")
 	purego.RegisterLibFunc(&sdlDuplicateSurface, lib, "SDL_DuplicateSurface")
 	// purego.RegisterLibFunc(&sdlEGL_GetCurrentConfig, lib, "SDL_EGL_GetCurrentConfig")
@@ -1590,8 +1590,8 @@ func init() {
 	purego.RegisterLibFunc(&sdlGetGlobalProperties, lib, "SDL_GetGlobalProperties")
 	// purego.RegisterLibFunc(&sdlGetGPUDeviceDriver, lib, "SDL_GetGPUDeviceDriver")
 	purego.RegisterLibFunc(&sdlGetGPUDriver, lib, "SDL_GetGPUDriver")
-	// purego.RegisterLibFunc(&sdlGetGPUShaderFormats, lib, "SDL_GetGPUShaderFormats")
-	// purego.RegisterLibFunc(&sdlGetGPUSwapchainTextureFormat, lib, "SDL_GetGPUSwapchainTextureFormat")
+	purego.RegisterLibFunc(&sdlGetGPUShaderFormats, lib, "SDL_GetGPUShaderFormats")
+	purego.RegisterLibFunc(&sdlGetGPUSwapchainTextureFormat, lib, "SDL_GetGPUSwapchainTextureFormat")
 	// purego.RegisterLibFunc(&sdlGetGrabbedWindow, lib, "SDL_GetGrabbedWindow")
 	// purego.RegisterLibFunc(&sdlGetHapticEffectStatus, lib, "SDL_GetHapticEffectStatus")
 	// purego.RegisterLibFunc(&sdlGetHapticFeatures, lib, "SDL_GetHapticFeatures")
@@ -1939,7 +1939,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdllltoa, lib, "SDL_lltoa")
 	purego.RegisterLibFunc(&sdlLoadBMP, lib, "SDL_LoadBMP")
 	purego.RegisterLibFunc(&sdlLoadBMPIO, lib, "SDL_LoadBMP_IO")
-	// purego.RegisterLibFunc(&sdlLoadFile, lib, "SDL_LoadFile")
+	purego.RegisterLibFunc(&sdlLoadFile, lib, "SDL_LoadFile")
 	// purego.RegisterLibFunc(&sdlLoadFile_IO, lib, "SDL_LoadFile_IO")
 	// purego.RegisterLibFunc(&sdlLoadFileAsync, lib, "SDL_LoadFileAsync")
 	// purego.RegisterLibFunc(&sdlLoadFunction, lib, "SDL_LoadFunction")
@@ -2075,9 +2075,9 @@ func init() {
 	// purego.RegisterLibFunc(&sdlReleaseGPUBuffer, lib, "SDL_ReleaseGPUBuffer")
 	// purego.RegisterLibFunc(&sdlReleaseGPUComputePipeline, lib, "SDL_ReleaseGPUComputePipeline")
 	// purego.RegisterLibFunc(&sdlReleaseGPUFence, lib, "SDL_ReleaseGPUFence")
-	// purego.RegisterLibFunc(&sdlReleaseGPUGraphicsPipeline, lib, "SDL_ReleaseGPUGraphicsPipeline")
+	purego.RegisterLibFunc(&sdlReleaseGPUGraphicsPipeline, lib, "SDL_ReleaseGPUGraphicsPipeline")
 	// purego.RegisterLibFunc(&sdlReleaseGPUSampler, lib, "SDL_ReleaseGPUSampler")
-	// purego.RegisterLibFunc(&sdlReleaseGPUShader, lib, "SDL_ReleaseGPUShader")
+	purego.RegisterLibFunc(&sdlReleaseGPUShader, lib, "SDL_ReleaseGPUShader")
 	// purego.RegisterLibFunc(&sdlReleaseGPUTexture, lib, "SDL_ReleaseGPUTexture")
 	// purego.RegisterLibFunc(&sdlReleaseGPUTransferBuffer, lib, "SDL_ReleaseGPUTransferBuffer")
 	purego.RegisterLibFunc(&sdlReleaseWindowFromGPUDevice, lib, "SDL_ReleaseWindowFromGPUDevice")
@@ -2182,11 +2182,11 @@ func init() {
 	// purego.RegisterLibFunc(&sdlSetGPUAllowedFramesInFlight, lib, "SDL_SetGPUAllowedFramesInFlight")
 	// purego.RegisterLibFunc(&sdlSetGPUBlendConstants, lib, "SDL_SetGPUBlendConstants")
 	// purego.RegisterLibFunc(&sdlSetGPUBufferName, lib, "SDL_SetGPUBufferName")
-	// purego.RegisterLibFunc(&sdlSetGPUScissor, lib, "SDL_SetGPUScissor")
+	purego.RegisterLibFunc(&sdlSetGPUScissor, lib, "SDL_SetGPUScissor")
 	// purego.RegisterLibFunc(&sdlSetGPUStencilReference, lib, "SDL_SetGPUStencilReference")
 	purego.RegisterLibFunc(&sdlSetGPUSwapchainParameters, lib, "SDL_SetGPUSwapchainParameters")
 	// purego.RegisterLibFunc(&sdlSetGPUTextureName, lib, "SDL_SetGPUTextureName")
-	// purego.RegisterLibFunc(&sdlSetGPUViewport, lib, "SDL_SetGPUViewport")
+	purego.RegisterLibFunc(&sdlSetGPUViewport, lib, "SDL_SetGPUViewport")
 	// purego.RegisterLibFunc(&sdlSetHapticAutocenter, lib, "SDL_SetHapticAutocenter")
 	// purego.RegisterLibFunc(&sdlSetHapticGain, lib, "SDL_SetHapticGain")
 	purego.RegisterLibFunc(&sdlSetHint, lib, "SDL_SetHint")
@@ -2324,7 +2324,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlstrpbrk, lib, "SDL_strpbrk")
 	// purego.RegisterLibFunc(&sdlstrrchr, lib, "SDL_strrchr")
 	// purego.RegisterLibFunc(&sdlstrrev, lib, "SDL_strrev")
-	// purego.RegisterLibFunc(&sdlstrstr, lib, "SDL_strstr")
+	purego.RegisterLibFunc(&sdlstrstr, lib, "SDL_strstr")
 	// purego.RegisterLibFunc(&sdlstrtod, lib, "SDL_strtod")
 	// purego.RegisterLibFunc(&sdlstrtok_r, lib, "SDL_strtok_r")
 	// purego.RegisterLibFunc(&sdlstrtol, lib, "SDL_strtol")

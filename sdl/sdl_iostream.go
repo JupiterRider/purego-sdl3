@@ -1,5 +1,7 @@
 package sdl
 
+import "unsafe"
+
 type IOStatus uint32
 
 const (
@@ -68,9 +70,9 @@ func IOFromMem(mem []byte) *IOStream {
 //	return sdlIOvprintf(context, fmt, ap)
 // }
 
-// func LoadFile(file string, datasize *uint64) unsafe.Pointer {
-//	return sdlLoadFile(file, datasize)
-// }
+func LoadFile(file string, dataSize *uint64) unsafe.Pointer {
+	return sdlLoadFile(file, dataSize)
+}
 
 // func LoadFile_IO(src *IOStream, datasize *uint64, closeio bool) unsafe.Pointer {
 //	return sdlLoadFile_IO(src, datasize, closeio)

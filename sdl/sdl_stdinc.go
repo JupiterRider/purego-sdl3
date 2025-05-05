@@ -535,9 +535,9 @@ func Free(mem unsafe.Pointer) {
 //	return sdlstrrev(str)
 // }
 
-// func strstr(haystack string, needle string) string {
-//	return sdlstrstr(haystack, needle)
-// }
+func Strstr(haystack string, needle string) string {
+	return sdlstrstr(haystack, needle)
+}
 
 // func strtod(str string, endp **byte) float64 {
 //	return sdlstrtod(str, endp)

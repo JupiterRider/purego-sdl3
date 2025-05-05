@@ -60,6 +60,15 @@ const (
 	GPUBlendFactorSrcAlphaSaturate
 )
 
+type GPUColorComponentFlags uint8
+
+const (
+	GPUColorComponentR GPUColorComponentFlags = 1 << 0
+	GPUColorComponentG GPUColorComponentFlags = 1 << 1
+	GPUColorComponentB GPUColorComponentFlags = 1 << 2
+	GPUColorComponentA GPUColorComponentFlags = 1 << 3
+)
+
 type GPUBlendOp uint32
 
 const (
@@ -401,6 +410,131 @@ type GPUDepthStencilTargetInfo struct {
 	Padding2       uint8
 }
 
+type GPUShader struct{}
+
+type GPUVertexBufferDescription struct {
+	Slot             uint32
+	Pitch            uint32
+	InputRate        GPUVertexInputRate
+	InstanceStepRate uint32
+}
+
+type GPUVertexAttribute struct {
+	Location   uint32
+	BufferSlot uint32
+	Format     GPUVertexElementFormat
+	Offset     uint32
+}
+
+type GPUVertexInputState struct {
+	VertexBufferDescriptions *GPUVertexBufferDescription
+	NumVertexBuffers         uint32
+	VertexAttributes         *GPUVertexAttribute
+	NumVertexAttributes      uint32
+}
+
+type GPUStencilOpState struct {
+	FailOp      GPUStencilOp
+	PassOp      GPUStencilOp
+	DepthFailOp GPUStencilOp
+	CompareOp   GPUCompareOp
+}
+
+type GPUColorTargetBlendState struct {
+	SrcColorBlendFactor  GPUBlendFactor
+	DstColorBlendFactor  GPUBlendFactor
+	ColorBlendOp         GPUBlendOp
+	SrcAlphaBlendFactor  GPUBlendFactor
+	DstAlphaBlendFactor  GPUBlendFactor
+	AlphaBlendOp         GPUBlendOp
+	ColorWriteMask       GPUColorComponentFlags
+	EnableBlend          bool
+	EnableColorWriteMask bool
+	Padding1             uint8
+	Padding2             uint8
+}
+
+type GPUShaderCreateInfo struct {
+	CodeSize           uint64
+	Code               *uint8
+	EntryPoint         *byte // must be null-terminated string. use convert.ToBytePtr().
+	Format             GPUShaderFormat
+	Stage              GPUShaderStage
+	NumSamplers        uint32
+	NumStorageTextures uint32
+	NumStorageBuffers  uint32
+	NumUniformBuffers  uint32
+	Props              PropertiesID
+}
+
+type GPURasterizerState struct {
+	FillMode                GPUFillMode
+	CullMode                GPUCullMode
+	FrontFace               GPUFrontFace
+	DepthBiasConstantFactor float32
+	DepthBiasClamp          float32
+	DepthBiasSlopeFactor    float32
+	EnableDepthBias         bool
+	EnableDepthClip         bool
+	Padding1                uint8
+	Padding2                uint8
+}
+
+type GPUMultisampleState struct {
+	SampleCount GPUSampleCount
+	SampleMask  uint32
+	EnableMask  bool
+	Padding1    uint8
+	Padding2    uint8
+	Padding3    uint8
+}
+
+type GPUDepthStencilState struct {
+	CompareOp         GPUCompareOp
+	BackStencilState  GPUStencilOpState
+	FrontStencilState GPUStencilOpState
+	CompareMask       uint8
+	WriteMask         uint8
+	EnableDepthTest   bool
+	EnableDepthWrite  bool
+	EnableStencilTest bool
+	Padding1          uint8
+	Padding2          uint8
+	Padding3          uint8
+}
+
+type GPUColorTargetDescription struct {
+	Format     GPUTextureFormat
+	BlendState GPUColorTargetBlendState
+}
+
+type GPUGraphicsPipelineTargetInfo struct {
+	ColorTargetDescriptions *GPUColorTargetDescription
+	NumColorTargets         uint32
+	DepthStencilFormat      GPUTextureFormat
+	HasDepthStencilTarget   bool
+	Padding1                uint8
+	Padding2                uint8
+	Padding3                uint8
+}
+
+type GPUGraphicsPipelineCreateInfo struct {
+	VertextShader     *GPUShader
+	FragmentShader    *GPUShader
+	VertexInputState  GPUVertexInputState
+	PrimitiveType     GPUPrimitiveType
+	RasterizerState   GPURasterizerState
+	MultisampleState  GPUMultisampleState
+	DepthStencilState GPUDepthStencilState
+	TargetInfo        GPUGraphicsPipelineTargetInfo
+}
+
+type GPUGraphicsPipeline struct{}
+
+type GPUViewport struct {
+	X, Y, W, H, MinDepth, MaxDepth float32
+}
+
 func AcquireGPUCommandBuffer(device *GPUDevice) *GPUCommandBuffer {
 	return sdlAcquireGPUCommandBuffer(device)
 }
@@ -454,9 +588,9 @@ func BeginGPURenderPass(commandBuffer *GPUCommandBuffer, colorTargetInfos []GPUC
 //	sdlBindGPUFragmentStorageTextures(render_pass, first_slot, storage_textures, num_bindings)
 // }
 
-// func BindGPUGraphicsPipeline(render_pass *GPURenderPass, graphics_pipeline *GPUGraphicsPipeline)  {
-//	sdlBindGPUGraphicsPipeline(render_pass, graphics_pipeline)
-// }
+func BindGPUGraphicsPipeline(renderPass *GPURenderPass, graphicsPipeline *GPUGraphicsPipeline) {
+	sdlBindGPUGraphicsPipeline(renderPass, graphicsPipeline)
+}
 
 // func BindGPUIndexBuffer(render_pass *GPURenderPass, binding *GPUBufferBinding, index_element_size GPUIndexElementSize)  {
 //	sdlBindGPUIndexBuffer(render_pass, binding, index_element_size)
@@ -518,17 +652,17 @@ func CreateGPUDevice(formatFlags GPUShaderFormat, debugMode bool, name string) *
 //	return sdlCreateGPUDeviceWithProperties(props)
 // }
 
-// func CreateGPUGraphicsPipeline(device *GPUDevice, createinfo *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
-//	return sdlCreateGPUGraphicsPipeline(device, createinfo)
-// }
+func CreateGPUGraphicsPipeline(device *GPUDevice, createInfo *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
+	return sdlCreateGPUGraphicsPipeline(device, createInfo)
+}
 
 // func CreateGPUSampler(device *GPUDevice, createinfo *GPUSamplerCreateInfo) *GPUSampler {
 //	return sdlCreateGPUSampler(device, createinfo)
 // }
 
-// func CreateGPUShader(device *GPUDevice, createinfo *GPUShaderCreateInfo) *GPUShader {
-//	return sdlCreateGPUShader(device, createinfo)
-// }
+func CreateGPUShader(device *GPUDevice, createInfo *GPUShaderCreateInfo) *GPUShader {
+	return sdlCreateGPUShader(device, createInfo)
+}
 
 // func CreateGPUTexture(device *GPUDevice, createinfo *GPUTextureCreateInfo) *GPUTexture {
 //	return sdlCreateGPUTexture(device, createinfo)
@@ -566,9 +700,9 @@ func DestroyGPUDevice(device *GPUDevice) {
 //	sdlDrawGPUIndexedPrimitivesIndirect(render_pass, buffer, offset, draw_count)
 // }
 
-// func DrawGPUPrimitives(render_pass *GPURenderPass, num_vertices uint32, num_instances uint32, first_vertex uint32, first_instance uint32)  {
-//	sdlDrawGPUPrimitives(render_pass, num_vertices, num_instances, first_vertex, first_instance)
-// }
+func DrawGPUPrimitives(renderPass *GPURenderPass, numVertices uint32, numInstances uint32, firstVertex uint32, firstInstance uint32) {
+	sdlDrawGPUPrimitives(renderPass, numVertices, numInstances, firstVertex, firstInstance)
+}
 
 // func DrawGPUPrimitivesIndirect(render_pass *GPURenderPass, buffer *GPUBuffer, offset uint32, draw_count uint32)  {
 //	sdlDrawGPUPrimitivesIndirect(render_pass, buffer, offset, draw_count)
@@ -598,13 +732,13 @@ func GetGPUDriver(index int32) string {
 	return sdlGetGPUDriver(index)
 }
 
-// func GetGPUShaderFormats(device *GPUDevice) GPUShaderFormat {
-//	return sdlGetGPUShaderFormats(device)
-// }
+func GetGPUShaderFormats(device *GPUDevice) GPUShaderFormat {
+	return sdlGetGPUShaderFormats(device)
+}
 
-// func GetGPUSwapchainTextureFormat(device *GPUDevice, window *Window) GPUTextureFormat {
-//	return sdlGetGPUSwapchainTextureFormat(device, window)
-// }
+func GetGPUSwapchainTextureFormat(device *GPUDevice, window *Window) GPUTextureFormat {
+	return sdlGetGPUSwapchainTextureFormat(device, window)
+}
 
 // func GetNumGPUDrivers() int32 {
 //	return sdlGetNumGPUDrivers()
@@ -674,17 +808,17 @@ func GetGPUDriver(index int32) string {
 //	sdlReleaseGPUFence(device, fence)
 // }
 
-// func ReleaseGPUGraphicsPipeline(device *GPUDevice, graphics_pipeline *GPUGraphicsPipeline)  {
-//	sdlReleaseGPUGraphicsPipeline(device, graphics_pipeline)
-// }
+func ReleaseGPUGraphicsPipeline(device *GPUDevice, graphicsPipeline *GPUGraphicsPipeline) {
+	sdlReleaseGPUGraphicsPipeline(device, graphicsPipeline)
+}
 
 // func ReleaseGPUSampler(device *GPUDevice, sampler *GPUSampler)  {
 //	sdlReleaseGPUSampler(device, sampler)
 // }
 
-// func ReleaseGPUShader(device *GPUDevice, shader *GPUShader)  {
-//	sdlReleaseGPUShader(device, shader)
-// }
+func ReleaseGPUShader(device *GPUDevice, shader *GPUShader) {
+	sdlReleaseGPUShader(device, shader)
+}
 
 // func ReleaseGPUTexture(device *GPUDevice, texture *GPUTexture)  {
 //	sdlReleaseGPUTexture(device, texture)
@@ -710,9 +844,9 @@ func ReleaseWindowFromGPUDevice(device *GPUDevice, window *Window) {
 //	sdlSetGPUBufferName(device, buffer, text)
 // }
 
-// func SetGPUScissor(render_pass *GPURenderPass, scissor *Rect)  {
-//	sdlSetGPUScissor(render_pass, scissor)
-// }
+func SetGPUScissor(renderPass *GPURenderPass, scissor *Rect) {
+	sdlSetGPUScissor(renderPass, scissor)
+}
 
 // func SetGPUStencilReference(render_pass *GPURenderPass, reference uint8)  {
 //	sdlSetGPUStencilReference(render_pass, reference)
@@ -726,9 +860,9 @@ func SetGPUSwapchainParameters(device *GPUDevice, window *Window, swapchainCompo
 //	sdlSetGPUTextureName(device, texture, text)
 // }
 
-// func SetGPUViewport(render_pass *GPURenderPass, viewport *GPUViewport)  {
-//	sdlSetGPUViewport(render_pass, viewport)
-// }
+func SetGPUViewport(renderass *GPURenderPass, viewport *GPUViewport) {
+	sdlSetGPUViewport(renderass, viewport)
+}
 
 func SubmitGPUCommandBuffer(commandBuffer *GPUCommandBuffer) bool {
 	return sdlSubmitGPUCommandBuffer(commandBuffer)
