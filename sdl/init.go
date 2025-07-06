@@ -295,7 +295,7 @@ var (
 	sdlGetDefaultCursor func() *Cursor
 	// sdlGetDefaultLogOutputFunction           func() LogOutputFunction
 	// sdlGetDesktopDisplayMode                 func(DisplayID) *DisplayMode
-	// sdlGetDisplayBounds                      func(DisplayID, *Rect) bool
+	sdlGetDisplayBounds       func(DisplayID, *Rect) bool
 	sdlGetDisplayContentScale func(DisplayID) float32
 	// sdlGetDisplayForPoint                    func(*Point) DisplayID
 	// sdlGetDisplayForRect                     func(*Rect) DisplayID

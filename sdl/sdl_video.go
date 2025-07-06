@@ -214,10 +214,16 @@ func GetCurrentVideoDriver() string {
 //	return sdlGetDesktopDisplayMode(displayID)
 // }
 
-// func GetDisplayBounds(displayID DisplayID, rect *Rect) bool {
-//	return sdlGetDisplayBounds(displayID, rect)
-// }
+// GetDisplayBounds gets the desktop area represented by a display.
+func GetDisplayBounds(displayID DisplayID) *Rect {
+	rect := &Rect{}
+	if ok := sdlGetDisplayBounds(displayID, rect); ok {
+		return rect
+	}
+	return nil
+}
 
+// GetDisplayContentScale gets the content scale of a display.
 func GetDisplayContentScale(displayID DisplayID) float32 {
 	return sdlGetDisplayContentScale(displayID)
 }
