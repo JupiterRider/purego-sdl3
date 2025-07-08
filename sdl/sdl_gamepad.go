@@ -304,9 +304,15 @@ func GetGamepadNameForID(instanceId JoystickID) string {
 //	return sdlGetGamepadProperties(gamepad)
 // }
 
-// func GetGamepads(count *int32) *JoystickID {
-//	return sdlGetGamepads(count)
-// }
+// GetGamepads returns a list of currently connected gamepads or nil on failure.
+//
+// The returned slice must not be freed with e.g. [Free].
+func GetGamepads() []JoystickID {
+	var count int32
+	gamepads := sdlGetGamepads(&count)
+	defer Free(unsafe.Pointer(gamepads))
+	return mem.Copy(gamepads, count)
+}
 
 // func GetGamepadSensorData(gamepad *Gamepad, type SensorType, data *float32, num_values int32) bool {
 //	return sdlGetGamepadSensorData(gamepad, type, data, num_values)
@@ -316,9 +322,10 @@ func GetGamepadNameForID(instanceId JoystickID) string {
 //	return sdlGetGamepadSensorDataRate(gamepad, type)
 // }
 
-// func GetGamepadSerial(gamepad *Gamepad) string {
-//	return sdlGetGamepadSerial(gamepad)
-// }
+// GetGamepadSerial returns the serial number of an opened gamepad, or "" if unavailable.
+func GetGamepadSerial(gamepad *Gamepad) string {
+	return sdlGetGamepadSerial(gamepad)
+}
 
 // func GetGamepadSteamHandle(gamepad *Gamepad) uint64 {
 //	return sdlGetGamepadSteamHandle(gamepad)
@@ -328,21 +335,22 @@ func GetGamepadNameForID(instanceId JoystickID) string {
 //	return sdlGetGamepadStringForAxis(axis)
 // }
 
-// func GetGamepadStringForButton(button GamepadButton) string {
-//	return sdlGetGamepadStringForButton(button)
-// }
+// GetGamepadStringForButton returns the name for the given button.
+func GetGamepadStringForButton(button GamepadButton) string {
+	return sdlGetGamepadStringForButton(button)
+}
 
-// func GetGamepadStringForType(type GamepadType) string {
-//	return sdlGetGamepadStringForType(type)
-// }
+func GetGamepadStringForType(gamepadType GamepadType) string {
+	return sdlGetGamepadStringForType(gamepadType)
+}
 
 // func GetGamepadTouchpadFinger(gamepad *Gamepad, touchpad int32, finger int32, down *bool, x *float32, y *float32, pressure *float32) bool {
 //	return sdlGetGamepadTouchpadFinger(gamepad, touchpad, finger, down, x, y, pressure)
 // }
 
-// func GetGamepadType(gamepad *Gamepad) GamepadType {
-//	return sdlGetGamepadType(gamepad)
-// }
+func GetGamepadType(gamepad *Gamepad) GamepadType {
+	return sdlGetGamepadType(gamepad)
+}
 
 // func GetGamepadTypeForID(instance_id JoystickID) GamepadType {
 //	return sdlGetGamepadTypeForID(instance_id)

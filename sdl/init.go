@@ -345,16 +345,16 @@ var (
 	// sdlGetGamepadProductVersion              func(*Gamepad) uint16
 	// sdlGetGamepadProductVersionForID         func(JoystickID) uint16
 	// sdlGetGamepadProperties                  func(*Gamepad) PropertiesID
-	// sdlGetGamepads                           func(*int32) *JoystickID
+	sdlGetGamepads func(*int32) *JoystickID
 	// sdlGetGamepadSensorData                  func(*Gamepad, SensorType, *float32, int32) bool
 	// sdlGetGamepadSensorDataRate              func(*Gamepad, SensorType) float32
-	// sdlGetGamepadSerial                      func(*Gamepad) string
+	sdlGetGamepadSerial func(*Gamepad) string
 	// sdlGetGamepadSteamHandle                 func(*Gamepad) uint64
 	// sdlGetGamepadStringForAxis               func(GamepadAxis) string
-	// sdlGetGamepadStringForButton             func(GamepadButton) string
-	// sdlGetGamepadStringForType               func(GamepadType) string
+	sdlGetGamepadStringForButton func(GamepadButton) string
+	sdlGetGamepadStringForType   func(GamepadType) string
 	// sdlGetGamepadTouchpadFinger              func(*Gamepad, int32, int32, *bool, *float32, *float32, *float32) bool
-	// sdlGetGamepadType                        func(*Gamepad) GamepadType
+	sdlGetGamepadType func(*Gamepad) GamepadType
 	// sdlGetGamepadTypeForID                   func(JoystickID) GamepadType
 	// sdlGetGamepadTypeFromString              func(string) GamepadType
 	// sdlGetGamepadVendor                      func(*Gamepad) uint16
@@ -1571,16 +1571,16 @@ func init() {
 	// purego.RegisterLibFunc(&sdlGetGamepadProductVersion, lib, "SDL_GetGamepadProductVersion")
 	// purego.RegisterLibFunc(&sdlGetGamepadProductVersionForID, lib, "SDL_GetGamepadProductVersionForID")
 	// purego.RegisterLibFunc(&sdlGetGamepadProperties, lib, "SDL_GetGamepadProperties")
-	// purego.RegisterLibFunc(&sdlGetGamepads, lib, "SDL_GetGamepads")
+	purego.RegisterLibFunc(&sdlGetGamepads, lib, "SDL_GetGamepads")
 	// purego.RegisterLibFunc(&sdlGetGamepadSensorData, lib, "SDL_GetGamepadSensorData")
 	// purego.RegisterLibFunc(&sdlGetGamepadSensorDataRate, lib, "SDL_GetGamepadSensorDataRate")
-	// purego.RegisterLibFunc(&sdlGetGamepadSerial, lib, "SDL_GetGamepadSerial")
+	purego.RegisterLibFunc(&sdlGetGamepadSerial, lib, "SDL_GetGamepadSerial")
 	// purego.RegisterLibFunc(&sdlGetGamepadSteamHandle, lib, "SDL_GetGamepadSteamHandle")
 	// purego.RegisterLibFunc(&sdlGetGamepadStringForAxis, lib, "SDL_GetGamepadStringForAxis")
-	// purego.RegisterLibFunc(&sdlGetGamepadStringForButton, lib, "SDL_GetGamepadStringForButton")
-	// purego.RegisterLibFunc(&sdlGetGamepadStringForType, lib, "SDL_GetGamepadStringForType")
+	purego.RegisterLibFunc(&sdlGetGamepadStringForButton, lib, "SDL_GetGamepadStringForButton")
+	purego.RegisterLibFunc(&sdlGetGamepadStringForType, lib, "SDL_GetGamepadStringForType")
 	// purego.RegisterLibFunc(&sdlGetGamepadTouchpadFinger, lib, "SDL_GetGamepadTouchpadFinger")
-	// purego.RegisterLibFunc(&sdlGetGamepadType, lib, "SDL_GetGamepadType")
+	purego.RegisterLibFunc(&sdlGetGamepadType, lib, "SDL_GetGamepadType")
 	// purego.RegisterLibFunc(&sdlGetGamepadTypeForID, lib, "SDL_GetGamepadTypeForID")
 	// purego.RegisterLibFunc(&sdlGetGamepadTypeFromString, lib, "SDL_GetGamepadTypeFromString")
 	// purego.RegisterLibFunc(&sdlGetGamepadVendor, lib, "SDL_GetGamepadVendor")
