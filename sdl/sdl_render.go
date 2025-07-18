@@ -423,18 +423,38 @@ func RenderGeometry(renderer *Renderer, texture *Texture, vertices []Vertex, ind
 }
 
 func RenderGeometryRaw(renderer *Renderer, texture *Texture, xy []FPoint, color []FColor, uv []FPoint, indices []int32) bool {
+	var xyPtr, uvPtr *FPoint
+	numXY := len(xy)
+	if numXY > 0 {
+		xyPtr = &xy[0]
+	}
+	if len(uv) > 0 {
+		uvPtr = &uv[0]
+	}
+
+	var colorPtr *FColor
+	if len(color) > 0 {
+		colorPtr = &color[0]
+	}
+
+	var indicesPtr *int32
+	numIndices := len(indices)
+	if numIndices > 0 {
+		indicesPtr = &indices[0]
+	}
+
 	ret, _, _ := purego.SyscallN(sdlRenderGeometryRaw,
 		uintptr(unsafe.Pointer(renderer)),
 		uintptr(unsafe.Pointer(texture)),
-		uintptr(unsafe.Pointer(&xy[0])),
+		uintptr(unsafe.Pointer(xyPtr)),
 		uintptr(8), // xyStride -> unsafe.Sizeof(sdl.FPoint{}) == 8
-		uintptr(unsafe.Pointer(&color[0])),
+		uintptr(unsafe.Pointer(colorPtr)),
 		uintptr(16), // colorStride -> unsafe.Sizeof(sdl.FPoint{}) == 16
-		uintptr(unsafe.Pointer(&uv[0])),
+		uintptr(unsafe.Pointer(uvPtr)),
 		uintptr(8), // uvStride -> unsafe.Sizeof(sdl.FPoint{}) == 8
-		uintptr(len(xy)),
-		uintptr(unsafe.Pointer(&indices[0])),
-		uintptr(len(indices)),
+		uintptr(numXY),
+		uintptr(unsafe.Pointer(indicesPtr)),
+		uintptr(numIndices),
 		uintptr(4)) // sizeIndices -> unsafe.Sizeof(int32(0)) == 4
 
 	return byte(ret) != 0
