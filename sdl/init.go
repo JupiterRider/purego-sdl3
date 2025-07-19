@@ -445,7 +445,7 @@ var (
 	sdlGetNumVideoDrivers  func() int32
 	// sdlGetOriginalMemoryFunctions            func(*malloc_func, *calloc_func, *realloc_func, *free_func)
 	// sdlGetPathInfo                           func(string, *PathInfo) bool
-	sdlGetPerformanceCounter   func() uint64
+	sdlGetPerformanceCounter   uintptr
 	sdlGetPerformanceFrequency uintptr
 	sdlGetPixelFormatDetails   func(PixelFormat) *PixelFormatDetails
 	// sdlGetPixelFormatForMasks                func(int32, uint32, uint32, uint32, uint32) PixelFormat
@@ -1671,7 +1671,7 @@ func init() {
 	purego.RegisterLibFunc(&sdlGetNumVideoDrivers, lib, "SDL_GetNumVideoDrivers")
 	// purego.RegisterLibFunc(&sdlGetOriginalMemoryFunctions, lib, "SDL_GetOriginalMemoryFunctions")
 	// purego.RegisterLibFunc(&sdlGetPathInfo, lib, "SDL_GetPathInfo")
-	purego.RegisterLibFunc(&sdlGetPerformanceCounter, lib, "SDL_GetPerformanceCounter")
+	sdlGetPerformanceCounter = shared.Get(lib, "SDL_GetPerformanceCounter")
 	sdlGetPerformanceFrequency = shared.Get(lib, "SDL_GetPerformanceFrequency")
 	purego.RegisterLibFunc(&sdlGetPixelFormatDetails, lib, "SDL_GetPixelFormatDetails")
 	// purego.RegisterLibFunc(&sdlGetPixelFormatForMasks, lib, "SDL_GetPixelFormatForMasks")

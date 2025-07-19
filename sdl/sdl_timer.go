@@ -27,7 +27,8 @@ func DelayNS(ns uint64) {
 
 // GetPerformanceCounter returns the current value of the high resolution counter.
 func GetPerformanceCounter() uint64 {
-	return sdlGetPerformanceCounter()
+	ret, _, _ := purego.SyscallN(sdlGetPerformanceCounter)
+	return uint64(ret)
 }
 
 // GetPerformanceFrequency returns the count per second of the high resolution counter.
