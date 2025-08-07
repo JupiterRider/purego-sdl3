@@ -563,8 +563,8 @@ var (
 	// sdlGetWindowAspectRatio                  func(*Window, *float32, *float32) bool
 	// sdlGetWindowBordersSize                  func(*Window, *int32, *int32, *int32, *int32) bool
 	sdlGetWindowDisplayScale func(*Window) float32
-	// sdlGetWindowFlags                        func(*Window) WindowFlags
-	sdlGetWindowFromEvent func(*Event) *Window
+	sdlGetWindowFlags        func(*Window) WindowFlags
+	sdlGetWindowFromEvent    func(*Event) *Window
 	// sdlGetWindowFromID                       func(WindowID) *Window
 	sdlGetWindowFullscreenMode func(*Window) *DisplayMode
 	// sdlGetWindowICCProfile                   func(*Window, *uint64) unsafe.Pointer
@@ -587,21 +587,21 @@ var (
 	sdlGetWindowSizeInPixels func(*Window, *int32, *int32) bool
 	sdlGetWindowSurface      func(*Window) *Surface
 	// sdlGetWindowSurfaceVSync                 func(*Window, *int32) bool
-	sdlGetWindowTitle func(*Window) string
-	// sdlGL_CreateContext                      func(*Window) GLContext
-	// sdlGL_DestroyContext                     func(GLContext) bool
+	sdlGetWindowTitle   func(*Window) string
+	sdlGLCreateContext  func(*Window) GLContext
+	sdlGLDestroyContext func(GLContext) bool
 	// sdlGL_ExtensionSupported                 func(string) bool
-	// sdlGL_GetAttribute                       func(GLAttr, *int32) bool
-	// sdlGL_GetCurrentContext                  func() GLContext
-	// sdlGL_GetCurrentWindow                   func() *Window
+	sdlGLGetAttribute      func(GLAttr, *int32) bool
+	sdlGLGetCurrentContext func() GLContext
+	sdlGLGetCurrentWindow  func() *Window
 	// sdlGL_GetProcAddress                     func(string) FunctionPointer
 	// sdlGL_GetSwapInterval                    func(*int32) bool
 	// sdlGL_LoadLibrary                        func(string) bool
 	// sdlGL_MakeCurrent                        func(*Window, GLContext) bool
 	// sdlGL_ResetAttributes                    func()
-	// sdlGL_SetAttribute                       func(GLAttr, int32) bool
-	// sdlGL_SetSwapInterval                    func(int32) bool
-	// sdlGL_SwapWindow                         func(*Window) bool
+	sdlGLSetAttribute    func(GLAttr, int32) bool
+	sdlGLSetSwapInterval uintptr
+	sdlGLSwapWindow      uintptr
 	// sdlGL_UnloadLibrary                      func()
 	// sdlGlobDirectory                         func(string, string, GlobFlags, *int32) **byte
 	// sdlGlobStorageDirectory                  func(*Storage, string, string, GlobFlags, *int32) **byte
@@ -1789,7 +1789,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlGetWindowAspectRatio, lib, "SDL_GetWindowAspectRatio")
 	// purego.RegisterLibFunc(&sdlGetWindowBordersSize, lib, "SDL_GetWindowBordersSize")
 	purego.RegisterLibFunc(&sdlGetWindowDisplayScale, lib, "SDL_GetWindowDisplayScale")
-	// purego.RegisterLibFunc(&sdlGetWindowFlags, lib, "SDL_GetWindowFlags")
+	purego.RegisterLibFunc(&sdlGetWindowFlags, lib, "SDL_GetWindowFlags")
 	purego.RegisterLibFunc(&sdlGetWindowFromEvent, lib, "SDL_GetWindowFromEvent")
 	// purego.RegisterLibFunc(&sdlGetWindowFromID, lib, "SDL_GetWindowFromID")
 	purego.RegisterLibFunc(&sdlGetWindowFullscreenMode, lib, "SDL_GetWindowFullscreenMode")
@@ -1814,20 +1814,20 @@ func init() {
 	purego.RegisterLibFunc(&sdlGetWindowSurface, lib, "SDL_GetWindowSurface")
 	// purego.RegisterLibFunc(&sdlGetWindowSurfaceVSync, lib, "SDL_GetWindowSurfaceVSync")
 	purego.RegisterLibFunc(&sdlGetWindowTitle, lib, "SDL_GetWindowTitle")
-	// purego.RegisterLibFunc(&sdlGL_CreateContext, lib, "SDL_GL_CreateContext")
-	// purego.RegisterLibFunc(&sdlGL_DestroyContext, lib, "SDL_GL_DestroyContext")
+	purego.RegisterLibFunc(&sdlGLCreateContext, lib, "SDL_GL_CreateContext")
+	purego.RegisterLibFunc(&sdlGLDestroyContext, lib, "SDL_GL_DestroyContext")
 	// purego.RegisterLibFunc(&sdlGL_ExtensionSupported, lib, "SDL_GL_ExtensionSupported")
-	// purego.RegisterLibFunc(&sdlGL_GetAttribute, lib, "SDL_GL_GetAttribute")
-	// purego.RegisterLibFunc(&sdlGL_GetCurrentContext, lib, "SDL_GL_GetCurrentContext")
-	// purego.RegisterLibFunc(&sdlGL_GetCurrentWindow, lib, "SDL_GL_GetCurrentWindow")
+	purego.RegisterLibFunc(&sdlGLGetAttribute, lib, "SDL_GL_GetAttribute")
+	purego.RegisterLibFunc(&sdlGLGetCurrentContext, lib, "SDL_GL_GetCurrentContext")
+	purego.RegisterLibFunc(&sdlGLGetCurrentWindow, lib, "SDL_GL_GetCurrentWindow")
 	// purego.RegisterLibFunc(&sdlGL_GetProcAddress, lib, "SDL_GL_GetProcAddress")
 	// purego.RegisterLibFunc(&sdlGL_GetSwapInterval, lib, "SDL_GL_GetSwapInterval")
 	// purego.RegisterLibFunc(&sdlGL_LoadLibrary, lib, "SDL_GL_LoadLibrary")
 	// purego.RegisterLibFunc(&sdlGL_MakeCurrent, lib, "SDL_GL_MakeCurrent")
 	// purego.RegisterLibFunc(&sdlGL_ResetAttributes, lib, "SDL_GL_ResetAttributes")
-	// purego.RegisterLibFunc(&sdlGL_SetAttribute, lib, "SDL_GL_SetAttribute")
-	// purego.RegisterLibFunc(&sdlGL_SetSwapInterval, lib, "SDL_GL_SetSwapInterval")
-	// purego.RegisterLibFunc(&sdlGL_SwapWindow, lib, "SDL_GL_SwapWindow")
+	purego.RegisterLibFunc(&sdlGLSetAttribute, lib, "SDL_GL_SetAttribute")
+	sdlGLSetSwapInterval = shared.Get(lib, "SDL_GL_SetSwapInterval")
+	sdlGLSwapWindow = shared.Get(lib, "SDL_GL_SwapWindow")
 	// purego.RegisterLibFunc(&sdlGL_UnloadLibrary, lib, "SDL_GL_UnloadLibrary")
 	// purego.RegisterLibFunc(&sdlGlobDirectory, lib, "SDL_GlobDirectory")
 	// purego.RegisterLibFunc(&sdlGlobStorageDirectory, lib, "SDL_GlobStorageDirectory")

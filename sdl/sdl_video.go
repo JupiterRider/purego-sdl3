@@ -3,6 +3,7 @@ package sdl
 import (
 	"unsafe"
 
+	"github.com/ebitengine/purego"
 	"github.com/jupiterrider/purego-sdl3/internal/mem"
 )
 
@@ -136,6 +137,10 @@ const (
 	WindowPosCenteredMask = 0x2FFF0000
 	WindowPosCentered     = WindowPosCenteredMask
 )
+
+type GLContextState struct{}
+
+type GLContext *GLContextState
 
 func WindowPosCenteredDisplay(displayID DisplayID) uint32 {
 	return WindowPosCenteredMask | uint32(displayID)
@@ -300,9 +305,17 @@ func GetWindowDisplayScale(window *Window) float32 {
 	return sdlGetWindowDisplayScale(window)
 }
 
-// func GetWindowFlags(window *Window) WindowFlags {
-//	return sdlGetWindowFlags(window)
-// }
+// GetWindowFlags returns a mask of the [WindowFlags] associated with window.
+//
+// Example:
+//
+//	// true if the window has the "WindowResizable" flag
+//	if sdl.GetWindowFlags(window)&sdl.WindowResizable == sdl.WindowResizable {
+//		// ...
+//	}
+func GetWindowFlags(window *Window) WindowFlags {
+	return sdlGetWindowFlags(window)
+}
 
 // func GetWindowFromID(id WindowID) *Window {
 //	return sdlGetWindowFromID(id)
@@ -398,29 +411,34 @@ func GetWindowTitle(window *Window) string {
 	return sdlGetWindowTitle(window)
 }
 
-// func GL_CreateContext(window *Window) GLContext {
-//	return sdlGL_CreateContext(window)
-// }
+// GLCreateContext creates an OpenGL context for an OpenGL window, and makes it current.
+func GLCreateContext(window *Window) GLContext {
+	return sdlGLCreateContext(window)
+}
 
-// func GL_DestroyContext(context GLContext) bool {
-//	return sdlGL_DestroyContext(context)
-// }
+// GLDestroyContext deletes an OpenGL context.
+func GLDestroyContext(context GLContext) bool {
+	return sdlGLDestroyContext(context)
+}
 
 // func GL_ExtensionSupported(extension string) bool {
 //	return sdlGL_ExtensionSupported(extension)
 // }
 
-// func GL_GetAttribute(attr GLAttr, value *int32) bool {
-//	return sdlGL_GetAttribute(attr, value)
-// }
+// GLGetAttribute gets the actual value for an attribute from the current context.
+func GLGetAttribute(attr GLAttr, value *int32) bool {
+	return sdlGLGetAttribute(attr, value)
+}
 
-// func GL_GetCurrentContext() GLContext {
-//	return sdlGL_GetCurrentContext()
-// }
+// GLGetCurrentContext returns the currently active OpenGL context or nil on failure.
+func GLGetCurrentContext() GLContext {
+	return sdlGLGetCurrentContext()
+}
 
-// func GL_GetCurrentWindow() *Window {
-//	return sdlGL_GetCurrentWindow()
-// }
+// GLGetCurrentWindow returns the currently active OpenGL window on success or nil on failure.
+func GLGetCurrentWindow() *Window {
+	return sdlGLGetCurrentWindow()
+}
 
 // func GL_GetProcAddress(proc string) FunctionPointer {
 //	return sdlGL_GetProcAddress(proc)
@@ -442,17 +460,25 @@ func GetWindowTitle(window *Window) string {
 //	sdlGL_ResetAttributes()
 // }
 
-// func GL_SetAttribute(attr GLAttr, value int32) bool {
-//	return sdlGL_SetAttribute(attr, value)
-// }
+// GLSetAttribute sets the OpenGL attribute attr to value. The requested attributes should be set before creating an OpenGL window.
+//
+// You should use [GLGetAttribute] to check the values after creating the OpenGL context,
+// since the values obtained can differ from the requested ones.
+func GLSetAttribute(attr GLAttr, value int32) bool {
+	return sdlGLSetAttribute(attr, value)
+}
 
-// func GL_SetSwapInterval(interval int32) bool {
-//	return sdlGL_SetSwapInterval(interval)
-// }
+// GLSetSwapInterval sets the swap interval for the current OpenGL context.
+func GLSetSwapInterval(interval int32) bool {
+	ret, _, _ := purego.SyscallN(sdlGLSetSwapInterval, uintptr(interval))
+	return byte(ret) != 0
+}
 
-// func GL_SwapWindow(window *Window) bool {
-//	return sdlGL_SwapWindow(window)
-// }
+// GLSwapWindow updates a window with OpenGL rendering.
+func GLSwapWindow(window *Window) bool {
+	ret, _, _ := purego.SyscallN(sdlGLSwapWindow, uintptr(unsafe.Pointer(window)))
+	return byte(ret) != 0
+}
 
 // func GL_UnloadLibrary()  {
 //	sdlGL_UnloadLibrary()
