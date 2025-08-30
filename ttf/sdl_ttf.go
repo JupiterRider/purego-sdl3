@@ -1,8 +1,6 @@
 package ttf
 
 import (
-	"unsafe"
-
 	"github.com/jupiterrider/purego-sdl3/internal/convert"
 	"github.com/jupiterrider/purego-sdl3/sdl"
 )
@@ -447,51 +445,69 @@ func RemoveFallbackFont(font *Font, fallback *Font) {
 }
 
 func RenderGlyphBlended(font *Font, ch rune, fg sdl.Color) *sdl.Surface {
-	return ttfRenderGlyphBlended(font, ch, *(*uintptr)(unsafe.Pointer(&fg)))
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	return ttfRenderGlyphBlended(font, ch, uintptr(fgColor))
 }
 
 func RenderGlyphLCD(font *Font, ch rune, fg sdl.Color, bg sdl.Color) *sdl.Surface {
-	return ttfRenderGlyphLCD(font, ch, *(*uintptr)(unsafe.Pointer(&fg)), *(*uintptr)(unsafe.Pointer(&bg)))
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	bgColor := uint32(bg.A)<<24 + uint32(bg.B)<<16 + uint32(bg.G)<<8 + uint32(bg.R)
+	return ttfRenderGlyphLCD(font, ch, uintptr(fgColor), uintptr(bgColor))
 }
 
 func RenderGlyphShaded(font *Font, ch rune, fg sdl.Color, bg sdl.Color) *sdl.Surface {
-	return ttfRenderGlyphShaded(font, ch, *(*uintptr)(unsafe.Pointer(&fg)), *(*uintptr)(unsafe.Pointer(&bg)))
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	bgColor := uint32(bg.A)<<24 + uint32(bg.B)<<16 + uint32(bg.G)<<8 + uint32(bg.R)
+	return ttfRenderGlyphShaded(font, ch, uintptr(fgColor), uintptr(bgColor))
 }
 
 func RenderGlyphSolid(font *Font, ch rune, fg sdl.Color) *sdl.Surface {
-	return ttfRenderGlyphSolid(font, ch, *(*uintptr)(unsafe.Pointer(&fg)))
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	return ttfRenderGlyphSolid(font, ch, uintptr(fgColor))
 }
 
 func RenderTextBlended(font *Font, text string, length uint64, fg sdl.Color) *sdl.Surface {
-	return ttfRenderTextBlended(font, text, length, *(*uintptr)(unsafe.Pointer(&fg)))
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	return ttfRenderTextBlended(font, text, length, uintptr(fgColor))
 }
 
 func RenderTextBlendedWrapped(font *Font, text string, length uint64, fg sdl.Color, wrapWidth int32) *sdl.Surface {
-	return ttfRenderTextBlendedWrapped(font, text, length, *(*uintptr)(unsafe.Pointer(&fg)), wrapWidth)
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	return ttfRenderTextBlendedWrapped(font, text, length, uintptr(fgColor), wrapWidth)
 }
 
 func RenderTextLCD(font *Font, text string, length uint64, fg sdl.Color, bg sdl.Color) *sdl.Surface {
-	return ttfRenderTextLCD(font, text, length, *(*uintptr)(unsafe.Pointer(&fg)), *(*uintptr)(unsafe.Pointer(&bg)))
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	bgColor := uint32(bg.A)<<24 + uint32(bg.B)<<16 + uint32(bg.G)<<8 + uint32(bg.R)
+	return ttfRenderTextLCD(font, text, length, uintptr(fgColor), uintptr(bgColor))
 }
 
 func RenderTextLCDWrapped(font *Font, text string, length uint64, fg sdl.Color, bg sdl.Color, wrapWidth int32) *sdl.Surface {
-	return ttfRenderTextLCDWrapped(font, text, length, *(*uintptr)(unsafe.Pointer(&fg)), *(*uintptr)(unsafe.Pointer(&bg)), wrapWidth)
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	bgColor := uint32(bg.A)<<24 + uint32(bg.B)<<16 + uint32(bg.G)<<8 + uint32(bg.R)
+	return ttfRenderTextLCDWrapped(font, text, length, uintptr(fgColor), uintptr(bgColor), wrapWidth)
 }
 
 func RenderTextShaded(font *Font, text string, length uint64, fg sdl.Color, bg sdl.Color) *sdl.Surface {
-	return ttfRenderTextShaded(font, text, length, *(*uintptr)(unsafe.Pointer(&fg)), *(*uintptr)(unsafe.Pointer(&bg)))
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	bgColor := uint32(bg.A)<<24 + uint32(bg.B)<<16 + uint32(bg.G)<<8 + uint32(bg.R)
+	return ttfRenderTextShaded(font, text, length, uintptr(fgColor), uintptr(bgColor))
 }
 
 func RenderTextShadedWrapped(font *Font, text string, length uint64, fg sdl.Color, bg sdl.Color, wrapWidth int32) *sdl.Surface {
-	return ttfRenderTextShadedWrapped(font, text, length, *(*uintptr)(unsafe.Pointer(&fg)), *(*uintptr)(unsafe.Pointer(&bg)), wrapWidth)
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	bgColor := uint32(bg.A)<<24 + uint32(bg.B)<<16 + uint32(bg.G)<<8 + uint32(bg.R)
+	return ttfRenderTextShadedWrapped(font, text, length, uintptr(fgColor), uintptr(bgColor), wrapWidth)
 }
 
 func RenderTextSolid(font *Font, text string, length uint64, fg sdl.Color) *sdl.Surface {
-	return ttfRenderTextSolid(font, text, length, *(*uintptr)(unsafe.Pointer(&fg)))
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	return ttfRenderTextSolid(font, text, length, uintptr(fgColor))
 }
 
 func RenderTextSolidWrapped(font *Font, text string, length uint64, fg sdl.Color, wrapLength int32) *sdl.Surface {
-	return ttfRenderTextSolidWrapped(font, text, length, *(*uintptr)(unsafe.Pointer(&fg)), wrapLength)
+	fgColor := uint32(fg.A)<<24 + uint32(fg.B)<<16 + uint32(fg.G)<<8 + uint32(fg.R)
+	return ttfRenderTextSolidWrapped(font, text, length, uintptr(fgColor), wrapLength)
 }
 
 func SetFontDirection(font *Font, direction Direction) bool {
