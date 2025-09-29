@@ -66,7 +66,7 @@ func main() {
 
 	// Create the pipelines
 	pipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
-		VertextShader:  vertexShader,
+		VertexShader:   vertexShader,
 		FragmentShader: fragmentShader,
 		PrimitiveType:  sdl.GPUPrimitiveTypeTrianglelist,
 		TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
