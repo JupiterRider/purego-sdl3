@@ -53,6 +53,9 @@ const (
 //	return sdlGetLogPriority(category)
 // }
 
+// [Log] logs a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.
+//
+// [Log]: https://wiki.libsdl.org/SDL3/SDL_Log
 func Log(format string, a ...any) {
 	sdlLog(fmt.Sprintf(format, a...))
 }
@@ -65,6 +68,9 @@ func Log(format string, a ...any) {
 //	sdlLogDebug(category, fmt)
 // }
 
+// [LogError] logs a message with SDL_LOG_PRIORITY_ERROR.
+//
+// [LogError]: https://wiki.libsdl.org/SDL3/SDL_LogError
 func LogError(category LogCategory, format string, a ...any) {
 	sdlLogError(category, fmt.Sprintf(format, a...))
 }
@@ -73,6 +79,9 @@ func LogError(category LogCategory, format string, a ...any) {
 //	sdlLogInfo(category, fmt)
 // }
 
+// [LogMessage] logs a message with the specified category and priority.
+//
+// [LogMessage]: https://wiki.libsdl.org/SDL3/SDL_LogMessage
 func LogMessage(category LogCategory, priority LogPriority, format string, a ...any) {
 	sdlLogMessage(category, priority, fmt.Sprintf(format, a...))
 }
@@ -93,21 +102,30 @@ func LogMessage(category LogCategory, priority LogPriority, format string, a ...
 //	sdlLogWarn(category, fmt)
 // }
 
-// func ResetLogPriorities()  {
-//	sdlResetLogPriorities()
-// }
+// [ResetLogPriorities] resets all priorities to default.
+//
+// [ResetLogPriorities]: https://wiki.libsdl.org/SDL3/SDL_ResetLogPriorities
+func ResetLogPriorities() {
+	sdlResetLogPriorities()
+}
 
 // func SetLogOutputFunction(callback LogOutputFunction, userdata unsafe.Pointer)  {
 //	sdlSetLogOutputFunction(callback, userdata)
 // }
 
-// func SetLogPriorities(priority LogPriority)  {
-//	sdlSetLogPriorities(priority)
-// }
+// [SetLogPriorities] sets the priority of all log categories.
+//
+// [SetLogPriorities]: https://wiki.libsdl.org/SDL3/SDL_SetLogPriorities
+func SetLogPriorities(priority LogPriority) {
+	sdlSetLogPriorities(priority)
+}
 
-// func SetLogPriority(category int32, priority LogPriority)  {
-//	sdlSetLogPriority(category, priority)
-// }
+// [SetLogPriority] sets the priority of a particular log category.
+//
+// [SetLogPriority]: https://wiki.libsdl.org/SDL3/SDL_SetLogPriority
+func SetLogPriority(category int32, priority LogPriority) {
+	sdlSetLogPriority(category, priority)
+}
 
 // func SetLogPriorityPrefix(priority LogPriority, prefix string) bool {
 //	return sdlSetLogPriorityPrefix(priority, prefix)

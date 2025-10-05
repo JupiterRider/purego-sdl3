@@ -15,7 +15,9 @@ import "github.com/ebitengine/purego"
 //	sdlDelay(ms)
 // }
 
-// DelayNS waits a specified number of nanoseconds before returning.
+// [DelayNS] waits a specified number of nanoseconds before returning.
+//
+// [DelayNS]: https://wiki.libsdl.org/SDL3/SDL_DelayNS
 func DelayNS(ns uint64) {
 	sdlDelayNS(ns)
 }
@@ -25,26 +27,33 @@ func DelayNS(ns uint64) {
 //	sdlDelayPrecise(ns)
 // }
 
-// GetPerformanceCounter returns the current value of the high resolution counter.
+// [GetPerformanceCounter] returns the current value of the high resolution counter.
+//
+// [GetPerformanceCounter]: https://wiki.libsdl.org/SDL3/SDL_GetPerformanceCounter
 func GetPerformanceCounter() uint64 {
 	ret, _, _ := purego.SyscallN(sdlGetPerformanceCounter)
 	return uint64(ret)
 }
 
-// GetPerformanceFrequency returns the count per second of the high resolution counter.
+// [GetPerformanceFrequency] returns the count per second of the high resolution counter.
+//
+// [GetPerformanceFrequency]: https://wiki.libsdl.org/SDL3/SDL_GetPerformanceFrequency
 func GetPerformanceFrequency() uint64 {
 	ret, _, _ := purego.SyscallN(sdlGetPerformanceFrequency)
 	return uint64(ret)
 }
 
-// GetTicks returns the number of milliseconds that have elapsed since the SDL
-// library initialization.
+// [GetTicks] returns the number of milliseconds that have elapsed since the SDL library initialization.
+//
+// [GetTicks]: https://wiki.libsdl.org/SDL3/SDL_GetTicks
 func GetTicks() uint64 {
 	ret, _, _ := purego.SyscallN(sdlGetTicks)
 	return uint64(ret)
 }
 
-// GetTicksNS returns the number of nanoseconds since SDL library initialization.
+// [GetTicksNS] returns the number of nanoseconds since SDL library initialization.
+//
+// [GetTicksNS]: https://wiki.libsdl.org/SDL3/SDL_GetTicksNS
 func GetTicksNS() uint64 {
 	ret, _, _ := purego.SyscallN(sdlGetTicksNS)
 	return uint64(ret)
