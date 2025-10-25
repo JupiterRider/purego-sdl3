@@ -7,6 +7,9 @@ import (
 	"github.com/jupiterrider/purego-sdl3/internal/convert"
 )
 
+// [HintPriority] is an enumeration of hint priorities.
+//
+// [HintPriority]: https://wiki.libsdl.org/SDL3/SDL_HintPriority
 type HintPriority uint32
 
 const (
@@ -254,6 +257,9 @@ const (
 	HintPenTouchEvents                     = "SDL_PEN_TOUCH_EVENTS"
 )
 
+// [HintCallback] is a callback used to send notifications of hint value changes.
+//
+// [HintCallback]: https://wiki.libsdl.org/SDL3/SDL_HintCallback
 type HintCallback uintptr
 
 func NewHintCallback(callback func(userdata unsafe.Pointer, name, oldValue, newValue string)) HintCallback {
@@ -265,35 +271,58 @@ func NewHintCallback(callback func(userdata unsafe.Pointer, name, oldValue, newV
 	return HintCallback(cb)
 }
 
-// SetHint sets a hint with normal priority.
+// [SetHint] sets a hint with normal priority.
+//
+// [SetHint]: https://wiki.libsdl.org/SDL3/SDL_SetHint
 func SetHint(name, value string) bool {
 	return sdlSetHint(name, value)
 }
 
+// [AddHintCallback] adds a function to watch a particular hint.
+//
+// [AddHintCallback]: https://wiki.libsdl.org/SDL3/SDL_AddHintCallback
 func AddHintCallback(name string, callback HintCallback, userdata unsafe.Pointer) bool {
 	return sdlAddHintCallback(name, callback, userdata)
 }
 
+// [GetHint] gets the value of a hint.
+//
+// [GetHint]: https://wiki.libsdl.org/SDL3/SDL_GetHint
 func GetHint(name string) string {
 	return sdlGetHint(name)
 }
 
+// [GetHintBoolean] gets the boolean value of a hint variable.
+//
+// [GetHintBoolean]: https://wiki.libsdl.org/SDL3/SDL_GetHintBoolean
 func GetHintBoolean(name string, defaultValue bool) bool {
 	return sdlGetHintBoolean(name, defaultValue)
 }
 
+// [RemoveHintCallback] removes a function watching a particular hint.
+//
+// [RemoveHintCallback]: https://wiki.libsdl.org/SDL3/SDL_RemoveHintCallback
 func RemoveHintCallback(name string, callback HintCallback, userdata unsafe.Pointer) {
 	sdlRemoveHintCallback(name, callback, userdata)
 }
 
+// [ResetHint] resets a hint to the default value.
+//
+// [ResetHint]: https://wiki.libsdl.org/SDL3/SDL_ResetHint
 func ResetHint(name string) bool {
 	return sdlResetHint(name)
 }
 
+// [ResetHints] resets all hints to the default values.
+//
+// [ResetHints]: https://wiki.libsdl.org/SDL3/SDL_ResetHints
 func ResetHints() {
 	sdlResetHints()
 }
 
+// [SetHintWithPriority] sets a hint with a specific priority.
+//
+// [SetHintWithPriority]: https://wiki.libsdl.org/SDL3/SDL_SetHintWithPriority
 func SetHintWithPriority(name string, value string, priority HintPriority) bool {
 	return sdlSetHintWithPriority(name, value, priority)
 }
