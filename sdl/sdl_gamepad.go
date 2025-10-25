@@ -6,6 +6,9 @@ import (
 	"github.com/jupiterrider/purego-sdl3/internal/mem"
 )
 
+// [GamepadBindingType] defines the types of gamepad control bindings.
+//
+// [GamepadBindingType]: https://wiki.libsdl.org/SDL3/SDL_GamepadBindingType
 type GamepadBindingType uint32
 
 const (
@@ -15,6 +18,9 @@ const (
 	GamepadBindTypeHat
 )
 
+// [GamepadAxis] is a structure specifying the list of axes available on a gamepad.
+//
+// [GamepadAxis]: https://wiki.libsdl.org/SDL3/SDL_GamepadAxis
 type GamepadAxis int32
 
 const (
@@ -28,6 +34,9 @@ const (
 	GamepadAxisCount
 )
 
+// [GamepadButtonLabel] is a structure specifying the set of gamepad button labels.
+//
+// [GamepadButtonLabel]: https://wiki.libsdl.org/SDL3/SDL_GamepadButtonLabel
 type GamepadButtonLabel uint32
 
 const (
@@ -42,14 +51,17 @@ const (
 	GamepadButtonLabelTriangle
 )
 
+// [GamepadButton] is a structure specifying the list of buttons available on a gamepad.
+//
+// [GamepadButton]: https://wiki.libsdl.org/SDL3/SDL_GamepadButton
 type GamepadButton int32
 
 const (
 	GamepadButtonInvalid GamepadButton = iota - 1
-	GamepadButtonSouth
-	GamepadButtonEast
-	GamepadButtonWest
-	GamepadButtonNorth
+	GamepadButtonSouth                 // Bottom face button (e.g. Xbox A button).
+	GamepadButtonEast                  // Right face button (e.g. Xbox B button).
+	GamepadButtonWest                  // Left face button (e.g. Xbox X button).
+	GamepadButtonNorth                 // Top face button (e.g. Xbox Y button).
 	GamepadButtonBack
 	GamepadButtonGuide
 	GamepadButtonStart
@@ -61,20 +73,23 @@ const (
 	GamepadButtonDpadDown
 	GamepadButtonDpadLeft
 	GamepadButtonDpadRight
-	GamepadButtonMisc1
-	GamepadButtonRightPaddle1
-	GamepadButtonLeftPaddle1
-	GamepadButtonRightPaddle2
-	GamepadButtonLeftPaddle2
-	GamepadButtonTouchpad
-	GamepadButtonMisc2
-	GamepadButtonMisc3
-	GamepadButtonMisc4
-	GamepadButtonMisc5
-	GamepadButtonMisc6
+	GamepadButtonMisc1        // Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button).
+	GamepadButtonRightPaddle1 // Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button).
+	GamepadButtonLeftPaddle1  // Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button).
+	GamepadButtonRightPaddle2 // Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button).
+	GamepadButtonLeftPaddle2  // Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button).
+	GamepadButtonTouchpad     // PS4/PS5 touchpad button.
+	GamepadButtonMisc2        // Additional button.
+	GamepadButtonMisc3        // Additional button (e.g. Nintendo GameCube left trigger click).
+	GamepadButtonMisc4        // Additional button (e.g. Nintendo GameCube right trigger click).
+	GamepadButtonMisc5        // Additional button.
+	GamepadButtonMisc6        // Additional button.
 	GamepadButtonCount
 )
 
+// [GamepadType] defines the standard gamepad types.
+//
+// [GamepadType]: https://wiki.libsdl.org/SDL3/SDL_GamepadType
 type GamepadType uint32
 
 const (
@@ -92,8 +107,14 @@ const (
 	GamepadTypeCount
 )
 
+// [Gamepad] is a structure specifying the structure used to identify an SDL gamepad.
+//
+// [Gamepad]: https://wiki.libsdl.org/SDL3/SDL_Gamepad
 type Gamepad struct{}
 
+// [GamepadBinding] is a mapping between one joystick input to a gamepad control.
+//
+// [GamepadBinding]: https://wiki.libsdl.org/SDL3/SDL_GamepadBinding
 type GamepadBinding struct {
 	InputType  GamepadBindingType
 	input      [12]byte
@@ -139,6 +160,9 @@ func (g *GamepadBinding) OutputAxis() struct {
 //	return sdlAddGamepadMappingsFromIO(src, closeio)
 // }
 
+// [CloseGamepad] closes a gamepad previously opened with [OpenGamepad].
+//
+// [CloseGamepad]: https://wiki.libsdl.org/SDL3/SDL_CloseGamepad
 func CloseGamepad(gamepad *Gamepad) {
 	sdlCloseGamepad(gamepad)
 }
@@ -183,9 +207,11 @@ func CloseGamepad(gamepad *Gamepad) {
 //	return sdlGetGamepadAxisFromString(str)
 // }
 
-// GetGamepadBindings returns the SDL joystick layer bindings for a gamepad or nil on failure.
+// [GetGamepadBindings] returns the SDL joystick layer bindings for a gamepad or nil on failure.
 //
 // The returned slice must not be freed with e.g. [Free].
+//
+// [GetGamepadBindings]: https://wiki.libsdl.org/SDL3/SDL_GetGamepadBindings
 func GetGamepadBindings(gamepad *Gamepad) []*GamepadBinding {
 	var count int32
 	bindings := sdlGetGamepadBindings(gamepad, &count)
@@ -220,6 +246,9 @@ func GetGamepadBindings(gamepad *Gamepad) []*GamepadBinding {
 //	return sdlGetGamepadFirmwareVersion(gamepad)
 // }
 
+// [GetGamepadFromID] gets the [Gamepad] associated with a joystick instance ID, if it has been opened.
+//
+// [GetGamepadFromID]: https://wiki.libsdl.org/SDL3/SDL_GetGamepadFromID
 func GetGamepadFromID(instanceId JoystickID) *Gamepad {
 	return sdlGetGamepadFromID(instanceId)
 }
@@ -256,10 +285,16 @@ func GetGamepadFromID(instanceId JoystickID) *Gamepad {
 //	return sdlGetGamepadMappings(count)
 // }
 
+// [GetGamepadName] gets the implementation-dependent name for an opened gamepad.
+//
+// [GetGamepadName]: https://wiki.libsdl.org/SDL3/SDL_GetGamepadName
 func GetGamepadName(gamepad *Gamepad) string {
 	return sdlGetGamepadName(gamepad)
 }
 
+// [GetGamepadNameForID] gets the implementation dependent name of a gamepad.
+//
+// [GetGamepadNameForID]: https://wiki.libsdl.org/SDL3/SDL_GetGamepadNameForID
 func GetGamepadNameForID(instanceId JoystickID) string {
 	return sdlGetGamepadNameForID(instanceId)
 }
@@ -304,9 +339,11 @@ func GetGamepadNameForID(instanceId JoystickID) string {
 //	return sdlGetGamepadProperties(gamepad)
 // }
 
-// GetGamepads returns a list of currently connected gamepads or nil on failure.
+// [GetGamepads] returns a list of currently connected gamepads or nil on failure.
 //
 // The returned slice must not be freed with e.g. [Free].
+//
+// [GetGamepads]: https://wiki.libsdl.org/SDL3/SDL_GetGamepads
 func GetGamepads() []JoystickID {
 	var count int32
 	gamepads := sdlGetGamepads(&count)
@@ -322,7 +359,9 @@ func GetGamepads() []JoystickID {
 //	return sdlGetGamepadSensorDataRate(gamepad, type)
 // }
 
-// GetGamepadSerial returns the serial number of an opened gamepad, or "" if unavailable.
+// [GetGamepadSerial] returns the serial number of an opened gamepad, or "" if unavailable.
+//
+// [GetGamepadSerial]: https://wiki.libsdl.org/SDL3/SDL_GetGamepadSerial
 func GetGamepadSerial(gamepad *Gamepad) string {
 	return sdlGetGamepadSerial(gamepad)
 }
@@ -335,11 +374,16 @@ func GetGamepadSerial(gamepad *Gamepad) string {
 //	return sdlGetGamepadStringForAxis(axis)
 // }
 
-// GetGamepadStringForButton returns the name for the given button.
+// [GetGamepadStringForButton] returns the name for the given button.
+//
+// [GetGamepadStringForButton]: https://wiki.libsdl.org/SDL3/SDL_GetGamepadStringForButton
 func GetGamepadStringForButton(button GamepadButton) string {
 	return sdlGetGamepadStringForButton(button)
 }
 
+// [GetGamepadStringForType] converts from an [GamepadType] enum to a string.
+//
+// [GetGamepadStringForType]: https://wiki.libsdl.org/SDL3/SDL_GetGamepadStringForType
 func GetGamepadStringForType(gamepadType GamepadType) string {
 	return sdlGetGamepadStringForType(gamepadType)
 }
@@ -348,6 +392,9 @@ func GetGamepadStringForType(gamepadType GamepadType) string {
 //	return sdlGetGamepadTouchpadFinger(gamepad, touchpad, finger, down, x, y, pressure)
 // }
 
+// [GetGamepadType] gets the type of an opened gamepad.
+//
+// [GetGamepadType]: https://wiki.libsdl.org/SDL3/SDL_GetGamepadType
 func GetGamepadType(gamepad *Gamepad) GamepadType {
 	return sdlGetGamepadType(gamepad)
 }
@@ -392,6 +439,9 @@ func GetGamepadType(gamepad *Gamepad) GamepadType {
 //	return sdlIsGamepad(instance_id)
 // }
 
+// [OpenGamepad] opens a gamepad for use.
+//
+// [OpenGamepad]: https://wiki.libsdl.org/SDL3/SDL_OpenGamepad
 func OpenGamepad(instanceId JoystickID) *Gamepad {
 	return sdlOpenGamepad(instanceId)
 }
