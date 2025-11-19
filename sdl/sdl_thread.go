@@ -1,5 +1,8 @@
 package sdl
 
+// [ThreadPriority] is a structure specifying the SDL thread prioritys.
+//
+// [ThreadPriority]: https://wiki.libsdl.org/SDL3/SDL_ThreadPriority
 type ThreadPriority uint32
 
 const (
@@ -9,13 +12,16 @@ const (
 	ThreadPriorityTimeCritical
 )
 
+// [ThreadState] is a structure specifying the SDL thread states.
+//
+// [ThreadState]: https://wiki.libsdl.org/SDL3/SDL_ThreadState
 type ThreadState uint32
 
 const (
-	ThreadUnknown ThreadState = iota
-	ThreadAlive
-	ThreadDetached
-	ThreadComplete
+	ThreadUnknown  ThreadState = iota // The thread is not valid.
+	ThreadAlive                       // The thread is currently running.
+	ThreadDetached                    // The thread is detached and can't be waited on.
+	ThreadComplete                    // The thread has finished and should be cleaned up with [WaitThread].
 )
 
 // func CleanupTLS()  {
