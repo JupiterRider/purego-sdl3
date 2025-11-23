@@ -25,8 +25,8 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("examples/renderer/cliprect", WindowWidth, WindowHeight, 0, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
 	defer sdl.DestroyWindow(window)
+	defer sdl.DestroyRenderer(renderer)
 
 	var clipRectPosition sdl.FPoint
 	clipRectDirection := sdl.FPoint{X: 1, Y: 1}

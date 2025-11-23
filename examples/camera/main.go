@@ -13,8 +13,8 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("examples/camera", 640, 480, 0, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
 	defer sdl.DestroyWindow(window)
+	defer sdl.DestroyRenderer(renderer)
 
 	sdl.SetRenderVSync(renderer, 1)
 

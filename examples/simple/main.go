@@ -17,8 +17,8 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("Hello, World!", 1280, 720, sdl.WindowResizable, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
 	defer sdl.DestroyWindow(window)
+	defer sdl.DestroyRenderer(renderer)
 
 	sdl.SetRenderDrawColor(renderer, 100, 150, 200, 255)
 

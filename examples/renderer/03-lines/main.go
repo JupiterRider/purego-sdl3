@@ -18,8 +18,8 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("examples/renderer/lines", 640, 480, 0, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
 	defer sdl.DestroyWindow(window)
+	defer sdl.DestroyRenderer(renderer)
 
 	line_points := []sdl.FPoint{
 		{X: 100, Y: 354}, {X: 220, Y: 230}, {X: 140, Y: 230}, {X: 320, Y: 100}, {X: 500, Y: 230},

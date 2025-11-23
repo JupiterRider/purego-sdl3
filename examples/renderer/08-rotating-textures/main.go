@@ -20,8 +20,8 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("examples/renderer/rotating-textures", WindowWidth, WindowHeight, 0, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
 	defer sdl.DestroyWindow(window)
+	defer sdl.DestroyRenderer(renderer)
 
 	// Textures are pixel data that we upload to the video hardware for fast drawing. Lots of 2D
 	// engines refer to these as "sprites." We'll do a static texture (upload once, draw many

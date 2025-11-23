@@ -21,8 +21,8 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("examples/renderer/streaming-textures", WindowWidth, WindowHeight, 0, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
 	defer sdl.DestroyWindow(window)
+	defer sdl.DestroyRenderer(renderer)
 
 	texture := sdl.CreateTexture(renderer, sdl.PixelFormatRGBA8888, sdl.TextureAccessStreaming, TextureSize, TextureSize)
 	if texture == nil {
