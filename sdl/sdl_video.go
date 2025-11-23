@@ -176,6 +176,9 @@ const (
 
 type GLContextState struct{}
 
+// [GLContext] is an opaque handle to an OpenGL context.
+//
+// [GLContext]: https://wiki.libsdl.org/SDL3/SDL_GLContext
 type GLContext *GLContextState
 
 func WindowPosCenteredDisplay(displayID DisplayID) uint32 {
@@ -516,12 +519,16 @@ func GetWindowTitle(window *Window) string {
 	return sdlGetWindowTitle(window)
 }
 
-// GLCreateContext creates an OpenGL context for an OpenGL window, and makes it current.
+// [GLCreateContext] creates an OpenGL context for an OpenGL window, and makes it current.
+//
+// [GLCreateContext]: https://wiki.libsdl.org/SDL3/SDL_GL_CreateContext
 func GLCreateContext(window *Window) GLContext {
 	return sdlGLCreateContext(window)
 }
 
-// GLDestroyContext deletes an OpenGL context.
+// [GLDestroyContext] deletes an OpenGL context.
+//
+// [GLDestroyContext]: https://wiki.libsdl.org/SDL3/SDL_GL_DestroyContext
 func GLDestroyContext(context GLContext) bool {
 	return sdlGLDestroyContext(context)
 }
@@ -530,17 +537,23 @@ func GLDestroyContext(context GLContext) bool {
 //	return sdlGL_ExtensionSupported(extension)
 // }
 
-// GLGetAttribute gets the actual value for an attribute from the current context.
+// [GLGetAttribute] gets the actual value for an attribute from the current context.
+//
+// [GLGetAttribute]: https://wiki.libsdl.org/SDL3/SDL_GL_GetAttribute
 func GLGetAttribute(attr GLAttr, value *int32) bool {
 	return sdlGLGetAttribute(attr, value)
 }
 
-// GLGetCurrentContext returns the currently active OpenGL context or nil on failure.
+// [GLGetCurrentContext] returns the currently active OpenGL context or nil on failure.
+//
+// [GLGetCurrentContext]: https://wiki.libsdl.org/SDL3/SDL_GL_GetCurrentContext
 func GLGetCurrentContext() GLContext {
 	return sdlGLGetCurrentContext()
 }
 
-// GLGetCurrentWindow returns the currently active OpenGL window on success or nil on failure.
+// [GLGetCurrentWindow] returns the currently active OpenGL window on success or nil on failure.
+//
+// [GLGetCurrentWindow]: https://wiki.libsdl.org/SDL3/SDL_GL_GetCurrentWindow
 func GLGetCurrentWindow() *Window {
 	return sdlGLGetCurrentWindow()
 }
@@ -565,21 +578,27 @@ func GLGetCurrentWindow() *Window {
 //	sdlGL_ResetAttributes()
 // }
 
-// GLSetAttribute sets the OpenGL attribute attr to value. The requested attributes should be set before creating an OpenGL window.
+// [GLSetAttribute] sets the OpenGL attribute attr to value. The requested attributes should be set before creating an OpenGL window.
 //
 // You should use [GLGetAttribute] to check the values after creating the OpenGL context,
 // since the values obtained can differ from the requested ones.
+//
+// [GLSetAttribute]: https://wiki.libsdl.org/SDL3/SDL_GL_SetAttribute
 func GLSetAttribute(attr GLAttr, value int32) bool {
 	return sdlGLSetAttribute(attr, value)
 }
 
-// GLSetSwapInterval sets the swap interval for the current OpenGL context.
+// [GLSetSwapInterval] sets the swap interval for the current OpenGL context.
+//
+// [GLSetSwapInterval]: https://wiki.libsdl.org/SDL3/SDL_GL_SetSwapInterval
 func GLSetSwapInterval(interval int32) bool {
 	ret, _, _ := purego.SyscallN(sdlGLSetSwapInterval, uintptr(interval))
 	return byte(ret) != 0
 }
 
-// GLSwapWindow updates a window with OpenGL rendering.
+// [GLSwapWindow] updates a window with OpenGL rendering.
+//
+// [GLSwapWindow]: https://wiki.libsdl.org/SDL3/SDL_GL_SwapWindow
 func GLSwapWindow(window *Window) bool {
 	ret, _, _ := purego.SyscallN(sdlGLSwapWindow, uintptr(unsafe.Pointer(window)))
 	return byte(ret) != 0

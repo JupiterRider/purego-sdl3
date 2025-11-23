@@ -1,13 +1,16 @@
 package sdl
 
+// [HidBusType] defines HID underlying bus types.
+//
+// [HidBusType]: https://wiki.libsdl.org/SDL3/SDL_hid_bus_type
 type HidBusType uint32
 
 const (
-	HidApiBusUnknown HidBusType = iota
-	HidApiBusUSB
-	HidApiBusBluetooth
-	HidApiBusI2C
-	HidApiBusSPI
+	HidApiBusUnknown   HidBusType = iota // Unknown bus type.
+	HidApiBusUSB                         // USB bus. Specifications: https://usb.org/hid.
+	HidApiBusBluetooth                   // Bluetooth or Bluetooth LE bus. Specifications: https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/, https://www.bluetooth.com/specifications/specs/hid-service-1-0/, https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/.
+	HidApiBusI2C                         // I2C bus. Specifications: https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85).
+	HidApiBusSPI                         // SPI bus. Specifications: https://www.microsoft.com/download/details.aspx?id=103325.
 )
 
 // func hid_ble_scan(active bool)  {

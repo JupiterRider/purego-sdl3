@@ -1,5 +1,8 @@
 package sdl
 
+// [InitStatus] is a structure specifying the current status of an [InitState] structures.
+//
+// [InitStatus]: https://wiki.libsdl.org/SDL3/SDL_InitStatus
 type InitStatus uint32
 
 const (

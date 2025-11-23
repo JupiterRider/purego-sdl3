@@ -1,12 +1,15 @@
 package sdl
 
+// [ProcessIO] defines the description of where standard I/O should be directed when creating a process.
+//
+// [ProcessIO]: https://wiki.libsdl.org/SDL3/SDL_ProcessIO
 type ProcessIO uint32
 
 const (
-	ProcessStdioInherited ProcessIO = iota
-	ProcessStdioNull
-	ProcessStdioApp
-	ProcessStdioRedirect
+	ProcessStdioInherited ProcessIO = iota // The I/O stream is inherited from the application.
+	ProcessStdioNull                       // The I/O stream is ignored.
+	ProcessStdioApp                        // The I/O stream is connected to a new [IOStream] that the application can read or write.
+	ProcessStdioRedirect                   // The I/O stream is redirected to an existing [IOStream].
 )
 
 // func CreateProcess(args **byte, pipe_stdio bool) *Process {

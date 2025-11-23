@@ -1,18 +1,24 @@
 package sdl
 
+// [DateFormat] is a structure specifying the preferred date format of the current system locales.
+//
+// [DateFormat]: https://wiki.libsdl.org/SDL3/SDL_DateFormat
 type DateFormat uint32
 
 const (
-	DateFormatYYYYMMDD DateFormat = iota
-	DateFormatDDMMYYYY
-	DateFormatMMDDYYYY
+	DateFormatYYYYMMDD DateFormat = iota // Year/Month/Day.
+	DateFormatDDMMYYYY                   // Day/Month/Year.
+	DateFormatMMDDYYYY                   // Month/Day/Year.
 )
 
+// [TimeFormat] is a structure specifying the preferred time format of the current system locales.
+//
+// [TimeFormat]: https://wiki.libsdl.org/SDL3/SDL_TimeFormat
 type TimeFormat uint32
 
 const (
-	TimeFormat24HR TimeFormat = iota
-	TimeFormat12HR
+	TimeFormat24HR TimeFormat = iota // 24 hour time.
+	TimeFormat12HR                   // 12 hour time.
 )
 
 // func DateTimeToTime(dt *DateTime, ticks *Time) bool {
