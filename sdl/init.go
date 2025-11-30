@@ -279,8 +279,8 @@ var (
 	// sdlGetCPUCacheLineSize                   func() int32
 	sdlGetCurrentAudioDriver  func() string
 	sdlGetCurrentCameraDriver func() string
-	// sdlGetCurrentDirectory                   func() string
-	sdlGetCurrentDisplayMode func(DisplayID) *DisplayMode
+	sdlGetCurrentDirectory    func() *byte
+	sdlGetCurrentDisplayMode  func(DisplayID) *DisplayMode
 	// sdlGetCurrentDisplayOrientation          func(DisplayID) DisplayOrientation
 	sdlGetCurrentRenderOutputSize func(*Renderer, *int32, *int32) bool
 	// sdlGetCurrentThreadID                    func() ThreadID
@@ -454,8 +454,8 @@ var (
 	sdlGetPointerProperty  func(PropertiesID, string, unsafe.Pointer) unsafe.Pointer
 	sdlGetPowerInfo        func(*int32, *int32) PowerState
 	sdlGetPreferredLocales func(*int32) **struct{ language, country *byte }
-	// sdlGetPrefPath                           func(string, string) string
-	sdlGetPrimaryDisplay func() DisplayID
+	sdlGetPrefPath         func(*byte, *byte) *byte
+	sdlGetPrimaryDisplay   func() DisplayID
 	// sdlGetPrimarySelectionText               func() string
 	// sdlGetProcessInput                       func(*Process) *IOStream
 	// sdlGetProcessOutput                      func(*Process) *IOStream
@@ -1505,7 +1505,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlGetCPUCacheLineSize, lib, "SDL_GetCPUCacheLineSize")
 	purego.RegisterLibFunc(&sdlGetCurrentAudioDriver, lib, "SDL_GetCurrentAudioDriver")
 	purego.RegisterLibFunc(&sdlGetCurrentCameraDriver, lib, "SDL_GetCurrentCameraDriver")
-	// purego.RegisterLibFunc(&sdlGetCurrentDirectory, lib, "SDL_GetCurrentDirectory")
+	purego.RegisterLibFunc(&sdlGetCurrentDirectory, lib, "SDL_GetCurrentDirectory")
 	purego.RegisterLibFunc(&sdlGetCurrentDisplayMode, lib, "SDL_GetCurrentDisplayMode")
 	// purego.RegisterLibFunc(&sdlGetCurrentDisplayOrientation, lib, "SDL_GetCurrentDisplayOrientation")
 	purego.RegisterLibFunc(&sdlGetCurrentRenderOutputSize, lib, "SDL_GetCurrentRenderOutputSize")
@@ -1680,7 +1680,7 @@ func init() {
 	purego.RegisterLibFunc(&sdlGetPointerProperty, lib, "SDL_GetPointerProperty")
 	purego.RegisterLibFunc(&sdlGetPowerInfo, lib, "SDL_GetPowerInfo")
 	purego.RegisterLibFunc(&sdlGetPreferredLocales, lib, "SDL_GetPreferredLocales")
-	// purego.RegisterLibFunc(&sdlGetPrefPath, lib, "SDL_GetPrefPath")
+	purego.RegisterLibFunc(&sdlGetPrefPath, lib, "SDL_GetPrefPath")
 	purego.RegisterLibFunc(&sdlGetPrimaryDisplay, lib, "SDL_GetPrimaryDisplay")
 	// purego.RegisterLibFunc(&sdlGetPrimarySelectionText, lib, "SDL_GetPrimarySelectionText")
 	// purego.RegisterLibFunc(&sdlGetProcessInput, lib, "SDL_GetProcessInput")
