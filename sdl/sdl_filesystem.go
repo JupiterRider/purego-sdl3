@@ -68,6 +68,9 @@ func GetBasePath() string {
 	return sdlGetBasePath()
 }
 
+// [GetCurrentDirectory] gets what the system believes is the "current working directory".
+//
+// [GetCurrentDirectory]: https://wiki.libsdl.org/SDL3/SDL_GetCurrentDirectory
 func GetCurrentDirectory() string {
 	ret := sdlGetCurrentDirectory()
 	defer Free(unsafe.Pointer(ret))
@@ -78,6 +81,9 @@ func GetCurrentDirectory() string {
 //	return sdlGetPathInfo(path, info)
 // }
 
+// [GetPrefPath] gets the user-and-app-specific path where files can be written.
+//
+// [GetPrefPath]: https://wiki.libsdl.org/SDL3/SDL_GetPrefPath
 func GetPrefPath(org string, app string) string {
 	ret := sdlGetPrefPath(convert.ToBytePtrNullable(org), convert.ToBytePtrNullable(app))
 	defer Free(unsafe.Pointer(ret))
