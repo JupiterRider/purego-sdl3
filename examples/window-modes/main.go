@@ -25,8 +25,8 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("Window modes", 960, 540, sdl.WindowResizable, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
 	defer sdl.DestroyWindow(window)
+	defer sdl.DestroyRenderer(renderer)
 
 	fmt.Println("Available display IDs:", sdl.GetDisplays())
 

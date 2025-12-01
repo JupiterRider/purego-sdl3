@@ -1,5 +1,11 @@
 package sdl
 
+import (
+	"unsafe"
+
+	"github.com/jupiterrider/purego-sdl3/internal/convert"
+)
+
 // [EnumerationResult] defines the possible results from an enumeration callback.
 //
 // [EnumerationResult]: https://wiki.libsdl.org/SDL3/SDL_EnumerationResult
@@ -62,17 +68,21 @@ func GetBasePath() string {
 	return sdlGetBasePath()
 }
 
-// func GetCurrentDirectory() string {
-//	return sdlGetCurrentDirectory()
-// }
+func GetCurrentDirectory() string {
+	ret := sdlGetCurrentDirectory()
+	defer Free(unsafe.Pointer(ret))
+	return convert.ToString(ret)
+}
 
 // func GetPathInfo(path string, info *PathInfo) bool {
 //	return sdlGetPathInfo(path, info)
 // }
 
-// func GetPrefPath(org string, app string) string {
-//	return sdlGetPrefPath(org, app)
-// }
+func GetPrefPath(org string, app string) string {
+	ret := sdlGetPrefPath(convert.ToBytePtrNullable(org), convert.ToBytePtrNullable(app))
+	defer Free(unsafe.Pointer(ret))
+	return convert.ToString(ret)
+}
 
 // func GetUserFolder(folder Folder) string {
 //	return sdlGetUserFolder(folder)

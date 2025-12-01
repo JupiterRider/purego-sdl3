@@ -32,8 +32,8 @@ func main() {
 	if !sdl.CreateWindowAndRenderer("examples/renderer/points", WindowWidth, WindowHeight, 0, &window, &renderer) {
 		panic(sdl.GetError())
 	}
-	defer sdl.DestroyRenderer(renderer)
 	defer sdl.DestroyWindow(window)
+	defer sdl.DestroyRenderer(renderer)
 
 	for i := 0; i < len(points); i++ {
 		points[i].X = rand.Float32() * WindowWidth

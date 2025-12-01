@@ -49,14 +49,14 @@ var (
 	// sdlBindGPUComputeSamplers                func(*GPUComputePass, uint32, *GPUTextureSamplerBinding, uint32)
 	// sdlBindGPUComputeStorageBuffers          func(*GPUComputePass, uint32, **GPUBuffer, uint32)
 	// sdlBindGPUComputeStorageTextures         func(*GPUComputePass, uint32, **GPUTexture, uint32)
-	sdlBindGPUFragmentSamplers func(*GPURenderPass, uint32, *GPUTextureSamplerBinding, uint32)
-	// sdlBindGPUFragmentStorageBuffers         func(*GPURenderPass, uint32, **GPUBuffer, uint32)
+	sdlBindGPUFragmentSamplers       func(*GPURenderPass, uint32, *GPUTextureSamplerBinding, uint32)
+	sdlBindGPUFragmentStorageBuffers func(*GPURenderPass, uint32, **GPUBuffer, uint32)
 	// sdlBindGPUFragmentStorageTextures        func(*GPURenderPass, uint32, **GPUTexture, uint32)
 	sdlBindGPUGraphicsPipeline func(*GPURenderPass, *GPUGraphicsPipeline)
 	sdlBindGPUIndexBuffer      func(*GPURenderPass, *GPUBufferBinding, GPUIndexElementSize)
 	sdlBindGPUVertexBuffers    func(*GPURenderPass, uint32, *GPUBufferBinding, uint32)
 	// sdlBindGPUVertexSamplers                 func(*GPURenderPass, uint32, *GPUTextureSamplerBinding, uint32)
-	// sdlBindGPUVertexStorageBuffers           func(*GPURenderPass, uint32, **GPUBuffer, uint32)
+	sdlBindGPUVertexStorageBuffers func(*GPURenderPass, uint32, **GPUBuffer, uint32)
 	// sdlBindGPUVertexStorageTextures          func(*GPURenderPass, uint32, **GPUTexture, uint32)
 	// sdlBlitGPUTexture                        func(*GPUCommandBuffer, *GPUBlitInfo)
 	sdlBlitSurface func(*Surface, *Rect, *Surface, *Rect) bool
@@ -279,8 +279,8 @@ var (
 	// sdlGetCPUCacheLineSize                   func() int32
 	sdlGetCurrentAudioDriver  func() string
 	sdlGetCurrentCameraDriver func() string
-	// sdlGetCurrentDirectory                   func() string
-	sdlGetCurrentDisplayMode func(DisplayID) *DisplayMode
+	sdlGetCurrentDirectory    func() *byte
+	sdlGetCurrentDisplayMode  func(DisplayID) *DisplayMode
 	// sdlGetCurrentDisplayOrientation          func(DisplayID) DisplayOrientation
 	sdlGetCurrentRenderOutputSize func(*Renderer, *int32, *int32) bool
 	// sdlGetCurrentThreadID                    func() ThreadID
@@ -454,8 +454,8 @@ var (
 	sdlGetPointerProperty  func(PropertiesID, string, unsafe.Pointer) unsafe.Pointer
 	sdlGetPowerInfo        func(*int32, *int32) PowerState
 	sdlGetPreferredLocales func(*int32) **struct{ language, country *byte }
-	// sdlGetPrefPath                           func(string, string) string
-	sdlGetPrimaryDisplay func() DisplayID
+	sdlGetPrefPath         func(*byte, *byte) *byte
+	sdlGetPrimaryDisplay   func() DisplayID
 	// sdlGetPrimarySelectionText               func() string
 	// sdlGetProcessInput                       func(*Process) *IOStream
 	// sdlGetProcessOutput                      func(*Process) *IOStream
@@ -1276,13 +1276,13 @@ func init() {
 	// purego.RegisterLibFunc(&sdlBindGPUComputeStorageBuffers, lib, "SDL_BindGPUComputeStorageBuffers")
 	// purego.RegisterLibFunc(&sdlBindGPUComputeStorageTextures, lib, "SDL_BindGPUComputeStorageTextures")
 	purego.RegisterLibFunc(&sdlBindGPUFragmentSamplers, lib, "SDL_BindGPUFragmentSamplers")
-	// purego.RegisterLibFunc(&sdlBindGPUFragmentStorageBuffers, lib, "SDL_BindGPUFragmentStorageBuffers")
+	purego.RegisterLibFunc(&sdlBindGPUFragmentStorageBuffers, lib, "SDL_BindGPUFragmentStorageBuffers")
 	// purego.RegisterLibFunc(&sdlBindGPUFragmentStorageTextures, lib, "SDL_BindGPUFragmentStorageTextures")
 	purego.RegisterLibFunc(&sdlBindGPUGraphicsPipeline, lib, "SDL_BindGPUGraphicsPipeline")
 	purego.RegisterLibFunc(&sdlBindGPUIndexBuffer, lib, "SDL_BindGPUIndexBuffer")
 	purego.RegisterLibFunc(&sdlBindGPUVertexBuffers, lib, "SDL_BindGPUVertexBuffers")
 	// purego.RegisterLibFunc(&sdlBindGPUVertexSamplers, lib, "SDL_BindGPUVertexSamplers")
-	// purego.RegisterLibFunc(&sdlBindGPUVertexStorageBuffers, lib, "SDL_BindGPUVertexStorageBuffers")
+	purego.RegisterLibFunc(&sdlBindGPUVertexStorageBuffers, lib, "SDL_BindGPUVertexStorageBuffers")
 	// purego.RegisterLibFunc(&sdlBindGPUVertexStorageTextures, lib, "SDL_BindGPUVertexStorageTextures")
 	// purego.RegisterLibFunc(&sdlBlitGPUTexture, lib, "SDL_BlitGPUTexture")
 	purego.RegisterLibFunc(&sdlBlitSurface, lib, "SDL_BlitSurface")
@@ -1505,7 +1505,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlGetCPUCacheLineSize, lib, "SDL_GetCPUCacheLineSize")
 	purego.RegisterLibFunc(&sdlGetCurrentAudioDriver, lib, "SDL_GetCurrentAudioDriver")
 	purego.RegisterLibFunc(&sdlGetCurrentCameraDriver, lib, "SDL_GetCurrentCameraDriver")
-	// purego.RegisterLibFunc(&sdlGetCurrentDirectory, lib, "SDL_GetCurrentDirectory")
+	purego.RegisterLibFunc(&sdlGetCurrentDirectory, lib, "SDL_GetCurrentDirectory")
 	purego.RegisterLibFunc(&sdlGetCurrentDisplayMode, lib, "SDL_GetCurrentDisplayMode")
 	// purego.RegisterLibFunc(&sdlGetCurrentDisplayOrientation, lib, "SDL_GetCurrentDisplayOrientation")
 	purego.RegisterLibFunc(&sdlGetCurrentRenderOutputSize, lib, "SDL_GetCurrentRenderOutputSize")
@@ -1680,7 +1680,7 @@ func init() {
 	purego.RegisterLibFunc(&sdlGetPointerProperty, lib, "SDL_GetPointerProperty")
 	purego.RegisterLibFunc(&sdlGetPowerInfo, lib, "SDL_GetPowerInfo")
 	purego.RegisterLibFunc(&sdlGetPreferredLocales, lib, "SDL_GetPreferredLocales")
-	// purego.RegisterLibFunc(&sdlGetPrefPath, lib, "SDL_GetPrefPath")
+	purego.RegisterLibFunc(&sdlGetPrefPath, lib, "SDL_GetPrefPath")
 	purego.RegisterLibFunc(&sdlGetPrimaryDisplay, lib, "SDL_GetPrimaryDisplay")
 	// purego.RegisterLibFunc(&sdlGetPrimarySelectionText, lib, "SDL_GetPrimarySelectionText")
 	// purego.RegisterLibFunc(&sdlGetProcessInput, lib, "SDL_GetProcessInput")

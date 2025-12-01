@@ -946,9 +946,9 @@ func BindGPUFragmentSamplers(renderPass *GPURenderPass, firstSlot uint32, textur
 	sdlBindGPUFragmentSamplers(renderPass, firstSlot, textureSamplerBindings, numBindings)
 }
 
-// func BindGPUFragmentStorageBuffers(render_pass *GPURenderPass, first_slot uint32, storage_buffers **GPUBuffer, num_bindings uint32)  {
-//	sdlBindGPUFragmentStorageBuffers(render_pass, first_slot, storage_buffers, num_bindings)
-// }
+func BindGPUFragmentStorageBuffers(renderPass *GPURenderPass, firstSlot uint32, storageBuffers **GPUBuffer, numBindings uint32) {
+	sdlBindGPUFragmentStorageBuffers(renderPass, firstSlot, storageBuffers, numBindings)
+}
 
 // func BindGPUFragmentStorageTextures(render_pass *GPURenderPass, first_slot uint32, storage_textures **GPUTexture, num_bindings uint32)  {
 //	sdlBindGPUFragmentStorageTextures(render_pass, first_slot, storage_textures, num_bindings)
@@ -979,9 +979,9 @@ func BindGPUVertexBuffers(renderPass *GPURenderPass, firstSlot uint32, bindings 
 //	sdlBindGPUVertexSamplers(render_pass, first_slot, texture_sampler_bindings, num_bindings)
 // }
 
-// func BindGPUVertexStorageBuffers(render_pass *GPURenderPass, first_slot uint32, storage_buffers **GPUBuffer, num_bindings uint32)  {
-//	sdlBindGPUVertexStorageBuffers(render_pass, first_slot, storage_buffers, num_bindings)
-// }
+func BindGPUVertexStorageBuffers(renderPass *GPURenderPass, firstSlot uint32, storageBuffers **GPUBuffer, numBindings uint32) {
+	sdlBindGPUVertexStorageBuffers(renderPass, firstSlot, storageBuffers, numBindings)
+}
 
 // func BindGPUVertexStorageTextures(render_pass *GPURenderPass, first_slot uint32, storage_textures **GPUTexture, num_bindings uint32)  {
 //	sdlBindGPUVertexStorageTextures(render_pass, first_slot, storage_textures, num_bindings)
