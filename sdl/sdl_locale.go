@@ -6,11 +6,17 @@ import (
 	"github.com/jupiterrider/purego-sdl3/internal/convert"
 )
 
+// [Locale] is a struct to provide locale data.
+//
+// [Locale]: https://wiki.libsdl.org/SDL3/SDL_Locale
 type Locale struct {
-	Language, Country string
+	Language string // A language name, like "en" for English.
+	Country  string // A country, like "US" for America. Can be NULL.
 }
 
-// GetPreferredLocales reports the user's preferred locale.
+// [GetPreferredLocales] reports the user's preferred locale.
+//
+// [GetPreferredLocales]: https://wiki.libsdl.org/SDL3/SDL_GetPreferredLocales
 func GetPreferredLocales() []*Locale {
 	var count int32
 	locales := sdlGetPreferredLocales(&count)

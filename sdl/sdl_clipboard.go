@@ -18,6 +18,9 @@ import (
 //	return sdlGetClipboardMimeTypes(num_mime_types)
 // }
 
+// [GetClipboardText] gets UTF-8 text from the clipboard.
+//
+// [GetClipboardText]: https://wiki.libsdl.org/SDL3/SDL_GetClipboardText
 func GetClipboardText() string {
 	ret := sdlGetClipboardText()
 	defer Free(unsafe.Pointer(ret))
