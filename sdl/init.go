@@ -253,10 +253,10 @@ var (
 	// sdlGetAudioRecordingDevices              func(*int32) *AudioDeviceID
 	// sdlGetAudioStreamAvailable               func(*AudioStream) int32
 	// sdlGetAudioStreamData                    func(*AudioStream, unsafe.Pointer, int32) int32
-	// sdlGetAudioStreamDevice                  func(*AudioStream) AudioDeviceID
-	// sdlGetAudioStreamFormat                  func(*AudioStream, *AudioSpec, *AudioSpec) bool
-	// sdlGetAudioStreamFrequencyRatio          func(*AudioStream) float32
-	// sdlGetAudioStreamGain                    func(*AudioStream) float32
+	sdlGetAudioStreamDevice         func(*AudioStream) AudioDeviceID
+	sdlGetAudioStreamFormat         func(*AudioStream, *AudioSpec, *AudioSpec) bool
+	sdlGetAudioStreamFrequencyRatio func(*AudioStream) float32
+	sdlGetAudioStreamGain           func(*AudioStream) float32
 	// sdlGetAudioStreamInputChannelMap         func(*AudioStream, *int32) *int32
 	// sdlGetAudioStreamOutputChannelMap        func(*AudioStream, *int32) *int32
 	// sdlGetAudioStreamProperties              func(*AudioStream) PropertiesID
@@ -717,7 +717,7 @@ var (
 	// sdlLoadFileAsync                         func(string, *AsyncIOQueue, unsafe.Pointer) bool
 	// sdlLoadFunction                          func(*SharedObject, string) FunctionPointer
 	// sdlLoadObject                            func(string) *SharedObject
-	// sdlLoadWAV                               func(string, *AudioSpec, **uint8, *uint32) bool
+	sdlLoadWAV   func(string, *AudioSpec, **uint8, *uint32) bool
 	sdlLoadWAVIO func(*IOStream, bool, *AudioSpec, **uint8, *uint32) bool
 	// sdlLockAudioStream                       func(*AudioStream) bool
 	sdlLockJoysticks func()
@@ -928,9 +928,9 @@ var (
 	// sdlSetAtomicU32                          func(*AtomicU32, uint32) uint32
 	// sdlSetAudioDeviceGain                    func(AudioDeviceID, float32) bool
 	// sdlSetAudioPostmixCallback               func(AudioDeviceID, AudioPostmixCallback, unsafe.Pointer) bool
-	// sdlSetAudioStreamFormat                  func(*AudioStream, *AudioSpec, *AudioSpec) bool
-	// sdlSetAudioStreamFrequencyRatio          func(*AudioStream, float32) bool
-	// sdlSetAudioStreamGain                    func(*AudioStream, float32) bool
+	sdlSetAudioStreamFormat         func(*AudioStream, *AudioSpec, *AudioSpec) bool
+	sdlSetAudioStreamFrequencyRatio func(*AudioStream, float32) bool
+	sdlSetAudioStreamGain           func(*AudioStream, float32) bool
 	// sdlSetAudioStreamGetCallback             func(*AudioStream, AudioStreamCallback, unsafe.Pointer) bool
 	// sdlSetAudioStreamInputChannelMap         func(*AudioStream, *int32, int32) bool
 	// sdlSetAudioStreamOutputChannelMap        func(*AudioStream, *int32, int32) bool
@@ -1479,10 +1479,10 @@ func init() {
 	// purego.RegisterLibFunc(&sdlGetAudioRecordingDevices, lib, "SDL_GetAudioRecordingDevices")
 	// purego.RegisterLibFunc(&sdlGetAudioStreamAvailable, lib, "SDL_GetAudioStreamAvailable")
 	// purego.RegisterLibFunc(&sdlGetAudioStreamData, lib, "SDL_GetAudioStreamData")
-	// purego.RegisterLibFunc(&sdlGetAudioStreamDevice, lib, "SDL_GetAudioStreamDevice")
-	// purego.RegisterLibFunc(&sdlGetAudioStreamFormat, lib, "SDL_GetAudioStreamFormat")
-	// purego.RegisterLibFunc(&sdlGetAudioStreamFrequencyRatio, lib, "SDL_GetAudioStreamFrequencyRatio")
-	// purego.RegisterLibFunc(&sdlGetAudioStreamGain, lib, "SDL_GetAudioStreamGain")
+	purego.RegisterLibFunc(&sdlGetAudioStreamDevice, lib, "SDL_GetAudioStreamDevice")
+	purego.RegisterLibFunc(&sdlGetAudioStreamFormat, lib, "SDL_GetAudioStreamFormat")
+	purego.RegisterLibFunc(&sdlGetAudioStreamFrequencyRatio, lib, "SDL_GetAudioStreamFrequencyRatio")
+	purego.RegisterLibFunc(&sdlGetAudioStreamGain, lib, "SDL_GetAudioStreamGain")
 	// purego.RegisterLibFunc(&sdlGetAudioStreamInputChannelMap, lib, "SDL_GetAudioStreamInputChannelMap")
 	// purego.RegisterLibFunc(&sdlGetAudioStreamOutputChannelMap, lib, "SDL_GetAudioStreamOutputChannelMap")
 	// purego.RegisterLibFunc(&sdlGetAudioStreamProperties, lib, "SDL_GetAudioStreamProperties")
@@ -1943,7 +1943,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlLoadFileAsync, lib, "SDL_LoadFileAsync")
 	// purego.RegisterLibFunc(&sdlLoadFunction, lib, "SDL_LoadFunction")
 	// purego.RegisterLibFunc(&sdlLoadObject, lib, "SDL_LoadObject")
-	// purego.RegisterLibFunc(&sdlLoadWAV, lib, "SDL_LoadWAV")
+	purego.RegisterLibFunc(&sdlLoadWAV, lib, "SDL_LoadWAV")
 	purego.RegisterLibFunc(&sdlLoadWAVIO, lib, "SDL_LoadWAV_IO")
 	// purego.RegisterLibFunc(&sdlLockAudioStream, lib, "SDL_LockAudioStream")
 	purego.RegisterLibFunc(&sdlLockJoysticks, lib, "SDL_LockJoysticks")
@@ -2154,9 +2154,9 @@ func init() {
 	// purego.RegisterLibFunc(&sdlSetAtomicU32, lib, "SDL_SetAtomicU32")
 	// purego.RegisterLibFunc(&sdlSetAudioDeviceGain, lib, "SDL_SetAudioDeviceGain")
 	// purego.RegisterLibFunc(&sdlSetAudioPostmixCallback, lib, "SDL_SetAudioPostmixCallback")
-	// purego.RegisterLibFunc(&sdlSetAudioStreamFormat, lib, "SDL_SetAudioStreamFormat")
-	// purego.RegisterLibFunc(&sdlSetAudioStreamFrequencyRatio, lib, "SDL_SetAudioStreamFrequencyRatio")
-	// purego.RegisterLibFunc(&sdlSetAudioStreamGain, lib, "SDL_SetAudioStreamGain")
+	purego.RegisterLibFunc(&sdlSetAudioStreamFormat, lib, "SDL_SetAudioStreamFormat")
+	purego.RegisterLibFunc(&sdlSetAudioStreamFrequencyRatio, lib, "SDL_SetAudioStreamFrequencyRatio")
+	purego.RegisterLibFunc(&sdlSetAudioStreamGain, lib, "SDL_SetAudioStreamGain")
 	// purego.RegisterLibFunc(&sdlSetAudioStreamGetCallback, lib, "SDL_SetAudioStreamGetCallback")
 	// purego.RegisterLibFunc(&sdlSetAudioStreamInputChannelMap, lib, "SDL_SetAudioStreamInputChannelMap")
 	// purego.RegisterLibFunc(&sdlSetAudioStreamOutputChannelMap, lib, "SDL_SetAudioStreamOutputChannelMap")
