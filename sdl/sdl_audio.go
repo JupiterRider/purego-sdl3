@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ebitengine/purego"
+	"github.com/jupiterrider/purego-sdl3/internal/mem"
 )
 
 type AudioFormat uint32
@@ -134,21 +135,33 @@ func GetAudioDriver(index int32) string {
 //	return sdlGetAudioStreamData(stream, buf, len)
 // }
 
-// func GetAudioStreamDevice(stream *AudioStream) AudioDeviceID {
-//	return sdlGetAudioStreamDevice(stream)
-// }
+// [GetAudioStreamDevice] queries an audio stream for its currently-bound device.
+//
+// [GetAudioStreamDevice]: https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamDevice
+func GetAudioStreamDevice(stream *AudioStream) AudioDeviceID {
+	return sdlGetAudioStreamDevice(stream)
+}
 
-// func GetAudioStreamFormat(stream *AudioStream, src_spec *AudioSpec, dst_spec *AudioSpec) bool {
-//	return sdlGetAudioStreamFormat(stream, src_spec, dst_spec)
-// }
+// [GetAudioStreamFormat] queries the current format of an audio stream.
+//
+// [GetAudioStreamFormat]: https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamFormat
+func GetAudioStreamFormat(stream *AudioStream, srcSpec *AudioSpec, dstSpec *AudioSpec) bool {
+	return sdlGetAudioStreamFormat(stream, srcSpec, dstSpec)
+}
 
-// func GetAudioStreamFrequencyRatio(stream *AudioStream) float32 {
-//	return sdlGetAudioStreamFrequencyRatio(stream)
-// }
+// [GetAudioStreamFrequencyRatio] gets the frequency ratio of an audio stream.
+//
+// [GetAudioStreamFrequencyRatio]: https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamFrequencyRatio
+func GetAudioStreamFrequencyRatio(stream *AudioStream) float32 {
+	return sdlGetAudioStreamFrequencyRatio(stream)
+}
 
-// func GetAudioStreamGain(stream *AudioStream) float32 {
-//	return sdlGetAudioStreamGain(stream)
-// }
+// [GetAudioStreamGain] gets the gain of an audio stream.
+//
+// [GetAudioStreamGain]: https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamGain
+func GetAudioStreamGain(stream *AudioStream) float32 {
+	return sdlGetAudioStreamGain(stream)
+}
 
 // func GetAudioStreamInputChannelMap(stream *AudioStream, count *int32) *int32 {
 //	return sdlGetAudioStreamInputChannelMap(stream, count)
@@ -187,14 +200,40 @@ func GetNumAudioDrivers() int32 {
 //	return sdlIsAudioDevicePlayback(devid)
 // }
 
-// func LoadWAV(path string, spec *AudioSpec, audio_buf **uint8, audio_len *uint32) bool {
-//	return sdlLoadWAV(path, spec, audio_buf, audio_len)
-// }
+// [LoadWAV] loads a WAV from a file path.
+//
+// [LoadWAV]: https://wiki.libsdl.org/SDL3/SDL_LoadWAV
+func LoadWAV(path string, spec *AudioSpec, audioBuf *[]uint8, audioLen *uint32) bool {
+	var buf *uint8
+	var length uint32
+	ret := sdlLoadWAV(path, spec, &buf, &length)
+	defer Free(unsafe.Pointer(buf))
 
-// LoadWAVIO loads the audio data of a WAVE file into memory and returns true on success.
-// The data returned in audioBuf should be disposed with [Free] when it is no longer needed.
-func LoadWAVIO(src *IOStream, closeio bool, spec *AudioSpec, audioBuf **uint8, audioLen *uint32) bool {
-	return sdlLoadWAVIO(src, closeio, spec, audioBuf, audioLen)
+	if audioBuf != nil {
+		*audioBuf = mem.Copy(buf, int32(length))
+	}
+	if audioLen != nil {
+		*audioLen = length
+	}
+	return ret
+}
+
+// [LoadWAVIO] loads the audio data of a WAVE file into memory and returns true on success.
+//
+// [LoadWAVIO]: https://wiki.libsdl.org/SDL3/SDL_LoadWAV_IO
+func LoadWAVIO(src *IOStream, closeio bool, spec *AudioSpec, audioBuf *[]uint8, audioLen *uint32) bool {
+	var buf *uint8
+	var length uint32
+	ret := sdlLoadWAVIO(src, closeio, spec, &buf, &length)
+	defer Free(unsafe.Pointer(buf))
+
+	if audioBuf != nil {
+		*audioBuf = mem.Copy(buf, int32(length))
+	}
+	if audioLen != nil {
+		*audioLen = length
+	}
+	return ret
 }
 
 // func LockAudioStream(stream *AudioStream) bool {
@@ -246,17 +285,26 @@ func ResumeAudioStreamDevice(stream *AudioStream) bool {
 //	return sdlSetAudioPostmixCallback(devid, callback, userdata)
 // }
 
-// func SetAudioStreamFormat(stream *AudioStream, src_spec *AudioSpec, dst_spec *AudioSpec) bool {
-//	return sdlSetAudioStreamFormat(stream, src_spec, dst_spec)
-// }
+// [SetAudioStreamFormat] changes the input and output formats of an audio stream.
+//
+// [SetAudioStreamFormat]: https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamFormat
+func SetAudioStreamFormat(stream *AudioStream, srcSpec *AudioSpec, dstSpec *AudioSpec) bool {
+	return sdlSetAudioStreamFormat(stream, srcSpec, dstSpec)
+}
 
-// func SetAudioStreamFrequencyRatio(stream *AudioStream, ratio float32) bool {
-//	return sdlSetAudioStreamFrequencyRatio(stream, ratio)
-// }
+// [SetAudioStreamFrequencyRatio] changes the frequency ratio of an audio stream.
+//
+// [SetAudioStreamFrequencyRatio]: https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamFrequencyRatio
+func SetAudioStreamFrequencyRatio(stream *AudioStream, ratio float32) bool {
+	return sdlSetAudioStreamFrequencyRatio(stream, ratio)
+}
 
-// func SetAudioStreamGain(stream *AudioStream, gain float32) bool {
-//	return sdlSetAudioStreamGain(stream, gain)
-// }
+// [SetAudioStreamGain] changes the gain of an audio stream.
+//
+// [SetAudioStreamGain]: https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamGain
+func SetAudioStreamGain(stream *AudioStream, gain float32) bool {
+	return sdlSetAudioStreamGain(stream, gain)
+}
 
 // func SetAudioStreamGetCallback(stream *AudioStream, callback AudioStreamCallback, userdata unsafe.Pointer) bool {
 //	return sdlSetAudioStreamGetCallback(stream, callback, userdata)
