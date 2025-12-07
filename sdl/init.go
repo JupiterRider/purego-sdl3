@@ -753,7 +753,7 @@ var (
 	// sdlMapRGBA                               func(*PixelFormatDetails, *Palette, uint8, uint8, uint8, uint8) uint32
 	sdlMapSurfaceRGB func(*Surface, uint8, uint8, uint8) uint32
 	// sdlMapSurfaceRGBA                        func(*Surface, uint8, uint8, uint8, uint8) uint32
-	// sdlMaximizeWindow                        func(*Window) bool
+	sdlMaximizeWindow func(*Window) bool
 	// sdlmemcmp                                func(unsafe.Pointer, unsafe.Pointer, uint64) int32
 	// sdlmemcpy                                func(unsafe.Pointer, unsafe.Pointer, uint64) unsafe.Pointer
 	// sdlmemmove                               func(unsafe.Pointer, unsafe.Pointer, uint64) unsafe.Pointer
@@ -764,7 +764,7 @@ var (
 	// sdlMetal_CreateView                      func(*Window) MetalView
 	// sdlMetal_DestroyView                     func(MetalView)
 	// sdlMetal_GetLayer                        func(MetalView) unsafe.Pointer
-	// sdlMinimizeWindow                        func(*Window) bool
+	sdlMinimizeWindow func(*Window) bool
 	// sdlMixAudio                              func(*uint8, *uint8, AudioFormat, uint32, float32) bool
 	// sdlmodf                                  func(float64, *double) float64
 	// sdlmodff                                 func(float32, *float32) float32
@@ -1979,7 +1979,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlMapRGBA, lib, "SDL_MapRGBA")
 	purego.RegisterLibFunc(&sdlMapSurfaceRGB, lib, "SDL_MapSurfaceRGB")
 	// purego.RegisterLibFunc(&sdlMapSurfaceRGBA, lib, "SDL_MapSurfaceRGBA")
-	// purego.RegisterLibFunc(&sdlMaximizeWindow, lib, "SDL_MaximizeWindow")
+	purego.RegisterLibFunc(&sdlMaximizeWindow, lib, "SDL_MaximizeWindow")
 	// purego.RegisterLibFunc(&sdlmemcmp, lib, "SDL_memcmp")
 	// purego.RegisterLibFunc(&sdlmemcpy, lib, "SDL_memcpy")
 	// purego.RegisterLibFunc(&sdlmemmove, lib, "SDL_memmove")
@@ -1990,7 +1990,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlMetal_CreateView, lib, "SDL_Metal_CreateView")
 	// purego.RegisterLibFunc(&sdlMetal_DestroyView, lib, "SDL_Metal_DestroyView")
 	// purego.RegisterLibFunc(&sdlMetal_GetLayer, lib, "SDL_Metal_GetLayer")
-	// purego.RegisterLibFunc(&sdlMinimizeWindow, lib, "SDL_MinimizeWindow")
+	purego.RegisterLibFunc(&sdlMinimizeWindow, lib, "SDL_MinimizeWindow")
 	// purego.RegisterLibFunc(&sdlMixAudio, lib, "SDL_MixAudio")
 	// purego.RegisterLibFunc(&sdlmodf, lib, "SDL_modf")
 	// purego.RegisterLibFunc(&sdlmodff, lib, "SDL_modff")

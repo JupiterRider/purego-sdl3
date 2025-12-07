@@ -596,13 +596,13 @@ func HideWindow(window *Window) bool {
 	return sdlHideWindow(window)
 }
 
-// func MaximizeWindow(window *Window) bool {
-//	return sdlMaximizeWindow(window)
-// }
+func MaximizeWindow(window *Window) bool {
+	return sdlMaximizeWindow(window)
+}
 
-// func MinimizeWindow(window *Window) bool {
-//	return sdlMinimizeWindow(window)
-// }
+func MinimizeWindow(window *Window) bool {
+	return sdlMinimizeWindow(window)
+}
 
 // [RaiseWindow] requests that a window be raised above other windows and gain the input focus.
 //
