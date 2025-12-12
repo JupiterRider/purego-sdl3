@@ -946,6 +946,9 @@ func BindGPUFragmentSamplers(renderPass *GPURenderPass, firstSlot uint32, textur
 	sdlBindGPUFragmentSamplers(renderPass, firstSlot, textureSamplerBindings, numBindings)
 }
 
+// [BindGPUFragmentStorageBuffers] binds storage buffers for use on the fragment shader.
+//
+// [BindGPUFragmentStorageBuffers]: https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageBuffers
 func BindGPUFragmentStorageBuffers(renderPass *GPURenderPass, firstSlot uint32, storageBuffers **GPUBuffer, numBindings uint32) {
 	sdlBindGPUFragmentStorageBuffers(renderPass, firstSlot, storageBuffers, numBindings)
 }
@@ -979,6 +982,9 @@ func BindGPUVertexBuffers(renderPass *GPURenderPass, firstSlot uint32, bindings 
 //	sdlBindGPUVertexSamplers(render_pass, first_slot, texture_sampler_bindings, num_bindings)
 // }
 
+// [BindGPUVertexStorageBuffers] binds storage buffers for use on the vertex shader.
+//
+// [BindGPUVertexStorageBuffers]: https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageBuffers
 func BindGPUVertexStorageBuffers(renderPass *GPURenderPass, firstSlot uint32, storageBuffers **GPUBuffer, numBindings uint32) {
 	sdlBindGPUVertexStorageBuffers(renderPass, firstSlot, storageBuffers, numBindings)
 }

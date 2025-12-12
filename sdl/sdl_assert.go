@@ -1,13 +1,16 @@
 package sdl
 
+// [AssertState] defines the possible outcomes from a triggered assertion.
+//
+// [AssertState]: https://wiki.libsdl.org/SDL3/SDL_AssertState
 type AssertState uint32
 
 const (
-	AssertionRetry AssertState = iota
-	AssertionBreak
-	AssertionAbort
-	AssertionIgnore
-	AssertionAlwaysIgnore
+	AssertionRetry        AssertState = iota // Retry the assert immediately.
+	AssertionBreak                           // Make the debugger trigger a breakpoint.
+	AssertionAbort                           // Terminate the program.
+	AssertionIgnore                          // Ignore the assert.
+	AssertionAlwaysIgnore                    // Ignore the assert from now on.
 )
 
 // func GetAssertionHandler(puserdata *unsafe.Pointer) AssertionHandler {

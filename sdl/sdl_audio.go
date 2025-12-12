@@ -6,23 +6,29 @@ import (
 	"github.com/ebitengine/purego"
 )
 
+// [AudioFormat] defines the audio format.
+//
+// [AudioFormat]: https://wiki.libsdl.org/SDL3/SDL_AudioFormat
 type AudioFormat uint32
 
 const (
-	AudioUnknown AudioFormat = 0x0000
-	AudioU8      AudioFormat = 0x0008
-	AudioS8      AudioFormat = 0x8008
-	AudioS16Le   AudioFormat = 0x8010
-	AudioS16Be   AudioFormat = 0x9010
-	AudioS32Le   AudioFormat = 0x8020
-	AudioS32Be   AudioFormat = 0x9020
-	AudioF32Le   AudioFormat = 0x8120
-	AudioF32Be   AudioFormat = 0x9120
+	AudioUnknown AudioFormat = 0x0000 // Unspecified audio format.
+	AudioU8      AudioFormat = 0x0008 // Unsigned 8-bit samples.
+	AudioS8      AudioFormat = 0x8008 // Signed 8-bit samples.
+	AudioS16Le   AudioFormat = 0x8010 // Signed 16-bit samples.
+	AudioS16Be   AudioFormat = 0x9010 // Signed 16-bit samples, big-endian byte order.
+	AudioS32Le   AudioFormat = 0x8020 // 32-bit integer samples.
+	AudioS32Be   AudioFormat = 0x9020 // 32-bit integer samples, big-endian byte order.
+	AudioF32Le   AudioFormat = 0x8120 // 32-bit floating point samples.
+	AudioF32Be   AudioFormat = 0x9120 // 32-bit floating, big-endian byte order.
 	AudioS16     AudioFormat = AudioS16Le
 	AudioS32     AudioFormat = AudioS32Le
 	AudioF32     AudioFormat = AudioF32Le
 )
 
+// [AudioDeviceID] defines the SDL Audio Device instance IDs.
+//
+// [AudioDeviceID]: https://wiki.libsdl.org/SDL3/SDL_AudioDeviceID
 type AudioDeviceID uint32
 
 const (
@@ -30,14 +36,23 @@ const (
 	AudioDeviceDefaultRecording AudioDeviceID = 0xFFFFFFFE
 )
 
+// [AudioSpec] defines the format specifier for audio data.
+//
+// [AudioSpec]: https://wiki.libsdl.org/SDL3/SDL_AudioSpec
 type AudioSpec struct {
-	Format   AudioFormat
-	Channels int32
-	Freq     int32
+	Format   AudioFormat // Audio data format.
+	Channels int32       // Number of channels: 1 mono, 2 stereo, etc.
+	Freq     int32       // Sample rate: sample frames per second.
 }
 
+// [AudioStream] is a structure specifying the opaque handle that represents an audio streams.
+//
+// [AudioStream]: https://wiki.libsdl.org/SDL3/SDL_AudioStream
 type AudioStream struct{}
 
+// [AudioStreamCallback] is a callback that fires when data passes through an [AudioStream].
+//
+// [AudioStreamCallback]: https://wiki.libsdl.org/SDL3/SDL_AudioStreamCallback
 type AudioStreamCallback uintptr
 
 func NewAudioStreamCallback(callback func(userdata unsafe.Pointer, stream *AudioStream, additionalAmount, totalAmount int32)) AudioStreamCallback {
@@ -53,6 +68,9 @@ func NewAudioStreamCallback(callback func(userdata unsafe.Pointer, stream *Audio
 //	return sdlAudioDevicePaused(dev)
 // }
 
+// [AudioStreamDevicePaused] queries if an audio device associated with a stream is paused.
+//
+// [AudioStreamDevicePaused]: https://wiki.libsdl.org/SDL3/SDL_AudioStreamDevicePaused
 func AudioStreamDevicePaused(stream *AudioStream) bool {
 	ret, _, _ := purego.SyscallN(sdlAudioStreamDevicePaused, uintptr(unsafe.Pointer(stream)))
 	return byte(ret) != 0
@@ -66,6 +84,9 @@ func AudioStreamDevicePaused(stream *AudioStream) bool {
 //	return sdlBindAudioStreams(devid, streams, num_streams)
 // }
 
+// [ClearAudioStream] clears any pending data in the stream.
+//
+// [ClearAudioStream]: https://wiki.libsdl.org/SDL3/SDL_ClearAudioStream
 func ClearAudioStream(stream *AudioStream) bool {
 	ret, _, _ := purego.SyscallN(sdlClearAudioStream, uintptr(unsafe.Pointer(stream)))
 	return byte(ret) != 0
@@ -83,12 +104,17 @@ func ClearAudioStream(stream *AudioStream) bool {
 //	return sdlCreateAudioStream(src_spec, dst_spec)
 // }
 
+// [DestroyAudioStream] frees an audio stream.
+//
+// [DestroyAudioStream]: https://wiki.libsdl.org/SDL3/SDL_DestroyAudioStream
 func DestroyAudioStream(stream *AudioStream) {
 	sdlDestroyAudioStream(stream)
 }
 
-// FlushAudioStream tells the stream that you're done sending data,
+// [FlushAudioStream] tells the stream that you're done sending data,
 // and anything being buffered should be converted/resampled and made available immediately.
+//
+// [FlushAudioStream]: https://wiki.libsdl.org/SDL3/SDL_FlushAudioStream
 func FlushAudioStream(stream *AudioStream) bool {
 	ret, _, _ := purego.SyscallN(sdlFlushAudioStream, uintptr(unsafe.Pointer(stream)))
 	return byte(ret) != 0
@@ -110,6 +136,9 @@ func FlushAudioStream(stream *AudioStream) bool {
 //	return sdlGetAudioDeviceName(devid)
 // }
 
+// [GetAudioDriver] gets the name of a built in audio driver.
+//
+// [GetAudioDriver]: https://wiki.libsdl.org/SDL3/SDL_GetAudioDriver
 func GetAudioDriver(index int32) string {
 	return sdlGetAudioDriver(index)
 }
@@ -162,15 +191,24 @@ func GetAudioDriver(index int32) string {
 //	return sdlGetAudioStreamProperties(stream)
 // }
 
+// [GetAudioStreamQueued] gets the number of bytes currently queued.
+//
+// [GetAudioStreamQueued]: https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamQueued
 func GetAudioStreamQueued(stream *AudioStream) int32 {
 	ret, _, _ := purego.SyscallN(sdlGetAudioStreamQueued, uintptr(unsafe.Pointer(stream)))
 	return int32(ret)
 }
 
+// [GetCurrentAudioDriver] gets the name of the current audio driver.
+//
+// [GetCurrentAudioDriver]: https://wiki.libsdl.org/SDL3/SDL_GetCurrentAudioDriver
 func GetCurrentAudioDriver() string {
 	return sdlGetCurrentAudioDriver()
 }
 
+// [GetNumAudioDrivers] gets the number of built-in audio drivers.
+//
+// [GetNumAudioDrivers]: https://wiki.libsdl.org/SDL3/SDL_GetNumAudioDrivers
 func GetNumAudioDrivers() int32 {
 	return sdlGetNumAudioDrivers()
 }
@@ -191,8 +229,10 @@ func GetNumAudioDrivers() int32 {
 //	return sdlLoadWAV(path, spec, audio_buf, audio_len)
 // }
 
-// LoadWAVIO loads the audio data of a WAVE file into memory and returns true on success.
+// [LoadWAVIO] loads the audio data of a WAVE file into memory and returns true on success.
 // The data returned in audioBuf should be disposed with [Free] when it is no longer needed.
+//
+// [LoadWAVIO]: https://wiki.libsdl.org/SDL3/SDL_LoadWAV_IO
 func LoadWAVIO(src *IOStream, closeio bool, spec *AudioSpec, audioBuf **uint8, audioLen *uint32) bool {
 	return sdlLoadWAVIO(src, closeio, spec, audioBuf, audioLen)
 }
@@ -209,8 +249,10 @@ func LoadWAVIO(src *IOStream, closeio bool, spec *AudioSpec, audioBuf **uint8, a
 //	return sdlOpenAudioDevice(devid, spec)
 // }
 
-// OpenAudioDeviceStream returns an audio stream on success, ready to use, or nil on failure.
+// [OpenAudioDeviceStream] returns an audio stream on success, ready to use, or nil on failure.
 // When done with this stream, call [DestroyAudioStream] to free resources and close the device.
+//
+// [OpenAudioDeviceStream]: https://wiki.libsdl.org/SDL3/SDL_OpenAudioDeviceStream
 func OpenAudioDeviceStream(devid AudioDeviceID, spec *AudioSpec, callback AudioStreamCallback, userdata unsafe.Pointer) *AudioStream {
 	return sdlOpenAudioDeviceStream(devid, spec, callback, userdata)
 }
@@ -219,11 +261,17 @@ func OpenAudioDeviceStream(devid AudioDeviceID, spec *AudioSpec, callback AudioS
 //	return sdlPauseAudioDevice(dev)
 // }
 
+// [PauseAudioStreamDevice] pauses audio playback on the audio device associated with an audio stream.
+//
+// [PauseAudioStreamDevice]: https://wiki.libsdl.org/SDL3/SDL_PauseAudioStreamDevice
 func PauseAudioStreamDevice(stream *AudioStream) bool {
 	ret, _, _ := purego.SyscallN(sdlPauseAudioStreamDevice, uintptr(unsafe.Pointer(stream)))
 	return byte(ret) != 0
 }
 
+// [PutAudioStreamData] adds data to the stream.
+//
+// [PutAudioStreamData]: https://wiki.libsdl.org/SDL3/SDL_PutAudioStreamData
 func PutAudioStreamData(stream *AudioStream, buf *uint8, len int32) bool {
 	ret, _, _ := purego.SyscallN(sdlPutAudioStreamData, uintptr(unsafe.Pointer(stream)), uintptr(unsafe.Pointer(buf)), uintptr(len))
 	return byte(ret) != 0
@@ -233,6 +281,9 @@ func PutAudioStreamData(stream *AudioStream, buf *uint8, len int32) bool {
 //	return sdlResumeAudioDevice(dev)
 // }
 
+// [ResumeAudioStreamDevice] unpauses audio playback on the audio device associated with an audio stream.
+//
+// [ResumeAudioStreamDevice]: https://wiki.libsdl.org/SDL3/SDL_ResumeAudioStreamDevice
 func ResumeAudioStreamDevice(stream *AudioStream) bool {
 	ret, _, _ := purego.SyscallN(sdlResumeAudioStreamDevice, uintptr(unsafe.Pointer(stream)))
 	return byte(ret) != 0

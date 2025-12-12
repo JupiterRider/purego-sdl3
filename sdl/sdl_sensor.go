@@ -1,18 +1,24 @@
 package sdl
 
+// [SensorType] is a structure specifying the different sensors defined by SDLs.
+//
+// [SensorType]: https://wiki.libsdl.org/SDL3/SDL_SensorType
 type SensorType int32
 
 const (
-	SensorInvalid SensorType = iota - 1
-	SensorUnknown
-	SensorAccel
-	SensorGyro
-	SensorAccelL
-	SensorGyroL
-	SensorAccelR
-	SensorGyroR
+	SensorInvalid SensorType = iota - 1 // Returned for an invalid sensor.
+	SensorUnknown                       // Unknown sensor type.
+	SensorAccel                         // Accelerometer.
+	SensorGyro                          // Gyroscope.
+	SensorAccelL                        // Accelerometer for left Joy-Con controller and Wii nunchuk.
+	SensorGyroL                         // Gyroscope for left Joy-Con controller.
+	SensorAccelR                        // Accelerometer for right Joy-Con controller.
+	SensorGyroR                         // Gyroscope for right Joy-Con controller.
 )
 
+// [SensorID] is a unique ID for a sensor for the time it is connected to the system, and is never reused for the lifetime of the application.
+//
+// [SensorID]: https://wiki.libsdl.org/SDL3/SDL_SensorID
 type SensorID uint32
 
 // func CloseSensor(sensor *Sensor)  {

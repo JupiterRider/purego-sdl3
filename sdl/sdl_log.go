@@ -2,6 +2,9 @@ package sdl
 
 import "fmt"
 
+// [LogPriority] is a structure specifying the predefined log priorities.
+//
+// [LogPriority]: https://wiki.libsdl.org/SDL3/SDL_LogPriority
 type LogPriority uint32
 
 const (
@@ -16,6 +19,9 @@ const (
 	LogPriorityCount
 )
 
+// [LogCategory] is a structure specifying the predefined log categories.
+//
+// [LogCategory]: https://wiki.libsdl.org/SDL3/SDL_LogCategory
 type LogCategory uint32
 
 const (
@@ -53,7 +59,7 @@ const (
 //	return sdlGetLogPriority(category)
 // }
 
-// [Log] logs a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.
+// [Log] logs a message with [LOG_CATEGORY_APPLICATION] and [LOG_PRIORITY_INFO].
 //
 // [Log]: https://wiki.libsdl.org/SDL3/SDL_Log
 func Log(format string, a ...any) {
@@ -68,7 +74,7 @@ func Log(format string, a ...any) {
 //	sdlLogDebug(category, fmt)
 // }
 
-// [LogError] logs a message with SDL_LOG_PRIORITY_ERROR.
+// [LogError] logs a message with [LOG_PRIORITY_ERROR].
 //
 // [LogError]: https://wiki.libsdl.org/SDL3/SDL_LogError
 func LogError(category LogCategory, format string, a ...any) {
