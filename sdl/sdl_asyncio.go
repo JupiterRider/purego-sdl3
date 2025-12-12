@@ -1,19 +1,25 @@
 package sdl
 
+// [AsyncIOTaskType] defines the types of asynchronous I/O tasks.
+//
+// [AsyncIOTaskType]: https://wiki.libsdl.org/SDL3/SDL_AsyncIOTaskType
 type AsyncIOTaskType uint32
 
 const (
-	AsyncIOTaskRead AsyncIOTaskType = iota
-	AsyncIOTaskWrite
-	AsyncIOTaskClose
+	AsyncIOTaskRead  AsyncIOTaskType = iota // A read operation.
+	AsyncIOTaskWrite                        // A write operation.
+	AsyncIOTaskClose                        // A close operation.
 )
 
+// [AsyncIOResult] defines the possible outcomes of an asynchronous I/O task.
+//
+// [AsyncIOResult]: https://wiki.libsdl.org/SDL3/SDL_AsyncIOResult
 type AsyncIOResult uint32
 
 const (
-	AsyncIOComplete AsyncIOResult = iota
-	AsyncIOFailure
-	AsyncIOCanceled
+	AsyncIOComplete AsyncIOResult = iota // Request was completed without error.
+	AsyncIOFailure                       // Request failed for some reason, check [GetError]!
+	AsyncIOCanceled                      // Request was canceled before completing.
 )
 
 // func AsyncIOFromFile(file string, mode string) *AsyncIO {
