@@ -578,8 +578,8 @@ var (
 	// sdlGetWindowParent                       func(*Window) *Window
 	sdlGetWindowPixelDensity func(*Window) float32
 	// sdlGetWindowPixelFormat                  func(*Window) PixelFormat
-	sdlGetWindowPosition func(*Window, *int32, *int32) bool
-	// sdlGetWindowProperties                   func(*Window) PropertiesID
+	sdlGetWindowPosition          func(*Window, *int32, *int32) bool
+	sdlGetWindowProperties        func(*Window) PropertiesID
 	sdlGetWindowRelativeMouseMode func(*Window) bool
 	// sdlGetWindows                            func(*int32) **Window
 	// sdlGetWindowSafeArea                     func(*Window, *Rect) bool
@@ -1805,7 +1805,7 @@ func init() {
 	purego.RegisterLibFunc(&sdlGetWindowPixelDensity, lib, "SDL_GetWindowPixelDensity")
 	// purego.RegisterLibFunc(&sdlGetWindowPixelFormat, lib, "SDL_GetWindowPixelFormat")
 	purego.RegisterLibFunc(&sdlGetWindowPosition, lib, "SDL_GetWindowPosition")
-	// purego.RegisterLibFunc(&sdlGetWindowProperties, lib, "SDL_GetWindowProperties")
+	purego.RegisterLibFunc(&sdlGetWindowProperties, lib, "SDL_GetWindowProperties")
 	purego.RegisterLibFunc(&sdlGetWindowRelativeMouseMode, lib, "SDL_GetWindowRelativeMouseMode")
 	// purego.RegisterLibFunc(&sdlGetWindows, lib, "SDL_GetWindows")
 	// purego.RegisterLibFunc(&sdlGetWindowSafeArea, lib, "SDL_GetWindowSafeArea")

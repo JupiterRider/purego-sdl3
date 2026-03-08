@@ -7,6 +7,44 @@ import (
 	"github.com/jupiterrider/purego-sdl3/internal/mem"
 )
 
+const (
+	PropWindowShapePointer                         = "SDL.window.shape"
+	PropWindowHDREnabledBoolean                    = "SDL.window.HDR_enabled"
+	PropWindowSDRWhiteLevelFloat                   = "SDL.window.SDR_white_level"
+	PropWindowHDRHeadroomFloat                     = "SDL.window.HDR_headroom"
+	PropWindowAndroidWindowPointer                 = "SDL.window.android.window"
+	PropWindowAndroidSurfacePointer                = "SDL.window.android.surface"
+	PropWindowUiKitWindowPointer                   = "SDL.window.uikit.window"
+	PropWindowUiKitMetalViewTagNumber              = "SDL.window.uikit.metal_view_tag"
+	PropWindowUiKitOpenGLFramebufferNumber         = "SDL.window.uikit.opengl.framebuffer"
+	PropWindowUiKitOpenGLRenderbufferNumber        = "SDL.window.uikit.opengl.renderbuffer"
+	PropWindowUiKitOpenGLResolveFramebufferNumber  = "SDL.window.uikit.opengl.resolve_framebuffer"
+	PropWindowKmsDrmDeviceIndexNumber              = "SDL.window.kmsdrm.dev_index"
+	PropWindowKmsDrmDrmFdNumber                    = "SDL.window.kmsdrm.drm_fd"
+	PropWindowKmsDrmGbmDevicePointer               = "SDL.window.kmsdrm.gbm_dev"
+	PropWindowCocoaWindowPointer                   = "SDL.window.cocoa.window"
+	PropWindowCocoaMetalViewTagNumber              = "SDL.window.cocoa.metal_view_tag"
+	PropWindowOpenVROverlayID                      = "SDL.window.openvr.overlay_id"
+	PropWindowVivanteDisplayPointer                = "SDL.window.vivante.display"
+	PropWindowVivanteWindowPointer                 = "SDL.window.vivante.window"
+	PropWindowVivanteSurfacePointer                = "SDL.window.vivante.surface"
+	PropWindowWin32HwndPointer                     = "SDL.window.win32.hwnd"
+	PropWindowWin32HdcPointer                      = "SDL.window.win32.hdc"
+	PropWindowWin32InstancePointer                 = "SDL.window.win32.instance"
+	PropWindowWaylandDisplayPointer                = "SDL.window.wayland.display"
+	PropWindowWaylandSurfacePointer                = "SDL.window.wayland.surface"
+	PropWindowWaylandViewportPointer               = "SDL.window.wayland.viewport"
+	PropWindowWaylandEGLWindowPointer              = "SDL.window.wayland.egl_window"
+	PropWindowWaylandXDGSurfacePointer             = "SDL.window.wayland.xdg_surface"
+	PropWindowWaylandXDGToplevelPointer            = "SDL.window.wayland.xdg_toplevel"
+	PropWindowWaylandXDGToplevelExportHandleString = "SDL.window.wayland.xdg_toplevel_export_handle"
+	PropWindowWaylandXDGPopupPointer               = "SDL.window.wayland.xdg_popup"
+	PropWindowWaylandXDGPositionerPointer          = "SDL.window.wayland.xdg_positioner"
+	PropWindowX11DisplayPointer                    = "SDL.window.x11.display"
+	PropWindowX11ScreenNumber                      = "SDL.window.x11.screen"
+	PropWindowX11WindowNumber                      = "SDL.window.x11.window"
+)
+
 // [DisplayID] is a unique ID for a display for the time it is connected to the system, and is never reused for the lifetime of the application.
 //
 // [DisplayID]: https://wiki.libsdl.org/SDL3/SDL_DisplayID
@@ -472,9 +510,12 @@ func GetWindowPosition(window *Window, x *int32, y *int32) bool {
 	return sdlGetWindowPosition(window, x, y)
 }
 
-// func GetWindowProperties(window *Window) PropertiesID {
-//	return sdlGetWindowProperties(window)
-// }
+// [GetWindowProperties] gets the properties associated with a window.
+//
+// [GetWindowProperties]: https://wiki.libsdl.org/SDL3/SDL_GetWindowProperties
+func GetWindowProperties(window *Window) PropertiesID {
+	return sdlGetWindowProperties(window)
+}
 
 // func GetWindows(count *int32) **Window {
 //	return sdlGetWindows(count)
