@@ -1,5 +1,12 @@
 package sdl
 
+const PropHidapiLibusbDeviceHandlePointer = "SDL.hidapi.libusb.device.handle"
+
+// [HidDevice] is an opaque handle representing an open HID device.
+//
+// [HidDevice]: https://wiki.libsdl.org/SDL3/SDL_hid_device
+type HidDevice struct{}
+
 // [HidBusType] defines HID underlying bus types.
 //
 // [HidBusType]: https://wiki.libsdl.org/SDL3/SDL_hid_bus_type
@@ -12,6 +19,27 @@ const (
 	HidApiBusI2C                         // I2C bus. Specifications: https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85).
 	HidApiBusSPI                         // SPI bus. Specifications: https://www.microsoft.com/download/details.aspx?id=103325.
 )
+
+// [HidDeviceInfo] describes information about a connected HID device
+//
+// [HidDeviceInfo]: https://wiki.libsdl.org/SDL3/SDL_hid_device_info
+type HidDeviceInfo struct {
+	Path               *byte  // Platform-specific device path.
+	VendorId           uint16 // Device Vendor ID.
+	ProductId          uint16 // Device Product ID.
+	SerialNumber       *byte  // Serial Number.
+	ReleaseNumber      uint16 // Device Release Number in binary-coded decimal, also known as Device Version Number.
+	ManufacturerString *byte  // Manufacturer.
+	ProductString      *byte  // Product.
+	UsagePage          uint16 // Usage Page for this Device/Interface (Windows/Mac/hidraw only).
+	Usage              uint16 // Usage for this Device/Interface (Windows/Mac/hidraw only).
+	InterfaceNumber    int32  // The USB interface which this logical device represents. Valid only if the device is a USB HID device. Set to -1 in all other cases.
+	InterfaceClass     int32  // Additional information about the USB interface. Valid on libusb and Android implementations.
+	InterfaceSubclass  int32
+	InterfaceProtocol  int32
+	BusType            HidBusType     // Underlying bus type.
+	Next               *HidDeviceInfo // Pointer to the next device.
+}
 
 // func hid_ble_scan(active bool)  {
 //	sdlhid_ble_scan(active)
@@ -79,6 +107,11 @@ const (
 
 // func hid_open_path(path string) *hid_device {
 //	return sdlhid_open_path(path)
+// }
+
+// Available since SDL 3.4.0.
+// func hid_get_properties(dev *HidDevice) PropertiesID {
+// 	return sdlhid_get_properties(dev)
 // }
 
 // func hid_read(dev *hid_device, data *uint8, length uint64) int32 {

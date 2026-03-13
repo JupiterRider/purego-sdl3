@@ -6,6 +6,8 @@ import (
 	"github.com/ebitengine/purego"
 )
 
+const PropAudiostreamAutoCleanupBoolean = "SDL.audiostream.auto_cleanup"
+
 // [AudioFormat] defines the audio format.
 //
 // [AudioFormat]: https://wiki.libsdl.org/SDL3/SDL_AudioFormat
@@ -54,6 +56,13 @@ type AudioStream struct{}
 //
 // [AudioStreamCallback]: https://wiki.libsdl.org/SDL3/SDL_AudioStreamCallback
 type AudioStreamCallback uintptr
+
+// [AudioStreamDataCompleteCallback] is a callback that fires for completed [PutAudioStreamDataNoCopy] data.
+//
+// Available since SDL 3.4.0.
+//
+// [AudioStreamDataCompleteCallback]: https://wiki.libsdl.org/SDL3/SDL_AudioStreamDataCompleteCallback
+type AudioStreamDataCompleteCallback uintptr
 
 func NewAudioStreamCallback(callback func(userdata unsafe.Pointer, stream *AudioStream, additionalAmount, totalAmount int32)) AudioStreamCallback {
 	cb := purego.NewCallback(func(userdata unsafe.Pointer, stream *AudioStream, additionalAmount, totalAmount int32) uintptr {
@@ -276,6 +285,26 @@ func PutAudioStreamData(stream *AudioStream, buf *uint8, len int32) bool {
 	ret, _, _ := purego.SyscallN(sdlPutAudioStreamData, uintptr(unsafe.Pointer(stream)), uintptr(unsafe.Pointer(buf)), uintptr(len))
 	return byte(ret) != 0
 }
+
+// [PutAudioStreamDataNoCopy] adds external data to an audio stream without copying it.
+//
+// Available since SDL 3.4.0.
+//
+// [PutAudioStreamDataNoCopy]: https://wiki.libsdl.org/SDL3/SDL_PutAudioStreamDataNoCopy
+// func PutAudioStreamDataNoCopy(stream *AudioStream, buf *uint8, len int32, callback AudioStreamDataCompleteCallback, userdata uintptr) bool {
+// 	ret, _, _ := purego.SyscallN(sdlPutAudioStreamDataNoCopy, uintptr(unsafe.Pointer(stream)), uintptr(unsafe.Pointer(buf)), uintptr(len), uintptr(callback), userdata)
+// 	return byte(ret) != 0
+// }
+
+// [PutAudioStreamPlanarData] adds data to the stream with each channel in a separate array.
+//
+// Available since SDL 3.4.0.
+//
+// [PutAudioStreamPlanarData]: https://wiki.libsdl.org/SDL3/SDL_PutAudioStreamPlanarData
+// func PutAudioStreamPlanarData(stream *AudioStream, channelBuffers *[][]uint8, numChannels, numSamples int32) bool {
+// 	ret, _, _ := purego.SyscallN(sdlPutAudioStreamPlanarData, uintptr(unsafe.Pointer(stream)), uintptr(unsafe.Pointer(channelBuffers)), uintptr(numChannels), uintptr(numSamples))
+// 	return byte(ret) != 0
+// }
 
 // func ResumeAudioDevice(dev AudioDeviceID) bool {
 //	return sdlResumeAudioDevice(dev)

@@ -17,6 +17,11 @@ const (
 	EnumFailure                           // Value that requests that enumeration stop, as a failure.
 )
 
+// [EnumerateDirectoryCallback] is a callback for directory enumeration.
+//
+// [EnumerateDirectoryCallback]: https://wiki.libsdl.org/SDL3/SDL_EnumerateDirectoryCallback
+type EnumerateDirectoryCallback uintptr
+
 // [PathType] defines the types of filesystem entries.
 //
 // [PathType]: https://wiki.libsdl.org/SDL3/SDL_PathType
@@ -28,6 +33,24 @@ const (
 	PathTypeDirectory                 // A directory.
 	PathTypeOther                     // Something completely different like a device node (not a symlink, those are always followed).
 )
+
+// [PathInfo] defines the information about a path on the filesystem.
+//
+// [PathInfo]: https://wiki.libsdl.org/SDL3/SDL_PathInfo
+type PathInfo struct {
+	Type       PathType // The path type.
+	Size       uint64   // The file size in bytes.
+	CreateTime Time     // The time when the path was created.
+	ModifyTime Time     // The last time the path was modified.
+	AccessTime Time     // The last time the path was read.
+}
+
+// [GlobFlags] defines flags for path matching.
+//
+// [GlobFlags]: https://wiki.libsdl.org/SDL3/SDL_GlobFlags
+type GlobFlags uint32
+
+const GlobCaseinsensitive GlobFlags = 1 << 0
 
 // [Folder] is a structure specifying the type of the OS-provided default folder for a specific purposes.
 //

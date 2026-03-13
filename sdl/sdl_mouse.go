@@ -45,6 +45,16 @@ const (
 	SystemCursorCount
 )
 
+// [CursorFrameInfo] describes animated cursor frame info.
+//
+// Available since SDL 3.4.0.
+//
+// [CursorFrameInfo]: https://wiki.libsdl.org/SDL3/SDL_CursorFrameInfo
+type CursorFrameInfo struct {
+	Surface  *Surface // The surface data for this frame.
+	Duration uint32   // The frame duration in milliseconds (a duration of 0 is infinite).
+}
+
 // [MouseID] is a unique ID for a mouse for the time it is connected to the system, and is never reused for the lifetime of the application.
 //
 // [MouseID]: https://wiki.libsdl.org/SDL3/SDL_MouseID
@@ -74,6 +84,13 @@ const (
 // [Cursor]: https://wiki.libsdl.org/SDL3/SDL_Cursor
 type Cursor struct{}
 
+// [MouseMotionTransformCallback] is a callback used to transform mouse motion delta from raw values.
+//
+// Available since SDL 3.4.0.
+//
+// [MouseMotionTransformCallback]: https://wiki.libsdl.org/SDL3/SDL_MouseMotionTransformCallback
+type MouseMotionTransformCallback uintptr
+
 // [CaptureMouse] captures the mouse and to track input outside an SDL window.
 //
 // [CaptureMouse]: https://wiki.libsdl.org/SDL3/SDL_CaptureMouse
@@ -86,6 +103,15 @@ func CaptureMouse(enabled bool) bool {
 // [CreateColorCursor]: https://wiki.libsdl.org/SDL3/SDL_CreateColorCursor
 func CreateColorCursor(surface *Surface, hotX int32, hotY int32) *Cursor {
 	return sdlCreateColorCursor(surface, hotX, hotY)
+}
+
+// [CreateAnimatedCursor] creates an animated color cursor.
+//
+// Available since SDL 3.4.0.
+//
+// [CreateAnimatedCursor]: https://wiki.libsdl.org/SDL3/SDL_CreateAnimatedCursor
+func CreateAnimatedCursor(frames *CursorFrameInfo, frameCount, hotX, hotY int32) *Cursor {
+	return sdlCreateAnimatedCursor(frames, frameCount, hotX, hotY)
 }
 
 // [CreateCursor] creates a cursor using the specified bitmap data and mask (in MSB format).
@@ -232,3 +258,12 @@ func WarpMouseGlobal(x float32, y float32) bool {
 func WarpMouseInWindow(window *Window, x float32, y float32) {
 	sdlWarpMouseInWindow(window, x, y)
 }
+
+// [SetRelativeMouseTransform] sets a user-defined function by which to transform relative mouse inputs.
+//
+// Available since SDL 3.4.0.
+//
+// [SetRelativeMouseTransform]: https://wiki.libsdl.org/SDL3/SDL_SetRelativeMouseTransform
+// func SetRelativeMouseTransform(callback MouseMotionTransformCallback, userdata uintptr) bool {
+// 	return sdlSetRelativeMouseTransform(callback, userdata)
+// }

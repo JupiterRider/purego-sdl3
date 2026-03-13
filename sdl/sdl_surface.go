@@ -12,6 +12,7 @@ const (
 	PropSurfaceToneMapOperatorString = "SDL.surface.tonemap"
 	PropSurfaceHotspotXNumber        = "SDL.surface.hotspot.x"
 	PropSurfaceHotspotYNumber        = "SDL.surface.hotspot.y"
+	PropSurfaceRotationFloat         = "SDL.surface.rotation"
 )
 
 // [FlipMode] is a structure specifying the flip modes.
@@ -71,7 +72,9 @@ func MustLock(surface *Surface) bool {
 	return surface.Flags&SurfaceLockNeeded == SurfaceLockNeeded
 }
 
-// LoadBMPIO loads a BMP image from a seekable SDL data stream.
+// [LoadBMPIO] loads a BMP image from a seekable SDL data stream.
+//
+// [LoadBMPIO]: https://wiki.libsdl.org/SDL3/SDL_LoadBMP_IO
 func LoadBMPIO(src *IOStream, closeio bool) *Surface {
 	return sdlLoadBMPIO(src, closeio)
 }
@@ -120,6 +123,15 @@ func BlitSurface(src *Surface, srcrect *Rect, dst *Surface, dstrect *Rect) bool 
 // func BlitSurfaceUncheckedScaled(src *Surface, srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) bool {
 //	return sdlBlitSurfaceUncheckedScaled(src, srcrect, dst, dstrect, scaleMode)
 // }
+
+// [StretchSurface] performs a stretched pixel copy from one surface to another.
+//
+// Available since SDL 3.4.0.
+//
+// [StretchSurface]: https://wiki.libsdl.org/SDL3/SDL_StretchSurface
+func StretchSurface(src *Surface, srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) bool {
+	return sdlStretchSurface(src, srcrect, dst, dstrect, scaleMode)
+}
 
 // func ClearSurface(surface *Surface, r float32, g float32, b float32, a float32) bool {
 //	return sdlClearSurface(surface, r, g, b, a)
@@ -197,6 +209,15 @@ func FillSurfaceRect(dst *Surface, rect *Rect, color uint32) bool {
 // [FlipSurface]: https://wiki.libsdl.org/SDL3/SDL_FlipSurface
 func FlipSurface(surface *Surface, flip FlipMode) bool {
 	return sdlFlipSurface(surface, flip)
+}
+
+// [RotateSurface] returns a copy of a surface rotated clockwise a number of degrees.
+//
+// Available since SDL 3.4.0.
+//
+// [RotateSurface]: https://wiki.libsdl.org/SDL3/SDL_RotateSurface
+func RotateSurface(surface *Surface, angle float32) *Surface {
+	return sdlRotateSurface(surface, angle)
 }
 
 // [GetSurfaceAlphaMod] gets the additional alpha value used in blit operations.
@@ -422,3 +443,57 @@ func UnlockSurface(surface *Surface) {
 // func WriteSurfacePixelFloat(surface *Surface, x int32, y int32, r float32, g float32, b float32, a float32) bool {
 //	return sdlWriteSurfacePixelFloat(surface, x, y, r, g, b, a)
 // }
+
+// [LoadSurfaceIO] loads a BMP or PNG image from a seekable SDL data stream.
+//
+// Available since SDL 3.4.0.
+//
+// [LoadSurfaceIO]: https://wiki.libsdl.org/SDL3/SDL_LoadSurface_IO
+// func LoadSurfaceIO(src *IOStream, closeio bool) *Surface {
+// 	return sdlLoadSurfaceIO(src, closeio)
+// }
+
+// [LoadSurface] loads a BMP or PNG image from a file.
+//
+// Available since SDL 3.4.0.
+//
+// [LoadSurface]: https://wiki.libsdl.org/SDL3/SDL_LoadSurface
+func LoadSurface(file string) *Surface {
+	return sdlLoadSurface(file)
+}
+
+// [LoadPNGIO] loads a PNG image from a seekable SDL data stream.
+//
+// Available since SDL 3.4.0.
+//
+// [LoadPNGIO]: https://wiki.libsdl.org/SDL3/SDL_LoadPNG_IO
+// func LoadPNGIO(src *IOStream, closeio bool) *Surface {
+// 	return sdlLoadPNGIO(src, closeio)
+// }
+
+// [LoadPNG] loads a PNG image from a file.
+//
+// Available since SDL 3.4.0.
+//
+// [LoadPNG]: https://wiki.libsdl.org/SDL3/SDL_LoadPNG
+func LoadPNG(file string) *Surface {
+	return sdlLoadPNG(file)
+}
+
+// [SavePNGIO] saves a surface to a seekable SDL data stream in PNG format.
+//
+// Available since SDL 3.4.0.
+//
+// [SavePNGIO]: https://wiki.libsdl.org/SDL3/SDL_SavePNG_IO
+// func SavePNGIO(surface *Surface, dst *IOStream, closeio bool) bool {
+// 	return sdlSavePNGIO(surface, dst, closeio)
+// }
+
+// [SavePNG] saves a surface to a file in PNG format.
+//
+// Available since SDL 3.4.0.
+//
+// [SavePNG]: https://wiki.libsdl.org/SDL3/SDL_SavePNG
+func SavePNG(surface *Surface, file string) bool {
+	return sdlSavePNG(surface, file)
+}

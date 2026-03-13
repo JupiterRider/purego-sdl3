@@ -2,6 +2,18 @@ package sdl
 
 import "unsafe"
 
+const (
+	PropIOStreamWindowsHandlePointer   = "SDL.iostream.windows.handle"
+	PropIOStreamStdioFilePointer       = "SDL.iostream.stdio.file"
+	PropIOStreamFileDescriptorNumber   = "SDL.iostream.file_descriptor"
+	PropIOStreamAndroidAassetPointer   = "SDL.iostream.android.aasset"
+	PropIOStreamMemoryPointer          = "SDL.iostream.memory.base"
+	PropIOStreamMemorySizeNumber       = "SDL.iostream.memory.size"
+	PropIOStreamMemoryFreeFuncPointer  = "SDL.iostream.memory.free"
+	PropIOStreamDynamicMemoryPointer   = "SDL.iostream.dynamic.memory"
+	PropIOStreamDynamicChunksizeNumber = "SDL.iostream.dynamic.chunksize"
+)
+
 // [IOStatus] defines the [IOStream] status, set by a read or write operation.
 //
 // [IOStatus]: https://wiki.libsdl.org/SDL3/SDL_IOStatus
@@ -26,6 +38,19 @@ const (
 	IOSeekCur                 // Seek relative to current read point.
 	IOSeekEnd                 // Seek relative to the end of data.
 )
+
+// [IOStreamInterface] defines the function pointers that drive an [IOStream].
+//
+// [IOStreamInterface]: https://wiki.libsdl.org/SDL3/SDL_IOStreamInterface
+type IOStreamInterface struct {
+	Version uint32
+	Size    *func(userdata uintptr) int64
+	Seek    *func(userdata uintptr, offset int64, whence IOWhence) int64
+	Read    *func(userdata, ptr, size uintptr, status *IOStatus) uintptr
+	Write   *func(userdata, ptr, size uintptr, status *IOStatus) uintptr
+	Flush   *func(userdata uintptr, status *IOStatus) bool
+	Close   *func(userdata uintptr) bool
+}
 
 // [IOStream] is a structure specifying the read/write operation structures.
 //

@@ -17,6 +17,19 @@ const (
 	CameraPositionBackFacing
 )
 
+// [CameraPermissionState] is a structure specifying the current state of a request for camera access.
+//
+// Available since SDL 3.4.0.
+//
+// [CameraPermissionState]: https://wiki.libsdl.org/SDL3/SDL_CameraPermissionState
+type CameraPermissionState int32
+
+const (
+	CameraPermissionStateDenied CameraPermissionState = iota - 1
+	CameraPermissionStatePending
+	CameraPermissionStateApproved
+)
+
 // [CameraID] is a unique ID for a camera device for the time it is connected to the system, and is never reused for the lifetime of the application.
 //
 // [CameraID]: https://wiki.libsdl.org/SDL3/SDL_CameraID
@@ -84,8 +97,8 @@ func GetCameraName(instanceId CameraID) string {
 // [GetCameraPermissionState] queries if camera access has been approved by the user.
 //
 // [GetCameraPermissionState]: https://wiki.libsdl.org/SDL3/SDL_GetCameraPermissionState
-func GetCameraPermissionState(camera *Camera) int32 {
-	return sdlGetCameraPermissionState(camera)
+func GetCameraPermissionState(camera *Camera) CameraPermissionState {
+	return CameraPermissionState(sdlGetCameraPermissionState(camera))
 }
 
 // [GetCameraPosition] gets the position of the camera in relation to the system.

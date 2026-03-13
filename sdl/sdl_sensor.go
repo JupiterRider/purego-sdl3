@@ -1,5 +1,10 @@
 package sdl
 
+// [Sensor] is a opaque structure used to identify an opened SDL sensor.
+//
+// [Sensor]: https://wiki.libsdl.org/SDL3/SDL_Sensor
+type Sensor struct{}
+
 // [SensorType] is a structure specifying the different sensors defined by SDLs.
 //
 // [SensorType]: https://wiki.libsdl.org/SDL3/SDL_SensorType
@@ -14,6 +19,7 @@ const (
 	SensorGyroL                         // Gyroscope for left Joy-Con controller.
 	SensorAccelR                        // Accelerometer for right Joy-Con controller.
 	SensorGyroR                         // Gyroscope for right Joy-Con controller.
+	SensorCount
 )
 
 // [SensorID] is a unique ID for a sensor for the time it is connected to the system, and is never reused for the lifetime of the application.

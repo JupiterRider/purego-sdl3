@@ -35,3 +35,26 @@ const (
 	PenInputButton5                             // Button 5 is pressed.
 	PenInputEraserTip PenInputFlags = 1 << 30   // Eraser tip is used.
 )
+
+// [PenDeviceType] describes the type of a pen device.
+//
+// Available since SDL 3.4.0.
+//
+// [PenDeviceType]: https://wiki.libsdl.org/SDL3/SDL_PenDeviceType
+type PenDeviceType int32
+
+const (
+	PenDeviceTypeInvalid  PenDeviceType = iota - 1 // Not a valid pen device.
+	PenDeviceTypeUnknown                           // Don't know specifics of this pen.
+	PenDeviceTypeDirect                            // Pen touches display.
+	PenDeviceTypeIndirect                          // Pen touches something that isn't the display.
+)
+
+// [GetPenDeviceType] gets the device type of the given pen.
+//
+// Available since SDL 3.4.0.
+//
+// [GetPenDeviceType]: https://wiki.libsdl.org/SDL3/SDL_GetPenDeviceType
+// func GetPenDeviceType(instanceId PenID) PenDeviceType {
+// 	return sdlGetPenDeviceType(instanceId)
+// }

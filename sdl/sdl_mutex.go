@@ -1,5 +1,25 @@
 package sdl
 
+// [Mutex] defines a means to serialize access to a resource between threads.
+//
+// [Mutex]: https://wiki.libsdl.org/SDL3/SDL_Mutex
+type Mutex struct{}
+
+// [RWLock] is a mutex that allows read-only threads to run in parallel.
+//
+// [RWLock]: https://wiki.libsdl.org/SDL3/SDL_RWLock
+type RWLock struct{}
+
+// [Semaphore] defines a means to manage access to a resource, by count, between threads.
+//
+// [Semaphore]: https://wiki.libsdl.org/SDL3/SDL_Semaphore
+type Semaphore struct{}
+
+// [Condition] defines a means to block multiple threads until a condition is satisfied.
+//
+// [Condition]: https://wiki.libsdl.org/SDL3/SDL_Condition
+type Condition struct{}
+
 // [InitStatus] is a structure specifying the current status of an [InitState] structures.
 //
 // [InitStatus]: https://wiki.libsdl.org/SDL3/SDL_InitStatus
@@ -11,6 +31,15 @@ const (
 	InitStatusInitialized
 	InitStatusUninitializing
 )
+
+// [InitState] is a structure used for thread-safe initialization and shutdown.
+//
+// [InitState]: https://wiki.libsdl.org/SDL3/SDL_InitState
+type InitState struct {
+	Status   AtomicInt
+	Thread   ThreadID
+	Reserved uintptr
+}
 
 // func BroadcastCondition(cond *Condition)  {
 //	sdlBroadcastCondition(cond)

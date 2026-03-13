@@ -1,5 +1,20 @@
 package sdl
 
+// [DateTime] is a structure holding a calendar date and time broken down into its components.
+//
+// [DateTime]: https://wiki.libsdl.org/SDL3/SDL_DateTime
+type DateTime struct {
+	Year       int32 // Year.
+	Month      int32 // Month [01-12].
+	Day        int32 // Day of the month [01-31].
+	Hour       int32 // Hour [0-23].
+	Minute     int32 // Minute [0-59].
+	Second     int32 // Seconds [0-60].
+	Nanosecond int32 // Nanoseconds [0-999999999].
+	DayOfWeek  int32 // Day of the week [0-6] (0 being Sunday).
+	UtcOffset  int32 // Seconds east of UTC.
+}
+
 // [DateFormat] is a structure specifying the preferred date format of the current system locales.
 //
 // [DateFormat]: https://wiki.libsdl.org/SDL3/SDL_DateFormat

@@ -35,16 +35,17 @@ const (
 	EventLocaleChanged              EventType = 0x107 // The user's locale preferences have changed.
 	EventSystemThemeChanged         EventType = 0x108 // The system theme changed.
 	EventDisplayOrientation         EventType = 0x151 // Display orientation has changed to data1.
-	EventDisplayFirst               EventType = 0x151
+	EventDisplayFirst                         = EventDisplayOrientation
 	EventDisplayAdded               EventType = 0x152 // Display has been added to the system.
 	EventDisplayRemoved             EventType = 0x153 // Display has been removed from the system.
 	EventDisplayMoved               EventType = 0x154 // Display has changed position.
 	EventDisplayDesktopModeChanged  EventType = 0x155 // Display has changed desktop mode.
 	EventDisplayCurrentModeChanged  EventType = 0x156 // Display has changed current mode.
 	EventDisplayContentScaleChanged EventType = 0x157 // Display has changed content scale.
-	EventDisplayLast                EventType = 0x157
+	EventDisplayUsableBoundsChanged EventType = 0x158 // Display has changed usable bounds.
+	EventDisplayLast                          = EventDisplayUsableBoundsChanged
 	EventWindowShown                EventType = 0x202 // Window has been shown.
-	EventWindowFirst                EventType = 0x202
+	EventWindowFirst                          = EventWindowShown
 	EventWindowHidden               EventType = 0x203 // Window has been hidden.
 	EventWindowExposed              EventType = 0x204 // Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event. data1 is 1 for live-resize expose events, 0 otherwise.
 	EventWindowMoved                EventType = 0x205 // Window has been moved to data1, data2.
@@ -69,7 +70,7 @@ const (
 	EventWindowLeaveFullscreen      EventType = 0x218 // The window has left fullscreen mode.
 	EventWindowDestroyed            EventType = 0x219 // The window with the associated ID is being or has been destroyed. If this message is being handled in an event watcher, the window handle is still valid and can still be used to retrieve any properties associated with the window. Otherwise, the handle has already been destroyed and all resources associated with it are invalid.
 	EventWindowHDRStateChanged      EventType = 0x21A // Window HDR properties have changed.
-	EventWindowLast                 EventType = 0x21A
+	EventWindowLast                           = EventWindowHDRStateChanged
 	EventKeyDown                    EventType = 0x300 // Key pressed.
 	EventKeyUp                      EventType = 0x301 // Key released.
 	EventTextEditing                EventType = 0x302 // Keyboard text editing (composition).
@@ -78,6 +79,8 @@ const (
 	EventKeyboardAdded              EventType = 0x305 // A new keyboard has been inserted into the system.
 	EventKeyboardRemoved            EventType = 0x306 // A keyboard has been removed.
 	EventTextEditingCandidates      EventType = 0x307 // Keyboard text editing candidates.
+	EventScreenKeyboardShown        EventType = 0x308 // The on-screen keyboard has been shown.
+	EventScreenKeyboardHidden       EventType = 0x309 // The on-screen keyboard has been hidden
 	EventMouseMotion                EventType = 0x400 // Mouse moved.
 	EventMouseButtonDown            EventType = 0x401 // Mouse button pressed.
 	EventMouseButtonUp              EventType = 0x402 // Mouse button released.
@@ -109,6 +112,9 @@ const (
 	EventFingerUp                   EventType = 0x701
 	EventFingerMotion               EventType = 0x702
 	EventFingerCanceled             EventType = 0x703
+	EventPinchBegin                 EventType = 0x710  // Pinch gesture started.
+	EventPinchUpdate                EventType = 0x711  // Pinch gesture updated.
+	EventPinchEnd                   EventType = 0x712  // Pinch gesture ended.
 	EventClipboardUpdate            EventType = 0x900  // The clipboard changed.
 	EventDropFile                   EventType = 0x1000 // The system requests a file open.
 	EventDropText                   EventType = 0x1001 // Text/plain drag-and-drop event.
@@ -755,6 +761,15 @@ type TouchFingerEvent struct {
 	WindowID WindowID // The window underneath the finger, if any.
 }
 
+// [PinchFingerEvent] defines the pinch finger event structure (event.pinch.*).
+//
+// [PinchFingerEvent]: https://wiki.libsdl.org/SDL3/SDL_PinchFingerEvent
+type PinchFingerEvent struct {
+	CommonEvent
+	Scale    float32  // The scale change since the last [EventPinchUpdate]. Scale < 1 is "zoom out". Scale > 1 is "zoom in".
+	WindowID WindowID // The window underneath the finger, if any.
+}
+
 // [PenProximityEvent] defines the pressure-sensitive pen proximity event structure (event.pproximity.*).
 //
 // [PenProximityEvent]: https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
@@ -962,6 +977,15 @@ func GetEventFilter(filter *EventFilter, userdata *unsafe.Pointer) bool {
 func GetWindowFromEvent(event *Event) *Window {
 	return sdlGetWindowFromEvent(event)
 }
+
+// [GetEventDescription] generates an English description of an event.
+//
+// Available since SDL 3.4.0.
+//
+// [GetEventDescription]: https://wiki.libsdl.org/SDL3/SDL_GetEventDescription
+// func GetEventDescription(event *Event, buf *byte, buflen int32) int32 {
+// 	return sdlGetEventDescription(event, buf, buflen)
+// }
 
 // [HasEvent] checks for the existence of a certain event type in the event queue.
 //

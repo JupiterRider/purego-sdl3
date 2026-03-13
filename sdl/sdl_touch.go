@@ -22,6 +22,16 @@ type TouchID uint64
 // [FingerID]: https://wiki.libsdl.org/SDL3/SDL_FingerID
 type FingerID uint64
 
+// [Finger] is a structure storing data about a single finger in a multitouch event.
+//
+// [Finger]: https://wiki.libsdl.org/SDL3/SDL_Finger
+type Finger struct {
+	ID       FingerID // The finger ID.
+	X        float32  // The x-axis location of the touch event, normalized (0...1).
+	Y        float32  // The y-axis location of the touch event, normalized (0...1).
+	Pressure float32  // The quantity of pressure applied, normalized (0...1).
+}
+
 // func GetTouchDeviceName(touchID TouchID) string {
 //	return sdlGetTouchDeviceName(touchID)
 // }
