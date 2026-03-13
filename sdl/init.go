@@ -1006,9 +1006,9 @@ var (
 	// sdlSetJoystickVirtualTouchpad            func(*Joystick, int32, int32, bool, float32, float32, float32) bool
 	// sdlSetLinuxThreadPriority                func(int64, int32) bool
 	// sdlSetLinuxThreadPriorityAndPolicy       func(int64, int32, int32) bool
-	// sdlSetLogOutputFunction                  func(LogOutputFunction, unsafe.Pointer)
-	sdlSetLogPriorities func(LogPriority)
-	sdlSetLogPriority   func(int32, LogPriority)
+	sdlSetLogOutputFunction func(LogOutputFunction, unsafe.Pointer)
+	sdlSetLogPriorities     func(LogPriority)
+	sdlSetLogPriority       func(int32, LogPriority)
 	// sdlSetLogPriorityPrefix                  func(LogPriority, string) bool
 	// sdlSetMainReady                          func()
 	// sdlSetMemoryFunctions                    func(malloc_func, calloc_func, realloc_func, free_func) bool
@@ -2239,7 +2239,7 @@ func init() {
 	// purego.RegisterLibFunc(&sdlSetJoystickVirtualTouchpad, lib, "SDL_SetJoystickVirtualTouchpad")
 	// purego.RegisterLibFunc(&sdlSetLinuxThreadPriority, lib, "SDL_SetLinuxThreadPriority")
 	// purego.RegisterLibFunc(&sdlSetLinuxThreadPriorityAndPolicy, lib, "SDL_SetLinuxThreadPriorityAndPolicy")
-	// purego.RegisterLibFunc(&sdlSetLogOutputFunction, lib, "SDL_SetLogOutputFunction")
+	purego.RegisterLibFunc(&sdlSetLogOutputFunction, lib, "SDL_SetLogOutputFunction")
 	purego.RegisterLibFunc(&sdlSetLogPriorities, lib, "SDL_SetLogPriorities")
 	purego.RegisterLibFunc(&sdlSetLogPriority, lib, "SDL_SetLogPriority")
 	// purego.RegisterLibFunc(&sdlSetLogPriorityPrefix, lib, "SDL_SetLogPriorityPrefix")

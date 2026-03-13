@@ -1,6 +1,12 @@
 package sdl
 
-import "fmt"
+import (
+	"fmt"
+	"unsafe"
+
+	"github.com/ebitengine/purego"
+	"github.com/jupiterrider/purego-sdl3/internal/convert"
+)
 
 // [LogPriority] is a structure specifying the predefined log priorities.
 //
@@ -46,6 +52,17 @@ const (
 	LogCategoryReserved10
 	LogCategoryCustom
 )
+
+type LogOutputFunction uintptr
+
+func NewLogOutputFunctionCallback(callback func(userdata unsafe.Pointer, category LogCategory, priority LogPriority, message string)) LogOutputFunction {
+	cb := purego.NewCallback(func(userdata unsafe.Pointer, category int32, priority LogPriority, message *byte) uintptr {
+		callback(userdata, LogCategory(category), priority, convert.ToString(message))
+		return 0
+	})
+
+	return LogOutputFunction(cb)
+}
 
 // func GetDefaultLogOutputFunction() LogOutputFunction {
 //	return sdlGetDefaultLogOutputFunction()
@@ -115,9 +132,12 @@ func ResetLogPriorities() {
 	sdlResetLogPriorities()
 }
 
-// func SetLogOutputFunction(callback LogOutputFunction, userdata unsafe.Pointer)  {
-//	sdlSetLogOutputFunction(callback, userdata)
-// }
+// [SetLogOutputFunction] replaces the default log output function with one of your own.
+//
+// [SetLogOutputFunction]: https://wiki.libsdl.org/SDL3/SDL_SetLogOutputFunction
+func SetLogOutputFunction(callback LogOutputFunction, userdata unsafe.Pointer) {
+	sdlSetLogOutputFunction(callback, userdata)
+}
 
 // [SetLogPriorities] sets the priority of all log categories.
 //
