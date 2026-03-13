@@ -8,7 +8,10 @@ import (
 	"github.com/jupiterrider/purego-sdl3/internal/convert"
 )
 
-const SoftwareRenderer = "software"
+const (
+	SoftwareRenderer = "software"
+	GPURenderer      = "gpu"
+)
 
 const (
 	PropRendererCreateNameString                           = "SDL.renderer.create.name"
@@ -16,6 +19,10 @@ const (
 	PropRendererCreateSurfacePointer                       = "SDL.renderer.create.surface"
 	PropRendererCreateOutputColorspaceNumber               = "SDL.renderer.create.output_colorspace"
 	PropRendererCreatePresentVSyncNumber                   = "SDL.renderer.create.present_vsync"
+	PropRendererCreateGpuDevicePointer                     = "SDL.renderer.create.gpu.device"
+	PropRendererCreateGpuShadersSpirvBoolean               = "SDL.renderer.create.gpu.shaders_spirv"
+	PropRendererCreateGpuShadersDxilBoolean                = "SDL.renderer.create.gpu.shaders_dxil"
+	PropRendererCreateGpuShadersMslBoolean                 = "SDL.renderer.create.gpu.shaders_msl"
 	PropRendererCreateVulkanInstancePointer                = "SDL.renderer.create.vulkan.instance"
 	PropRendererCreateVulkanSurfaceNumber                  = "SDL.renderer.create.vulkan.surface"
 	PropRendererCreateVulkanPhysicalDevicePointer          = "SDL.renderer.create.vulkan.physical_device"
@@ -29,6 +36,7 @@ const (
 	PropRendererVSyncNumber                          = "SDL.renderer.vsync"
 	PropRendererMaxTextureSizeNumber                 = "SDL.renderer.max_texture_size"
 	PropRendererTextureFormatsPointer                = "SDL.renderer.texture_formats"
+	PropRendererTextureWrappingBoolean               = "SDL.renderer.texture_wrapping"
 	PropRendererOutputColorspaceNumber               = "SDL.renderer.output_colorspace"
 	PropRendererHDREnabledBoolean                    = "SDL.renderer.HDR_enabled"
 	PropRendererSDRWhitePointFloat                   = "SDL.renderer.SDR_white_point"
@@ -53,6 +61,7 @@ const (
 	PropTextureCreateAccessNumber             = "SDL.texture.create.access"
 	PropTextureCreateWidthNumber              = "SDL.texture.create.width"
 	PropTextureCreateHeightNumber             = "SDL.texture.create.height"
+	PropTextureCreatePalettePointer           = "SDL.texture.create.palette"
 	PropTextureCreateSDRWhitePointFloat       = "SDL.texture.create.SDR_white_point"
 	PropTextureCreateHDRHeadroomFloat         = "SDL.texture.create.HDR_headroom"
 	PropTextureCreateD3D11TexturePointer      = "SDL.texture.create.d3d11.texture"
@@ -71,6 +80,11 @@ const (
 	PropTextureCreateOpenGLES2TextureUNumber  = "SDL.texture.create.opengles2.texture_u"
 	PropTextureCreateOpenGLES2TextureVNumber  = "SDL.texture.create.opengles2.texture_v"
 	PropTextureCreateVulkanTextureNumber      = "SDL.texture.create.vulkan.texture"
+	PropTextureCreateVulkanLayoutNumber       = "SDL.texture.create.vulkan.layout"
+	PropTextureCreateGPUTexturePointer        = "SDL.texture.create.gpu.texture"
+	PropTextureCreateGPUTextureUvPointer      = "SDL.texture.create.gpu.texture_uv"
+	PropTextureCreateGPUTextureUPointer       = "SDL.texture.create.gpu.texture_u"
+	PropTextureCreateGPUTextureVPointer       = "SDL.texture.create.gpu.texture_v"
 
 	PropTextureColorspaceNumber             = "SDL.texture.colorspace"
 	PropTextureFormatNumber                 = "SDL.texture.format"
@@ -98,6 +112,10 @@ const (
 	PropTextureOpenGLES2TextureVNumber      = "SDL.texture.opengles2.texture_v"
 	PropTextureOpenGLES2TextureTargetNumber = "SDL.texture.opengles2.target"
 	PropTextureVulkanTextureNumber          = "SDL.texture.vulkan.texture"
+	PropTextureGPUTexturePointer            = "SDL.texture.gpu.texture"
+	PropTextureGPUTextureUVPointer          = "SDL.texture.gpu.texture_uv"
+	PropTextureGPUTextureUPointer           = "SDL.texture.gpu.texture_u"
+	PropTextureGPUTextureVPointer           = "SDL.texture.gpu.texture_v"
 )
 
 const (
@@ -133,6 +151,20 @@ const (
 	TextureAccessTarget                         // Texture can be used as a render target
 )
 
+// [TextureAddressMode] defines the addressing mode for a texture when used in [RenderGeometry].
+//
+// Available since SDL 3.4.0.
+//
+// [TextureAddressMode]: https://wiki.libsdl.org/SDL3/SDL_TextureAddressMode
+type TextureAddressMode int32
+
+const (
+	TextureAddressInvalid TextureAddressMode = iota - 1
+	TextureAddressAuto                       // Wrapping is enabled if texture coordinates are outside [0, 1], this is the default.
+	TextureAddressClamp                      // Texture coordinates are clamped to the [0, 1] range.
+	TextureAddressWrap                       // The texture is repeated (tiled).
+)
+
 // [Renderer] is a structure representing rendering state
 //
 // [Renderer]: https://wiki.libsdl.org/SDL3/SDL_Renderer
@@ -156,6 +188,29 @@ type Vertex struct {
 	Color    FColor // Vertex color
 	TexCoord FPoint // Normalized texture coordinates, if needed
 }
+
+// [GPURenderStateCreateInfo] is a structure specifying the parameters of a GPU render state.
+//
+// Available since SDL 3.4.0.
+//
+// [GPURenderStateCreateInfo]: https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
+type GPURenderStateCreateInfo struct {
+	FragmentShader     *GPUShader                // The fragment shader to use when this render state is active.
+	NumSamplerBindings int32                     // The number of additional fragment samplers to bind when this render state is active.
+	SamplerBindings    *GPUTextureSamplerBinding // Additional fragment samplers to bind when this render state is active.
+	NumStorageTextures int32                     // The number of storage textures to bind when this render state is active.
+	StorageTextures    *GPUTexture               // Storage textures to bind when this render state is active.
+	NumStorageBuffers  int32                     // The number of storage buffers to bind when this render state is active.
+	StorageBuffers     *GPUBuffer                // Storage buffers to bind when this render state is active.
+	Props              PropertiesID              // A properties ID for extensions. Should be 0 if no extensions are needed..
+}
+
+// [GPURenderState] is a custom GPU render state.
+//
+// Available since SDL 3.4.0.
+//
+// [GPURenderState]: https://wiki.libsdl.org/SDL3/SDL_GPURenderState
+type GPURenderState struct{}
 
 // [CreateWindowAndRenderer] creates a window and default renderer.
 //
@@ -267,6 +322,32 @@ func CreateRenderer(window *Window, name string) *Renderer {
 // [CreateRendererWithProperties]: https://wiki.libsdl.org/SDL3/SDL_CreateRendererWithProperties
 func CreateRendererWithProperties(props PropertiesID) *Renderer {
 	return sdlCreateRendererWithProperties(props)
+}
+
+// [CreateGPURenderer] creates a 2D GPU rendering context.
+//
+// The GPU device to use is passed in as a parameter.
+// If this is nil, then a device will be created normally and can be retrieved using [GetGPURendererDevice].
+//
+// The window to use is passed in as a parameter.
+// If this is nil, then this will become an offscreen renderer.
+// In that case, you should call [SetRenderTarget] to setup rendering to a texture,
+// and then call [RenderPresent] normally to complete drawing a frame.
+//
+// Available since SDL 3.4.0.
+//
+// [CreateGPURenderer]: https://wiki.libsdl.org/SDL3/SDL_CreateGPURenderer
+func CreateGPURenderer(device *GPUDevice, window *Window) *Renderer {
+	return sdlCreateGPURenderer(device, window)
+}
+
+// [GetGPURendererDevice] returns the GPU device used by a renderer.
+//
+// Available since SDL 3.4.0.
+//
+// [GetGPURendererDevice]: https://wiki.libsdl.org/SDL3/SDL_GetGPURendererDevice
+func GetGPURendererDevice(renderer *Renderer) *GPUDevice {
+	return sdlGetGPURendererDevice(renderer)
 }
 
 // [CreateSoftwareRenderer] creates a 2D software rendering context for a surface.
@@ -515,6 +596,24 @@ func GetTextureSize(texture *Texture, w *float32, h *float32) bool {
 	return sdlGetTextureSize(texture, w, h)
 }
 
+// [SetTexturePalette] sets the palette used by a texture.
+//
+// Available since SDL 3.4.0.
+//
+// [SetTexturePalette]: https://wiki.libsdl.org/SDL3/SDL_SetTexturePalette
+func SetTexturePalette(texture *Texture, palette *Palette) bool {
+	return sdlSetTexturePalette(texture, palette)
+}
+
+// [GetTexturePalette] gets the palette used by a texture.
+//
+// Available since SDL 3.4.0.
+//
+// [GetTexturePalette]: https://wiki.libsdl.org/SDL3/SDL_GetTexturePalette
+func GetTexturePalette(texture *Texture) *Palette {
+	return sdlGetTexturePalette(texture)
+}
+
 // [LockTexture] locks a portion of the texture for write-only pixel access.
 //
 // [LockTexture]: https://wiki.libsdl.org/SDL3/SDL_LockTexture
@@ -556,6 +655,60 @@ func RenderCoordinatesToWindow(renderer *Renderer, x float32, y float32, windowX
 func RenderDebugTextFormat(renderer *Renderer, x float32, y float32, format string, a ...any) bool {
 	return sdlRenderDebugTextFormat(renderer, x, y, fmt.Sprintf(format, a...))
 }
+
+// [SetDefaultTextureScaleMode] sets default scale mode for new textures for given renderer.
+//
+// Available since SDL 3.4.0.
+//
+// [SetDefaultTextureScaleMode]: https://wiki.libsdl.org/SDL3/SDL_SetDefaultTextureScaleMode
+func SetDefaultTextureScaleMode(renderer *Renderer, scaleMode ScaleMode) bool {
+	return sdlSetDefaultTextureScaleMode(renderer, scaleMode)
+}
+
+// [GetDefaultTextureScaleMode] gets default scale mode for new textures for given renderer.
+//
+// Available since SDL 3.4.0.
+//
+// [GetDefaultTextureScaleMode]: https://wiki.libsdl.org/SDL3/SDL_GetDefaultTextureScaleMode
+func GetDefaultTextureScaleMode(renderer *Renderer, scaleMode *ScaleMode) bool {
+	return sdlGetDefaultTextureScaleMode(renderer, scaleMode)
+}
+
+// [CreateGPURenderState] creates custom GPU render state.
+//
+// Available since SDL 3.4.0.
+//
+// [CreateGPURenderState]: https://wiki.libsdl.org/SDL3/SDL_CreateGPURenderState
+// func CreateGPURenderState(renderer *Renderer, createinfo *GPURenderStateCreateInfo) *GPURenderState {
+// 	return sdlCreateGPURenderState(renderer, createinfo)
+// }
+
+// [SetGPURenderStateFragmentUniforms] sets fragment shader uniform variables in a custom GPU render state.
+//
+// Available since SDL 3.4.0.
+//
+// [SetGPURenderStateFragmentUniforms]: https://wiki.libsdl.org/SDL3/SDL_SetGPURenderStateFragmentUniforms
+// func SetGPURenderStateFragmentUniforms(state *GPURenderState, slotIndex uint32, data uintptr, length uint32) bool {
+// 	return sdlSetGPURenderStateFragmentUniforms(state, slotIndex, data, length)
+// }
+
+// [SetGPURenderState] sets custom GPU render state.
+//
+// Available since SDL 3.4.0.
+//
+// [SetGPURenderState]: https://wiki.libsdl.org/SDL3/SDL_SetGPURenderState
+// func SetGPURenderState(renderer *Renderer, state *GPURenderState) bool {
+// 	return sdlSetGPURenderState(renderer, state)
+// }
+
+// [DestroyGPURenderState] destroys custom GPU render state.
+//
+// Available since SDL 3.4.0.
+//
+// [DestroyGPURenderState]: https://wiki.libsdl.org/SDL3/SDL_DestroyGPURenderState
+// func DestroyGPURenderState(state *GPURenderState) {
+// 	sdlDestroyGPURenderState(state)
+// }
 
 // [RenderFillRects] fills some number of rectangles on the current rendering target with the drawing color at subpixel precision.
 //
@@ -640,6 +793,24 @@ func RenderGeometryRaw(renderer *Renderer, texture *Texture, xy []FPoint, color 
 	return byte(ret) != 0
 }
 
+// [SetRenderTextureAddressMode] sets the texture addressing mode used in [RenderGeometry].
+//
+// Available since SDL 3.4.0.
+//
+// [SetRenderTextureAddressMode]: https://wiki.libsdl.org/SDL3/SDL_SetRenderTextureAddressMode
+func SetRenderTextureAddressMode(renderer *Renderer, uMode, vMode TextureAddressMode) bool {
+	return sdlSetRenderTextureAddressMode(renderer, uMode, vMode)
+}
+
+// [GetRenderTextureAddressMode] gets the texture addressing mode used in [RenderGeometry].
+//
+// Available since SDL 3.4.0.
+//
+// [GetRenderTextureAddressMode]: https://wiki.libsdl.org/SDL3/SDL_GetRenderTextureAddressMode
+func GetRenderTextureAddressMode(renderer *Renderer, uMode, vMode *TextureAddressMode) bool {
+	return sdlGetRenderTextureAddressMode(renderer, uMode, vMode)
+}
+
 // [RenderLine] draws a line on the current rendering target at subpixel precision.
 //
 // [RenderLine]: https://wiki.libsdl.org/SDL3/SDL_RenderLine
@@ -705,6 +876,15 @@ func RenderRects(renderer *Renderer, rects []FRect) bool {
 // [RenderTexture9Grid]: https://wiki.libsdl.org/SDL3/SDL_RenderTexture9Grid
 func RenderTexture9Grid(renderer *Renderer, texture *Texture, srcrect *FRect, leftWidth, rightWidth, topHeight, bottomHeight, scale float32, dstrect *FRect) bool {
 	return sdlRenderTexture9Grid(renderer, texture, srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, dstrect)
+}
+
+// [RenderTexture9GridTiled] performs a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.
+//
+// Available since SDL 3.4.0.
+//
+// [RenderTexture9GridTiled]: https://wiki.libsdl.org/SDL3/SDL_RenderTexture9GridTiled
+func RenderTexture9GridTiled(renderer *Renderer, texture *Texture, srcrect *FRect, leftWidth, rightWidth, topHeight, bottomHeight, scale float32, dstrect *FRect, tileScale float32) bool {
+	return sdlRenderTexture9GridTiled(renderer, texture, srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, dstrect, tileScale)
 }
 
 // [RenderTextureAffine] copies a portion of the source texture to the current rendering target, with affine transform, at subpixel precision.

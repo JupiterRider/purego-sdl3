@@ -2,33 +2,71 @@ package sdl
 
 import "unsafe"
 
+const (
+	PropIOStreamWindowsHandlePointer   = "SDL.iostream.windows.handle"
+	PropIOStreamStdioFilePointer       = "SDL.iostream.stdio.file"
+	PropIOStreamFileDescriptorNumber   = "SDL.iostream.file_descriptor"
+	PropIOStreamAndroidAassetPointer   = "SDL.iostream.android.aasset"
+	PropIOStreamMemoryPointer          = "SDL.iostream.memory.base"
+	PropIOStreamMemorySizeNumber       = "SDL.iostream.memory.size"
+	PropIOStreamMemoryFreeFuncPointer  = "SDL.iostream.memory.free"
+	PropIOStreamDynamicMemoryPointer   = "SDL.iostream.dynamic.memory"
+	PropIOStreamDynamicChunksizeNumber = "SDL.iostream.dynamic.chunksize"
+)
+
+// [IOStatus] defines the [IOStream] status, set by a read or write operation.
+//
+// [IOStatus]: https://wiki.libsdl.org/SDL3/SDL_IOStatus
 type IOStatus uint32
 
 const (
-	IOStatusReady IOStatus = iota
-	IOStatusError
-	IOStatusEof
-	IOStatusNotReady
-	IOStatusReadOnly
-	IOStatusWriteOnly
+	IOStatusReady     IOStatus = iota // Everything is ready (no errors and not EOF).
+	IOStatusError                     // Read or write I/O error.
+	IOStatusEof                       // End of file.
+	IOStatusNotReady                  // Non blocking I/O, not ready.
+	IOStatusReadOnly                  // Tried to write a read-only buffer.
+	IOStatusWriteOnly                 // Tried to read a write-only buffer.
 )
 
+// [IOWhence] defines the possible whence values for [IOStream] seeking.
+//
+// [IOWhence]: https://wiki.libsdl.org/SDL3/SDL_IOWhence
 type IOWhence uint32
 
 const (
-	IOSeekSet IOWhence = iota
-	IOSeekCur
-	IOSeekEnd
+	IOSeekSet IOWhence = iota // Seek from the beginning of data.
+	IOSeekCur                 // Seek relative to current read point.
+	IOSeekEnd                 // Seek relative to the end of data.
 )
 
+// [IOStreamInterface] defines the function pointers that drive an [IOStream].
+//
+// [IOStreamInterface]: https://wiki.libsdl.org/SDL3/SDL_IOStreamInterface
+type IOStreamInterface struct {
+	Version uint32
+	Size    *func(userdata uintptr) int64
+	Seek    *func(userdata uintptr, offset int64, whence IOWhence) int64
+	Read    *func(userdata, ptr, size uintptr, status *IOStatus) uintptr
+	Write   *func(userdata, ptr, size uintptr, status *IOStatus) uintptr
+	Flush   *func(userdata uintptr, status *IOStatus) bool
+	Close   *func(userdata uintptr) bool
+}
+
+// [IOStream] is a structure specifying the read/write operation structures.
+//
+// [IOStream]: https://wiki.libsdl.org/SDL3/SDL_IOStream
 type IOStream struct{}
 
-// IOFromConstMem returns a read-only memory buffer for use with [IOStream] or nil on failure.
+// [IOFromConstMem] returns a read-only memory buffer for use with [IOStream] or nil on failure.
+//
+// [IOFromConstMem]: https://wiki.libsdl.org/SDL3/SDL_IOFromConstMem
 func IOFromConstMem(mem []byte) *IOStream {
 	return sdlIOFromConstMem(mem, len(mem))
 }
 
-// CloseIO closes and frees an allocated [IOStream] structure.
+// [CloseIO] closes and free an allocated [IOStream] structure.
+//
+// [CloseIO]: https://wiki.libsdl.org/SDL3/SDL_CloseIO
 func CloseIO(context *IOStream) bool {
 	return sdlCloseIO(context)
 }
@@ -53,11 +91,16 @@ func CloseIO(context *IOStream) bool {
 //	return sdlIOFromDynamicMem()
 // }
 
-// IOFromFile returns an [IOStream] for the named file. The mode can be "r" for read-only.
+// [IOFromFile] returns an [IOStream] for the named file. The mode can be "r" for read-only.
+//
+// [IOFromFile]: https://wiki.libsdl.org/SDL3/SDL_IOFromFile
 func IOFromFile(file string, mode string) *IOStream {
 	return sdlIOFromFile(file, mode)
 }
 
+// [IOFromMem] use this function to prepare a read-write memory buffer for use with [IOStream].
+//
+// [IOFromMem]: https://wiki.libsdl.org/SDL3/SDL_IOFromMem
 func IOFromMem(mem []byte) *IOStream {
 	return sdlIOFromMem(mem, len(mem))
 }
@@ -70,6 +113,9 @@ func IOFromMem(mem []byte) *IOStream {
 //	return sdlIOvprintf(context, fmt, ap)
 // }
 
+// [LoadFile] loads all the data from a file path.
+//
+// [LoadFile]: https://wiki.libsdl.org/SDL3/SDL_LoadFile
 func LoadFile(file string, dataSize *uint64) unsafe.Pointer {
 	return sdlLoadFile(file, dataSize)
 }

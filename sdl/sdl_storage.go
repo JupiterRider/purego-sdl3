@@ -1,5 +1,28 @@
 package sdl
 
+// [StorageInterface] defines function interface for [Storage].
+//
+// [StorageInterface]: https://wiki.libsdl.org/SDL3/SDL_StorageInterface
+type StorageInterface struct {
+	Version        uint32                                                                                                  // The version of this interface.
+	Close          *func(userdata uintptr) bool                                                                            // Called when the storage is closed.
+	Ready          *func(userdata uintptr) bool                                                                            // Optional, returns whether the storage is currently ready for access.
+	Enumerate      *func(userdata uintptr, path *byte, callback EnumerateDirectoryCallback, callbackUserdata uintptr) bool // Enumerate a directory, optional for write-only storage.
+	Info           *func(userdata uintptr, path *byte, info *PathInfo) bool                                                // Get path information, optional for write-only storage.
+	ReadFile       *func(userdata uintptr, path *byte, destination uintptr, length uint64) bool                            // Read a file from storage, optional for write-only storage.
+	WriteFile      *func(userdata uintptr, path *byte, source uintptr, length uint64) bool                                 // Write a file to storage, optional for read-only storage.
+	Mkdir          *func(userdata uintptr, path *byte) bool                                                                // Create a directory, optional for read-only storage.
+	Remove         *func(userdata uintptr, path *byte) bool                                                                // Remove a file or empty directory, optional for read-only storage.
+	Rename         *func(userdata uintptr, oldpath, newpath *byte) bool                                                    // Rename a path, optional for read-only storage.
+	Copy           *func(userdata uintptr, oldpath, newpath *byte) bool                                                    // Copy a file, optional for read-only storage.
+	SpaceRemaining *func(userdata uintptr) uint64                                                                          // Get the space remaining, optional for read-only storage.
+}
+
+// [Storage] is an abstract interface for filesystem access.
+//
+// [Storage]: https://wiki.libsdl.org/SDL3/SDL_Storage
+type Storage struct{}
+
 // func CloseStorage(storage *Storage) bool {
 //	return sdlCloseStorage(storage)
 // }

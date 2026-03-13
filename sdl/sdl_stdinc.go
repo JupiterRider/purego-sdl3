@@ -6,6 +6,22 @@ import (
 	"github.com/ebitengine/purego"
 )
 
+// [Time] is a structure specifying SDL time.
+// SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1, 1970).
+//
+// [Time]: https://wiki.libsdl.org/SDL3/SDL_Time
+type Time int64
+
+const (
+	MaxTime Time = 9223372036854775807
+	MinTime Time = -9223372036854775808
+)
+
+// [Environment] is a thread-safe set of environment variables.
+//
+// [Environment]: https://wiki.libsdl.org/SDL3/SDL_Environment
+type Environment struct{}
+
 const FltEpsilon = 0x0.000002p0
 
 func FourCC(a, b, c, d byte) uint32 {
@@ -152,9 +168,11 @@ func FourCC(a, b, c, d byte) uint32 {
 //	return sdlfmodf(x, y)
 // }
 
-// Free frees allocated memory.
+// [Free] frees allocated memory.
 //
 // If mem is nil, this function does nothing.
+//
+// [Free]: https://wiki.libsdl.org/SDL3/SDL_free
 func Free(mem unsafe.Pointer) {
 	purego.SyscallN(sdlfree, uintptr(mem))
 }

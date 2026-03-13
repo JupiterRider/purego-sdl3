@@ -516,6 +516,11 @@ type GPUCommandBuffer struct{}
 // [GPURenderPass]: https://wiki.libsdl.org/SDL3/SDL_GPURenderPass
 type GPURenderPass struct{}
 
+// [GPUComputePass] is an opaque handle representing a compute pass.
+//
+// [GPUComputePass]: https://wiki.libsdl.org/SDL3/SDL_GPUComputePass
+type GPUComputePass struct{}
+
 // [GPUColorTargetInfo] is a structure specifying the parameters of a color target used by a render pass.
 //
 // [GPUColorTargetInfo]: https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
@@ -551,10 +556,31 @@ type GPUDepthStencilTargetInfo struct {
 	Layer          uint8       // The layer index to use as the depth stencil target.
 }
 
+// [GPUBlitInfo] is a structure containing parameters for a blit command.
+//
+// [GPUBlitInfo]: https://wiki.libsdl.org/SDL3/SDL_GPUBlitInfo
+type GPUBlitInfo struct {
+	Source      GPUBlitRegion // The source region for the blit.
+	Destination GPUBlitRegion // The destination region for the blit.
+	LoadOp      GPULoadOp     // What is done with the contents of the destination before the blit.
+	ClearColor  FColor        // The color to clear the destination region to before the blit. Ignored if load_op is not SDL_GPU_LOADOP_CLEAR.
+	FlipMode    FlipMode      // The flip mode for the source region.
+	Filter      GPUFilter     // The filter mode used when blitting.
+	Cycle       bool          // True cycles the destination texture if it is already bound.
+	_           uint8         // Padding1
+	_           uint8         // Padding2
+	_           uint8         // Padding3
+}
+
 // [GPUShader] is an opaque handle representing a compiled shader object.
 //
 // [GPUShader]: https://wiki.libsdl.org/SDL3/SDL_GPUShader
 type GPUShader struct{}
+
+// [GPUComputePipeline] is an opaque handle representing a compute pipeline.
+//
+// [GPUComputePipeline]: https://wiki.libsdl.org/SDL3/SDL_GPUComputePipeline
+type GPUComputePipeline struct{}
 
 // [GPUVertexBufferDescription] is a structure specifying the parameters of vertex buffers used in a graphics pipeline.
 //
@@ -721,6 +747,26 @@ type GPUGraphicsPipelineCreateInfo struct {
 	Props             PropertiesID                  // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
+// [GPUComputePipelineCreateInfo] is a structure specifying the parameters of a compute pipeline state.
+//
+// [GPUComputePipelineCreateInfo]: https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+type GPUComputePipelineCreateInfo struct {
+	CodeSize                    uintptr         // The size in bytes of the compute shader code pointed to.
+	Code                        *byte           // A pointer to compute shader code.
+	Entrypoint                  *byte           // A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.
+	Format                      GPUShaderFormat // The format of the compute shader code.
+	NumSamplers                 uint32          // The number of samplers defined in the shader.
+	NumReadonlyStorageTextures  uint32          // The number of readonly storage textures defined in the shader.
+	NumReadonlyStorageBuffers   uint32          // The number of readonly storage buffers defined in the shader.
+	NumReadwriteStorageTextures uint32          // The number of read-write storage textures defined in the shader.
+	NumReadwriteStorageBuffers  uint32          // The number of read-write storage buffers defined in the shader.
+	NumUniformBuffers           uint32          // The number of uniform buffers defined in the shader.
+	ThreadcountX                uint32          // The number of threads in the X dimension. This should match the value in the shader.
+	ThreadcountY                uint32          // The number of threads in the Y dimension. This should match the value in the shader.
+	ThreadcountZ                uint32          // The number of threads in the Z dimension. This should match the value in the shader.
+	Props                       PropertiesID    // A properties ID for extensions. Should be 0 if no extensions are needed.
+}
+
 // [GPUGraphicsPipeline] is an opaque handle representing a graphics pipeline.
 //
 // [GPUGraphicsPipeline]: https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipeline
@@ -771,12 +817,29 @@ type GPUTransferBuffer struct{}
 // [GPUCopyPass]: https://wiki.libsdl.org/SDL3/SDL_GPUCopyPass
 type GPUCopyPass struct{}
 
+// [GPUFence] is an opaque handle representing a fence.
+//
+// [GPUFence]: https://wiki.libsdl.org/SDL3/SDL_GPUFence
+type GPUFence struct{}
+
 // [GPUTransferBufferLocation] is a structure specifying a location in a transfer buffer.
 //
 // [GPUTransferBufferLocation]: https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferLocation
 type GPUTransferBufferLocation struct {
 	TransferBuffer *GPUTransferBuffer // The transfer buffer used in the transfer operation.
 	Offset         uint32             // The starting byte of the buffer data in the transfer buffer.
+}
+
+// [GPUTextureLocation] is a structure specifying a location in a texture.
+//
+// [GPUTextureLocation]: https://wiki.libsdl.org/SDL3/SDL_GPUTextureLocation
+type GPUTextureLocation struct {
+	Texture  *GPUTexture // The texture used in the copy operation.
+	MipLevel uint32      // The mip level index of the location.
+	Layer    uint32      // The layer index of the location.
+	X        uint32      // The left offset of the location.
+	Y        uint32      // The top offset of the location.
+	Z        uint32      // The front offset of the location.
 }
 
 // [GPUBufferRegion] is a structure specifying a region of a buffer.
@@ -786,6 +849,36 @@ type GPUBufferRegion struct {
 	Buffer *GPUBuffer // The buffer.
 	Offset uint32     // The starting byte within the buffer.
 	Size   uint32     // The size in bytes of the region.
+}
+
+// [GPUIndirectDrawCommand] is a structure specifying the parameters of an indirect draw command.
+//
+// [GPUIndirectDrawCommand]: https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDrawCommand
+type GPUIndirectDrawCommand struct {
+	NumVertices   uint32 // The number of vertices to draw.
+	NumInstances  uint32 // The number of instances to draw.
+	FirstVertex   uint32 // The index of the first vertex to draw.
+	FirstInstance uint32 // The ID of the first instance to draw.
+}
+
+// [GPUIndexedIndirectDrawCommand] is a structure specifying the parameters of an indexed indirect draw command.
+//
+// [GPUIndexedIndirectDrawCommand]: https://wiki.libsdl.org/SDL3/SDL_GPUIndexedIndirectDrawCommand
+type GPUIndexedIndirectDrawCommand struct {
+	NumIndices    uint32 // The number of indices to draw per instance.
+	NumInstances  uint32 // The number of instances to draw.
+	FirstIndex    uint32 // The base index within the index buffer.
+	VertexOffset  int32  // The value added to the vertex index before indexing into the vertex buffer.
+	FirstInstance uint32 // The ID of the first instance to draw.
+}
+
+// [GPUIndirectDispatchCommand] is a structure specifying the parameters of an indexed dispatch command.
+//
+// [GPUIndirectDispatchCommand]: https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDispatchCommand
+type GPUIndirectDispatchCommand struct {
+	GroupcountX uint32 // The number of local workgroups to dispatch in the X dimension.
+	GroupcountY uint32 // The number of local workgroups to dispatch in the Y dimension.
+	GroupcountZ uint32 // The number of local workgroups to dispatch in the Z dimension.
 }
 
 // [GPUBufferBinding] is a structure specifying parameters in a buffer binding call.
@@ -851,6 +944,27 @@ type GPUTextureRegion struct {
 	D        uint32      // The depth of the region.
 }
 
+// [GPUBlitRegion] is a structure specifying a region of a texture used in the blit operation.
+//
+// [GPUBlitRegion]: https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion
+type GPUBlitRegion struct {
+	Texture           *GPUTexture //  The texture.
+	MipLevel          uint32      //  The mip level index of the region.
+	LayerOrDepthPlane uint32      //  The layer index or depth plane of the region. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures.
+	X                 uint32      //  The left offset of the region.
+	Y                 uint32      //  The top offset of the region.
+	W                 uint32      //  The width of the region.
+	H                 uint32      //  The height of the region.
+}
+
+// [GPUBufferLocation] is a structure specifying a location in a buffer.
+//
+// [GPUBufferLocation]: https://wiki.libsdl.org/SDL3/SDL_GPUBufferLocation
+type GPUBufferLocation struct {
+	Buffer *GPUBuffer // The buffer.
+	Offset uint32     // The starting byte within the buffer.
+}
+
 // [GPUSamplerCreateInfo] is a structure specifying the parameters of a sampler.
 //
 // [GPUSamplerCreateInfo]: https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
@@ -885,6 +999,99 @@ type GPUTextureSamplerBinding struct {
 	Texture *GPUTexture // The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
 	Sampler *GPUSampler // The sampler to bind.
 }
+
+// [GPUStorageBufferReadWriteBinding] is a structure specifying parameters related to binding buffers in a compute pass.
+//
+// [GPUStorageBufferReadWriteBinding]: https://wiki.libsdl.org/SDL3/SDL_GPUStorageBufferReadWriteBinding
+type GPUStorageBufferReadWriteBinding struct {
+	Buffer *GPUBuffer // The buffer to bind. Must have been created with [GPUBufferUsageComputeStorageWrite].
+	Cycle  bool       // True cycles the buffer if it is already bound.
+	_      uint8      // Padding1
+	_      uint8      // Padding2
+	_      uint8      // Padding3
+}
+
+// [GPUStorageTextureReadWriteBinding] is a structure specifying parameters related to binding textures in a compute pass.
+//
+// [GPUStorageTextureReadWriteBinding]: https://wiki.libsdl.org/SDL3/SDL_GPUStorageTextureReadWriteBinding
+type GPUStorageTextureReadWriteBinding struct {
+	Texture  *GPUTexture // The texture to bind. Must have been created with [GPUTextureUsageComputeStorageWrite] or [GPUTextureUsageComputeStorageSimultaneousReadWrite].
+	MipLevel uint32      // The mip level index to bind.
+	Layer    uint32      // The layer index to bind.
+	Cycle    bool        // True cycles the texture if it is already bound.
+	_        uint8       // Padding1
+	_        uint8       // Padding2
+	_        uint8       // Padding3
+}
+
+// [GPUVulkanOptions] is a structure specifying additional options when using Vulkan.
+//
+// Available since SDL 3.4.0.
+//
+// [GPUVulkanOptions]: https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
+type GPUVulkanOptions struct {
+	VulkanApiVersion               uint32  // The Vulkan API version to request for the instance. Use Vulkan's VK_MAKE_VERSION or VK_MAKE_API_VERSION.
+	FeatureList                    uintptr // Pointer to the first element of a chain of Vulkan feature structs. (Requires API version 1.1 or higher.)
+	Vulkan10PhysicalDeviceFeatures uintptr // Pointer to a VkPhysicalDeviceFeatures struct to enable additional Vulkan 1.0 features.
+	DeviceExtensionCount           uint32  // Number of additional device extensions to require.
+	DeviceExtensionNames           **byte  // Pointer to a list of additional device extensions to require.
+	InstanceExtensionCount         uint32  // Number of additional instance extensions to require.
+	InstanceExtensionNames         **byte  // Pointer to a list of additional instance extensions to require.
+}
+
+const (
+	PropGPUDeviceCreateDebugmodeBoolean                         = "SDL.gpu.device.create.debugmode"
+	PropGPUDeviceCreatePreferlowpowerBoolean                    = "SDL.gpu.device.create.preferlowpower"
+	PropGPUDeviceCreateVerboseBoolean                           = "SDL.gpu.device.create.verbose"
+	PropGPUDeviceCreateNameString                               = "SDL.gpu.device.create.name"
+	PropGPUDeviceCreateFeatureClipDistanceBoolean               = "SDL.gpu.device.create.feature.clip_distance"
+	PropGPUDeviceCreateFeatureDepthClampingBoolean              = "SDL.gpu.device.create.feature.depth_clamping"
+	PropGPUDeviceCreateFeatureIndirectDrawFirstInstanceBoolean  = "SDL.gpu.device.create.feature.indirect_draw_first_instance"
+	PropGPUDeviceCreateFeatureAnisotropyBoolean                 = "SDL.gpu.device.create.feature.anisotropy"
+	PropGPUDeviceCreateShadersPrivateBoolean                    = "SDL.gpu.device.create.shaders.private"
+	PropGPUDeviceCreateShadersSpirvBoolean                      = "SDL.gpu.device.create.shaders.spirv"
+	PropGPUDeviceCreateShadersDxbcBoolean                       = "SDL.gpu.device.create.shaders.dxbc"
+	PropGPUDeviceCreateShadersDxilBoolean                       = "SDL.gpu.device.create.shaders.dxil"
+	PropGPUDeviceCreateShadersMslBoolean                        = "SDL.gpu.device.create.shaders.msl"
+	PropGPUDeviceCreateShadersMetallibBoolean                   = "SDL.gpu.device.create.shaders.metallib"
+	PropGPUDeviceCreateD3d12AllowFewerResourceSlotsBoolean      = "SDL.gpu.device.create.d3d12.allowtier1resourcebinding"
+	PropGPUDeviceCreateD3d12SemanticNameString                  = "SDL.gpu.device.create.d3d12.semantic"
+	PropGPUDeviceCreateD3d12AgilitySdkVersionNumber             = "SDL.gpu.device.create.d3d12.agility_sdk_version"
+	PropGPUDeviceCreateD3d12AgilitySdkPathString                = "SDL.gpu.device.create.d3d12.agility_sdk_path"
+	PropGPUDeviceCreateVulkanRequireHardwareAccelerationBoolean = "SDL.gpu.device.create.vulkan.requirehardwareacceleration"
+	PropGPUDeviceCreateVulkanOptionsPointer                     = "SDL.gpu.device.create.vulkan.options"
+	PropGPUDeviceCreateMetalAllowMacfamily1Boolean              = "SDL.gpu.device.create.metal.allowmacfamily1"
+)
+
+const (
+	PropGPUDeviceNameString          = "SDL.gpu.device.name"
+	PropGPUDeviceDriverNameString    = "SDL.gpu.device.driver_name"
+	PropGPUDeviceDriverVersionString = "SDL.gpu.device.driver_version"
+	PropGPUDeviceDriverInfoString    = "SDL.gpu.device.driver_info"
+)
+
+const (
+	PropGPUComputepipelineCreateNameString  = "SDL.gpu.computepipeline.create.name"
+	PropGPUGraphicspipelineCreateNameString = "SDL.gpu.graphicspipeline.create.name"
+)
+
+const PropGPUSamplerCreateNameString = "SDL.gpu.sampler.create.name"
+
+const PropGPUShaderCreateNameString = "SDL.gpu.shader.create.name"
+
+const (
+	PropGPUTextureCreateD3d12ClearRFloat        = "SDL.gpu.texture.create.d3d12.clear.r"
+	PropGPUTextureCreateD3d12ClearGFloat        = "SDL.gpu.texture.create.d3d12.clear.g"
+	PropGPUTextureCreateD3d12ClearBFloat        = "SDL.gpu.texture.create.d3d12.clear.b"
+	PropGPUTextureCreateD3d12ClearAFloat        = "SDL.gpu.texture.create.d3d12.clear.a"
+	PropGPUTextureCreateD3d12ClearDepthFloat    = "SDL.gpu.texture.create.d3d12.clear.depth"
+	PropGPUTextureCreateD3d12ClearStencilNumber = "SDL.gpu.texture.create.d3d12.clear.stencil"
+	PropGPUTextureCreateNameString              = "SDL.gpu.texture.create.name"
+)
+
+const PropGPUBufferCreateNameString = "SDL.gpu.buffer.create.name"
+
+const PropGPUTransferbufferCreateNameString = "SDL.gpu.transferbuffer.create.name"
 
 // [AcquireGPUCommandBuffer] acquires a command buffer.
 //
@@ -946,6 +1153,9 @@ func BindGPUFragmentSamplers(renderPass *GPURenderPass, firstSlot uint32, textur
 	sdlBindGPUFragmentSamplers(renderPass, firstSlot, textureSamplerBindings, numBindings)
 }
 
+// [BindGPUFragmentStorageBuffers] binds storage buffers for use on the fragment shader.
+//
+// [BindGPUFragmentStorageBuffers]: https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageBuffers
 func BindGPUFragmentStorageBuffers(renderPass *GPURenderPass, firstSlot uint32, storageBuffers **GPUBuffer, numBindings uint32) {
 	sdlBindGPUFragmentStorageBuffers(renderPass, firstSlot, storageBuffers, numBindings)
 }
@@ -979,6 +1189,9 @@ func BindGPUVertexBuffers(renderPass *GPURenderPass, firstSlot uint32, bindings 
 //	sdlBindGPUVertexSamplers(render_pass, first_slot, texture_sampler_bindings, num_bindings)
 // }
 
+// [BindGPUVertexStorageBuffers] binds storage buffers for use on the vertex shader.
+//
+// [BindGPUVertexStorageBuffers]: https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageBuffers
 func BindGPUVertexStorageBuffers(renderPass *GPURenderPass, firstSlot uint32, storageBuffers **GPUBuffer, numBindings uint32) {
 	sdlBindGPUVertexStorageBuffers(renderPass, firstSlot, storageBuffers, numBindings)
 }
@@ -994,6 +1207,24 @@ func BindGPUVertexStorageBuffers(renderPass *GPURenderPass, firstSlot uint32, st
 // func CalculateGPUTextureFormatSize(format GPUTextureFormat, width uint32, height uint32, depth_or_layer_count uint32) uint32 {
 //	return sdlCalculateGPUTextureFormatSize(format, width, height, depth_or_layer_count)
 // }
+
+// [GetPixelFormatFromGPUTextureFormat] gets the SDL pixel format corresponding to a GPU texture format.
+//
+// Available since SDL 3.4.0.
+//
+// [GetPixelFormatFromGPUTextureFormat]: https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatFromGPUTextureFormat
+func GetPixelFormatFromGPUTextureFormat(format GPUTextureFormat) PixelFormat {
+	return sdlGetPixelFormatFromGPUTextureFormat(format)
+}
+
+// [GetGPUTextureFormatFromPixelFormat] gets the GPU texture format corresponding to an SDL pixel format.
+//
+// Available since SDL 3.4.0.
+//
+// [GetGPUTextureFormatFromPixelFormat]: https://wiki.libsdl.org/SDL3/SDL_GetGPUTextureFormatFromPixelFormat
+func GetGPUTextureFormatFromPixelFormat(format PixelFormat) GPUTextureFormat {
+	return sdlGetGPUTextureFormatFromPixelFormat(format)
+}
 
 // func CancelGPUCommandBuffer(command_buffer *GPUCommandBuffer) bool {
 //	return sdlCancelGPUCommandBuffer(command_buffer)
@@ -1157,6 +1388,15 @@ func GetGPUDriver(index int32) string {
 // [GetGPUShaderFormats]: https://wiki.libsdl.org/SDL3/SDL_GetGPUShaderFormats
 func GetGPUShaderFormats(device *GPUDevice) GPUShaderFormat {
 	return sdlGetGPUShaderFormats(device)
+}
+
+// [GetGPUDeviceProperties] gets the properties associated with a GPU device.
+//
+// Available since SDL 3.4.0.
+//
+// [GetGPUDeviceProperties]: https://wiki.libsdl.org/SDL3/SDL_GetGPUDeviceProperties
+func GetGPUDeviceProperties(device *GPUDevice) PropertiesID {
+	return sdlGetGPUDeviceProperties(device)
 }
 
 // [GetGPUSwapchainTextureFormat] obtains the texture format of the swapchain for the given window.

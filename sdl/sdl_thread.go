@@ -1,5 +1,23 @@
 package sdl
 
+// [Thread] is the SDL thread object.
+//
+// [Thread]: https://wiki.libsdl.org/SDL3/SDL_Thread
+type Thread struct{}
+
+// [ThreadID] is a unique numeric ID that identifies a thread.
+//
+// [ThreadID]: https://wiki.libsdl.org/SDL3/SDL_ThreadID
+type ThreadID uint64
+
+// [TLSID] is a thread local storage ID.
+//
+// [TLSID]: https://wiki.libsdl.org/SDL3/SDL_TLSID
+type TLSID AtomicInt
+
+// [ThreadPriority] is a structure specifying the SDL thread prioritys.
+//
+// [ThreadPriority]: https://wiki.libsdl.org/SDL3/SDL_ThreadPriority
 type ThreadPriority uint32
 
 const (
@@ -9,14 +27,22 @@ const (
 	ThreadPriorityTimeCritical
 )
 
+// [ThreadState] is a structure specifying the SDL thread states.
+//
+// [ThreadState]: https://wiki.libsdl.org/SDL3/SDL_ThreadState
 type ThreadState uint32
 
 const (
-	ThreadUnknown ThreadState = iota
-	ThreadAlive
-	ThreadDetached
-	ThreadComplete
+	ThreadUnknown  ThreadState = iota // The thread is not valid.
+	ThreadAlive                       // The thread is currently running.
+	ThreadDetached                    // The thread is detached and can't be waited on.
+	ThreadComplete                    // The thread has finished and should be cleaned up with [WaitThread].
 )
+
+// [ThreadFunction] is the function passed to [CreateThread] as the new thread's entry point.
+//
+// [ThreadFunction]: https://wiki.libsdl.org/SDL3/SDL_ThreadFunction
+type ThreadFunction uintptr
 
 // func CleanupTLS()  {
 //	sdlCleanupTLS()

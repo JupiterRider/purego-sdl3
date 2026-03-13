@@ -1,5 +1,33 @@
 package sdl
 
+// [Tray] is an opaque handle representing a toplevel system tray object.
+//
+// [Tray]: https://wiki.libsdl.org/SDL3/SDL_Tray
+type Tray struct{}
+
+// [TrayMenu] is an opaque handle representing a menu/submenu on a system tray object.
+//
+// [TrayMenu]: https://wiki.libsdl.org/SDL3/SDL_TrayMenu
+type TrayMenu struct{}
+
+// [TrayEntry] is an opaque handle representing an entry on a system tray object.
+//
+// [TrayEntry]: https://wiki.libsdl.org/SDL3/SDL_TrayEntry
+type TrayEntry struct{}
+
+// [TrayEntryFlags] defines flags that control the creation of system tray entries.
+//
+// [TrayEntryFlags]: https://wiki.libsdl.org/SDL3/SDL_TrayEntryFlags
+type TrayEntryFlags uint32
+
+const (
+	TrayentryButton   TrayEntryFlags = 0x00000001 // Make the entry a simple button. Required.
+	TrayentryCheckbox TrayEntryFlags = 0x00000002 // Make the entry a checkbox. Required.
+	TrayentrySubmenu  TrayEntryFlags = 0x00000004 // Prepare the entry to have a submenu. Required
+	TrayentryDisabled TrayEntryFlags = 0x80000000 // Make the entry disabled. Optional.
+	TrayentryChecked  TrayEntryFlags = 0x40000000 // Make the entry checked. This is valid only for checkboxes. Optional.
+)
+
 // func ClickTrayEntry(entry *TrayEntry)  {
 //	sdlClickTrayEntry(entry)
 // }
@@ -86,4 +114,11 @@ package sdl
 
 // func SetTrayTooltip(tray *Tray, tooltip string)  {
 //	sdlSetTrayTooltip(tray, tooltip)
+// }
+
+// [UpdateTrays] updates the trays.
+//
+// [UpdateTrays]: https://wiki.libsdl.org/SDL3/SDL_UpdateTrays
+// func UpdateTrays() {
+// 	sdlUpdateTrays()
 // }
