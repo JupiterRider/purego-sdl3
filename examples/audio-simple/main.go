@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"time"
 	"unsafe"
@@ -8,20 +9,26 @@ import (
 	"github.com/jupiterrider/purego-sdl3/sdl"
 )
 
+//go:embed tone.wav
+var tone []byte
+
 func main() {
+	iostream := sdl.IOFromConstMem(tone)
+
 	var spec sdl.AudioSpec
-	var audioData []uint8
-	if !sdl.LoadWAV("tone.wav", &spec, &audioData, nil) {
+	var audioData *uint8
+	var audioLen uint32
+	// alternatively you can load the wav from file:
+	// sdl.LoadWAV("tone.wav", &spec, &audioData, &audioLen)
+	if !sdl.LoadWAVIO(iostream, true, &spec, &audioData, &audioLen) {
 		panic(sdl.GetError())
 	}
-	// if !sdl.LoadWAVIO(sdl.IOFromFile("tone.wav", "r"), true, &spec, &audioData, nil) { // Alternative way to load audio data
-	// 	panic(sdl.GetError())
-	// }
+	defer sdl.Free(unsafe.Pointer(audioData))
 
 	defer sdl.Quit()
 	sdl.Init(sdl.InitAudio)
 
-	dataIndex, dataLen, loopCounter := int32(0), int32(len(audioData)), 0
+	dataIndex, dataLen, loopCounter := int32(0), int32(audioLen), 0
 	audioStream := sdl.OpenAudioDeviceStream(
 		sdl.AudioDeviceDefaultPlayback,
 		&spec,
@@ -31,7 +38,7 @@ func main() {
 				length = additionalAmount
 			}
 
-			sdl.PutAudioStreamData(stream, &audioData[dataIndex], length)
+			sdl.PutAudioStreamData(stream, audioData, length)
 
 			dataIndex += length
 			if dataIndex >= dataLen { // Loop the sound
@@ -88,7 +95,7 @@ func main() {
 	fmt.Printf("Created audio stream without callback function that is using:\n - audio device ID: %d,\n - input (playback) spec: %#v,\n - output (recording) spec: %#v\n",
 		sdl.GetAudioStreamDevice(audioStream), inSpec, outSpec)
 
-	sdl.PutAudioStreamData(audioStream2, &audioData[0], dataLen) // Initial data to be played
+	sdl.PutAudioStreamData(audioStream2, audioData, dataLen) // Initial data to be played
 
 	fmt.Println("Playing audio stream without callback function")
 	if !sdl.ResumeAudioStreamDevice(audioStream2) {
@@ -98,7 +105,7 @@ func main() {
 	for loopCounter < 5 {
 		// If the amount of data in the buffer is small put entire sound sample into the buffer, probably not the good approach for large sounds?
 		if sdl.GetAudioStreamQueued(audioStream2) <= 256 {
-			sdl.PutAudioStreamData(audioStream2, &audioData[0], dataLen)
+			sdl.PutAudioStreamData(audioStream2, audioData, dataLen)
 
 			// In each loop increase gain and speed of the sound sample
 			gain := sdl.GetAudioStreamGain(audioStream2)

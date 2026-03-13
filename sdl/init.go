@@ -739,7 +739,7 @@ var (
 	// sdlLoadPNGIO   func(*IOStream, bool) *Surface
 	sdlLoadSurface func(string) *Surface
 	// sdlLoadSurfaceIO func(*IOStream, bool) *Surface
-	sdlLoadWAV                               func(string, *AudioSpec, **uint8, *uint32) bool
+	sdlLoadWAV   func(string, *AudioSpec, **uint8, *uint32) bool
 	sdlLoadWAVIO func(*IOStream, bool, *AudioSpec, **uint8, *uint32) bool
 	// sdlLockAudioStream                       func(*AudioStream) bool
 	sdlLockJoysticks func()

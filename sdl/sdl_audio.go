@@ -4,7 +4,6 @@ import (
 	"unsafe"
 
 	"github.com/ebitengine/purego"
-	"github.com/jupiterrider/purego-sdl3/internal/mem"
 )
 
 const PropAudiostreamAutoCleanupBoolean = "SDL.audiostream.auto_cleanup"
@@ -248,21 +247,11 @@ func GetNumAudioDrivers() int32 {
 // }
 
 // [LoadWAV] loads a WAV from a file path.
+// The data returned in audioBuf should be disposed with [Free] when it is no longer needed.
 //
 // [LoadWAV]: https://wiki.libsdl.org/SDL3/SDL_LoadWAV
-func LoadWAV(path string, spec *AudioSpec, audioBuf *[]uint8, audioLen *uint32) bool {
-	var buf *uint8
-	var length uint32
-	ret := sdlLoadWAV(path, spec, &buf, &length)
-	defer Free(unsafe.Pointer(buf))
-
-	if audioBuf != nil {
-		*audioBuf = mem.Copy(buf, int32(length))
-	}
-	if audioLen != nil {
-		*audioLen = length
-	}
-	return ret
+func LoadWAV(path string, spec *AudioSpec, audioBuf **uint8, audioLen *uint32) bool {
+	return sdlLoadWAV(path, spec, audioBuf, audioLen)
 }
 
 // [LoadWAVIO] loads the audio data of a WAVE file into memory and returns true on success.

@@ -15,6 +15,10 @@ Files: examples/renderer/20-sprite-batching/gopher-happy.png
 Copyright: egonelbre
 License: CC0-1.0
 
+Files: examples/audio-simple/tone.wav
+Copyright: Unknown
+License: Unknown
+
 License: Unlicense
  This is free and unencumbered software released into the public domain.
  .
