@@ -393,10 +393,10 @@ type FColor struct {
 //
 // [Palette]: https://wiki.libsdl.org/SDL3/SDL_Palette
 type Palette struct {
-	ncolors int32  // Number of elements in `colors`.
-	colors  *Color // Number of elements in `colors`.
-	version uint32 // Internal use only, do not touch.
-	refcount int32 // Internal use only, do not touch.
+	ncolors  int32  // Number of elements in `colors`.
+	colors   *Color // Number of elements in `colors`.
+	version  uint32 // Internal use only, do not touch.
+	refcount int32  // Internal use only, do not touch.
 }
 
 // [PixelFormatDetails] defines the details about the format of a pixel.
