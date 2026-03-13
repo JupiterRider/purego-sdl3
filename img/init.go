@@ -68,6 +68,50 @@ var (
 	imgFreeAnimation            func(*Animation)
 	imgLoadGIFAnimationIO       func(*sdl.IOStream) *Animation
 	imgLoadWEBPAnimationIO      func(*sdl.IOStream) *Animation
+
+	imgLoadGPUTexture                       func(*sdl.GPUDevice, *sdl.GPUCopyPass, string, *int32, *int32) *sdl.GPUTexture
+	imgLoadGPUTextureIO                     func(*sdl.GPUDevice, *sdl.GPUCopyPass, *sdl.IOStream, bool, *int32, *int32) *sdl.GPUTexture
+	imgLoadGPUTextureTypedIO                func(*sdl.GPUDevice, *sdl.GPUCopyPass, *sdl.IOStream, bool, string, *int32, *int32) *sdl.GPUTexture
+	imgGetClipboardImage                    func() *sdl.Surface
+	imgIsANI                                func(*sdl.IOStream) bool
+	imgSave                                 func(*sdl.Surface, string) bool
+	imgSaveTypedIO                          func(*sdl.Surface, *sdl.IOStream, bool, string) bool
+	imgSaveBMP                              func(*sdl.Surface, string) bool
+	imgSaveBMPIO                            func(*sdl.Surface, *sdl.IOStream, bool) bool
+	imgSaveCUR                              func(*sdl.Surface, string) bool
+	imgSaveCURIO                            func(*sdl.Surface, *sdl.IOStream, bool) bool
+	imgSaveGIF                              func(*sdl.Surface, string) bool
+	imgSaveGIFIO                            func(*sdl.Surface, *sdl.IOStream, bool) bool
+	imgSaveICO                              func(*sdl.Surface, string) bool
+	imgSaveICOIO                            func(*sdl.Surface, *sdl.IOStream, bool) bool
+	imgSaveTGA                              func(*sdl.Surface, string) bool
+	imgSaveTGAIO                            func(*sdl.Surface, *sdl.IOStream, bool) bool
+	imgSaveWEBP                             func(*sdl.Surface, string, float32) bool
+	imgSaveWEBPIO                           func(*sdl.Surface, *sdl.IOStream, bool, float32) bool
+	imgLoadANIAnimationIO                   func(*sdl.IOStream) *Animation
+	imgLoadAPNGAnimationIO                  func(*sdl.IOStream) *Animation
+	imgLoadAVIFAnimationIO                  func(*sdl.IOStream) *Animation
+	imgSaveAnimation                        func(*Animation, string) bool
+	imgSaveAnimationTypedIO                 func(*Animation, *sdl.IOStream, bool, string) bool
+	imgSaveANIAnimationIO                   func(*Animation, *sdl.IOStream, bool) bool
+	imgSaveAPNGAnimationIO                  func(*Animation, *sdl.IOStream, bool) bool
+	imgSaveAVIFAnimationIO                  func(*Animation, *sdl.IOStream, bool, int32) bool
+	imgSaveGIFAnimationIO                   func(*Animation, *sdl.IOStream, bool) bool
+	imgSaveWEBPAnimationIO                  func(*Animation, *sdl.IOStream, bool, int32) bool
+	imgCreateAnimatedCursor                 func(*Animation, int32, int32) *sdl.Cursor
+	imgCreateAnimationEncoder               func(string) *AnimationEncoder
+	imgCreateAnimationEncoderIO             func(*sdl.IOStream, bool, string) *AnimationEncoder
+	imgCreateAnimationEncoderWithProperties func(sdl.PropertiesID) *AnimationEncoder
+	imgAddAnimationEncoderFrame             func(*AnimationEncoder, *sdl.Surface, uint64) bool
+	imgCloseAnimationEncoder                func(*AnimationEncoder) bool
+	imgCreateAnimationDecoder               func(string) *AnimationDecoder
+	imgCreateAnimationDecoderIO             func(*sdl.IOStream, bool, string) *AnimationDecoder
+	imgCreateAnimationDecoderWithProperties func(sdl.PropertiesID) *AnimationDecoder
+	imgGetAnimationDecoderProperties        func(*AnimationDecoder) sdl.PropertiesID
+	imgGetAnimationDecoderFrame             func(*AnimationDecoder, **sdl.Surface, *uint64) bool
+	imgGetAnimationDecoderStatus            func(*AnimationDecoder) AnimationDecoderStatus
+	imgResetAnimationDecoder                func(*AnimationDecoder) bool
+	imgCloseAnimationDecoder                func(*AnimationDecoder) bool
 )
 
 func init() {
@@ -147,4 +191,52 @@ func init() {
 	purego.RegisterLibFunc(&imgSavePNG, lib, "IMG_SavePNG")
 	purego.RegisterLibFunc(&imgSavePNGIO, lib, "IMG_SavePNG_IO")
 	purego.RegisterLibFunc(&imgVersion, lib, "IMG_Version")
+
+	// Load functions available since 3.4.0
+	versionMajor, versionMinor, _ := Version()
+	if versionMajor >= 3 && versionMinor >= 4 {
+		purego.RegisterLibFunc(&imgLoadGPUTexture, lib, "IMG_LoadGPUTexture")
+		purego.RegisterLibFunc(&imgLoadGPUTextureIO, lib, "IMG_LoadGPUTexture_IO")
+		purego.RegisterLibFunc(&imgLoadGPUTextureTypedIO, lib, "IMG_LoadGPUTextureTyped_IO")
+		purego.RegisterLibFunc(&imgGetClipboardImage, lib, "IMG_GetClipboardImage")
+		purego.RegisterLibFunc(&imgIsANI, lib, "IMG_isANI")
+		purego.RegisterLibFunc(&imgSave, lib, "IMG_Save")
+		purego.RegisterLibFunc(&imgSaveTypedIO, lib, "IMG_SaveTyped_IO")
+		purego.RegisterLibFunc(&imgSaveBMP, lib, "IMG_SaveBMP")
+		purego.RegisterLibFunc(&imgSaveBMPIO, lib, "IMG_SaveBMP_IO")
+		purego.RegisterLibFunc(&imgSaveCUR, lib, "IMG_SaveCUR")
+		purego.RegisterLibFunc(&imgSaveCURIO, lib, "IMG_SaveCUR_IO")
+		purego.RegisterLibFunc(&imgSaveGIF, lib, "IMG_SaveGIF")
+		purego.RegisterLibFunc(&imgSaveGIFIO, lib, "IMG_SaveGIF_IO")
+		purego.RegisterLibFunc(&imgSaveICO, lib, "IMG_SaveICO")
+		purego.RegisterLibFunc(&imgSaveICOIO, lib, "IMG_SaveICO_IO")
+		purego.RegisterLibFunc(&imgSaveTGA, lib, "IMG_SaveTGA")
+		purego.RegisterLibFunc(&imgSaveTGAIO, lib, "IMG_SaveTGA_IO")
+		purego.RegisterLibFunc(&imgSaveWEBP, lib, "IMG_SaveWEBP")
+		purego.RegisterLibFunc(&imgSaveWEBPIO, lib, "IMG_SaveWEBP_IO")
+		purego.RegisterLibFunc(&imgLoadANIAnimationIO, lib, "IMG_LoadANIAnimation_IO")
+		purego.RegisterLibFunc(&imgLoadAPNGAnimationIO, lib, "IMG_LoadAPNGAnimation_IO")
+		purego.RegisterLibFunc(&imgLoadAVIFAnimationIO, lib, "IMG_LoadAVIFAnimation_IO")
+		purego.RegisterLibFunc(&imgSaveAnimation, lib, "IMG_SaveAnimation")
+		purego.RegisterLibFunc(&imgSaveAnimationTypedIO, lib, "IMG_SaveAnimationTyped_IO")
+		purego.RegisterLibFunc(&imgSaveANIAnimationIO, lib, "IMG_SaveANIAnimation_IO")
+		purego.RegisterLibFunc(&imgSaveAPNGAnimationIO, lib, "IMG_SaveAPNGAnimation_IO")
+		purego.RegisterLibFunc(&imgSaveAVIFAnimationIO, lib, "IMG_SaveAVIFAnimation_IO")
+		purego.RegisterLibFunc(&imgSaveGIFAnimationIO, lib, "IMG_SaveGIFAnimation_IO")
+		purego.RegisterLibFunc(&imgSaveWEBPAnimationIO, lib, "IMG_SaveWEBPAnimation_IO")
+		purego.RegisterLibFunc(&imgCreateAnimatedCursor, lib, "IMG_CreateAnimatedCursor")
+		purego.RegisterLibFunc(&imgCreateAnimationEncoder, lib, "IMG_CreateAnimationEncoder")
+		purego.RegisterLibFunc(&imgCreateAnimationEncoderIO, lib, "IMG_CreateAnimationEncoder_IO")
+		purego.RegisterLibFunc(&imgCreateAnimationEncoderWithProperties, lib, "IMG_CreateAnimationEncoderWithProperties")
+		purego.RegisterLibFunc(&imgAddAnimationEncoderFrame, lib, "IMG_AddAnimationEncoderFrame")
+		purego.RegisterLibFunc(&imgCloseAnimationEncoder, lib, "IMG_CloseAnimationEncoder")
+		purego.RegisterLibFunc(&imgCreateAnimationDecoder, lib, "IMG_CreateAnimationDecoder")
+		purego.RegisterLibFunc(&imgCreateAnimationDecoderIO, lib, "IMG_CreateAnimationDecoder_IO")
+		purego.RegisterLibFunc(&imgCreateAnimationDecoderWithProperties, lib, "IMG_CreateAnimationDecoderWithProperties")
+		purego.RegisterLibFunc(&imgGetAnimationDecoderProperties, lib, "IMG_GetAnimationDecoderProperties")
+		purego.RegisterLibFunc(&imgGetAnimationDecoderFrame, lib, "IMG_GetAnimationDecoderFrame")
+		purego.RegisterLibFunc(&imgGetAnimationDecoderStatus, lib, "IMG_GetAnimationDecoderStatus")
+		purego.RegisterLibFunc(&imgResetAnimationDecoder, lib, "IMG_ResetAnimationDecoder")
+		purego.RegisterLibFunc(&imgCloseAnimationDecoder, lib, "IMG_CloseAnimationDecoder")
+	}
 }

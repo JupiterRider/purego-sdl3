@@ -2,6 +2,21 @@ package sdl
 
 import "github.com/ebitengine/purego"
 
+// [TimerID] is a definition of the timer ID type.
+//
+// [TimerID]: https://wiki.libsdl.org/SDL3/SDL_TimerID
+type TimerID uint32
+
+// [TimerCallback] is a function prototype for the millisecond timer callback function.
+//
+// [TimerCallback]: https://wiki.libsdl.org/SDL3/SDL_TimerCallback
+type TimerCallback uintptr
+
+// [NSTimerCallback] is a function prototype for the nanosecond timer callback function.
+//
+// [NSTimerCallback]: https://wiki.libsdl.org/SDL3/SDL_NSTimerCallback
+type NSTimerCallback uintptr
+
 // func AddTimer(interval uint32, callback TimerCallback, userdata unsafe.Pointer) TimerID {
 //	return sdlAddTimer(interval, callback, userdata)
 // }

@@ -7,6 +7,9 @@ import (
 	"github.com/jupiterrider/purego-sdl3/internal/convert"
 )
 
+// [HintPriority] is an enumeration of hint priorities.
+//
+// [HintPriority]: https://wiki.libsdl.org/SDL3/SDL_HintPriority
 type HintPriority uint32
 
 const (
@@ -34,6 +37,7 @@ const (
 	HintAudioDeviceSampleFrames            = "SDL_AUDIO_DEVICE_SAMPLE_FRAMES"
 	HintAudioDeviceStreamName              = "SDL_AUDIO_DEVICE_STREAM_NAME"
 	HintAudioDeviceStreamRole              = "SDL_AUDIO_DEVICE_STREAM_ROLE"
+	HintAudioDeviceRawStream               = "SDL_AUDIO_DEVICE_RAW_STREAM" // Available since SDL 3.4.0.
 	HintAudioDiskInputFile                 = "SDL_AUDIO_DISK_INPUT_FILE"
 	HintAudioDiskOutputFile                = "SDL_AUDIO_DISK_OUTPUT_FILE"
 	HintAudioDiskTimescale                 = "SDL_AUDIO_DISK_TIMESCALE"
@@ -50,6 +54,7 @@ const (
 	HintJoystickDirectInput                = "SDL_JOYSTICK_DIRECTINPUT"
 	HintFileDialogDriver                   = "SDL_FILE_DIALOG_DRIVER"
 	HintDisplayUsableBounds                = "SDL_DISPLAY_USABLE_BOUNDS"
+	HintInvalidParamChecks                 = "SDL_INVALID_PARAM_CHECKS" // Available since SDL 3.4.0.
 	HintEmscriptenAsyncify                 = "SDL_EMSCRIPTEN_ASYNCIFY"
 	HintEmscriptenCanvasSelector           = "SDL_EMSCRIPTEN_CANVAS_SELECTOR"
 	HintEmscriptenKeyboardElement          = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT"
@@ -70,6 +75,7 @@ const (
 	HintGDKTextInputScope                  = "SDL_GDK_TEXTINPUT_SCOPE"
 	HintGDKTextInputTitle                  = "SDL_GDK_TEXTINPUT_TITLE"
 	HintHidApiLibUSB                       = "SDL_HIDAPI_LIBUSB"
+	HintHidapiLibusbGamecube               = "SDL_HIDAPI_LIBUSB_GAMECUBE" // Available since SDL 3.4.0.
 	HintHidApiLibUSBWhitelist              = "SDL_HIDAPI_LIBUSB_WHITELIST"
 	HintHidApiUdev                         = "SDL_HIDAPI_UDEV"
 	HintGPUDriver                          = "SDL_GPU_DRIVER"
@@ -109,9 +115,15 @@ const (
 	HintJoystickHidApiSteamHomeLED         = "SDL_JOYSTICK_HIDAPI_STEAM_HOME_LED"
 	HintJoystickHidApiSteamDeck            = "SDL_JOYSTICK_HIDAPI_STEAMDECK"
 	HintJoystickHidApiSteamHori            = "SDL_JOYSTICK_HIDAPI_STEAM_HORI"
+	HintJoystickHidapiLg4ff                = "SDL_JOYSTICK_HIDAPI_LG4FF"   // Available since SDL 3.4.0.
+	HintJoystickHidapi8bitdo               = "SDL_JOYSTICK_HIDAPI_8BITDO"  // Available since SDL 3.4.0.
+	HintJoystickHidapiSinput               = "SDL_JOYSTICK_HIDAPI_SINPUT"  // Available since SDL 3.4.0.
+	HintJoystickHidapiZuiki                = "SDL_JOYSTICK_HIDAPI_ZUIKI"   // Available since SDL 3.4.0.
+	HintJoystickHidapiFlydigi              = "SDL_JOYSTICK_HIDAPI_FLYDIGI" // Available since SDL 3.4.0.
 	HintJoystickHidApiSwitch               = "SDL_JOYSTICK_HIDAPI_SWITCH"
 	HintJoystickHidApiSwitchHomeLED        = "SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED"
 	HintJoystickHidApiSwitchPlayerLED      = "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
+	HintJoystickHidapiSwitch2              = "SDL_JOYSTICK_HIDAPI_SWITCH2" // Available since SDL 3.4.0.
 	HintJoystickHidApiVerticalJoyCons      = "SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS"
 	HintJoystickHidApiWii                  = "SDL_JOYSTICK_HIDAPI_WII"
 	HintJoystickHidApiWiiPlayerLED         = "SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED"
@@ -121,6 +133,8 @@ const (
 	HintJoystickHidApiXbox360Wireless      = "SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS"
 	HintJoystickHidApiXboxOne              = "SDL_JOYSTICK_HIDAPI_XBOX_ONE"
 	HintJoystickHidApiXboxOneHomeLED       = "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
+	HintJoystickHidapiGip                  = "SDL_JOYSTICK_HIDAPI_GIP"                    // Available since SDL 3.4.0.
+	HintJoystickHidapiGipResetForMetadata  = "SDL_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA" // Available since SDL 3.4.0.
 	HintJoystickIOKit                      = "SDL_JOYSTICK_IOKIT"
 	HintJoystickLinuxClassic               = "SDL_JOYSTICK_LINUX_CLASSIC"
 	HintJoystickLinuxDeadzones             = "SDL_JOYSTICK_LINUX_DEADZONES"
@@ -137,20 +151,24 @@ const (
 	HintJoystickWheelDevices               = "SDL_JOYSTICK_WHEEL_DEVICES"
 	HintJoystickWheelDevicesExcluded       = "SDL_JOYSTICK_WHEEL_DEVICES_EXCLUDED"
 	HintJoystickZeroCenteredDevices        = "SDL_JOYSTICK_ZERO_CENTERED_DEVICES"
+	HintJoystickHapticAxes                 = "SDL_JOYSTICK_HAPTIC_AXES"
 	HintKeycodeOptions                     = "SDL_KEYCODE_OPTIONS"
 	HintKmsDrmDeviceIndex                  = "SDL_KMSDRM_DEVICE_INDEX"
 	HintKmsDrmRequireDrmMaster             = "SDL_KMSDRM_REQUIRE_DRM_MASTER"
+	HintKmsDrmAtomic                       = "SDL_KMSDRM_ATOMIC" // Available since SDL 3.4.0.
 	HintLogging                            = "SDL_LOGGING"
 	HintMacBackgroundApp                   = "SDL_MAC_BACKGROUND_APP"
 	HintMacCtrlClickEmulateRightClick      = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
-	HintMacOpenGLAsyncDispatch             = "SDL_MAC_OpenGL_ASYNC_DISPATCH"
+	HintMacOpenGLAsyncDispatch             = "SDL_MAC_OPENGL_ASYNC_DISPATCH"
 	HintMacOptionAsAlt                     = "SDL_MAC_OPTION_AS_ALT"
 	HintMacScrollMomentum                  = "SDL_MAC_SCROLL_MOMENTUM"
+	HintMacPressAndHold                    = "SDL_MAC_PRESS_AND_HOLD" // Available since SDL 3.4.0.
 	HintMainCallbackRate                   = "SDL_MAIN_CALLBACK_RATE"
 	HintMouseAutoCapture                   = "SDL_MOUSE_AUTO_CAPTURE"
 	HintMouseDoubleClickRadius             = "SDL_MOUSE_DOUBLE_CLICK_RADIUS"
 	HintMouseDoubleClickTime               = "SDL_MOUSE_DOUBLE_CLICK_TIME"
 	HintMouseDefaultSystemCursor           = "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR"
+	HintMouseDpiScaleCursors               = "SDL_MOUSE_DPI_SCALE_CURSORS" // Available since SDL 3.4.0.
 	HintMouseEmulateWarpWithRelative       = "SDL_MOUSE_EMULATE_WARP_WITH_RELATIVE"
 	HintMouseFocusClickThrough             = "SDL_MOUSE_FOCUS_CLICKTHROUGH"
 	HintMouseNormalSpeedScale              = "SDL_MOUSE_NORMAL_SPEED_SCALE"
@@ -162,9 +180,10 @@ const (
 	HintMouseTouchEvents                   = "SDL_MOUSE_TOUCH_EVENTS"
 	HintMuteConsoleKeyboard                = "SDL_MUTE_CONSOLE_KEYBOARD"
 	HintNoSignalHandlers                   = "SDL_NO_SIGNAL_HANDLERS"
-	HintOpenGLLibrary                      = "SDL_OpenGL_LIBRARY"
+	HintOpenGLLibrary                      = "SDL_OPENGL_LIBRARY"
 	HintEGLLibrary                         = "SDL_EGL_LIBRARY"
-	HintOpenGLESDriver                     = "SDL_OpenGL_ES_DRIVER"
+	HintOpenGLESDriver                     = "SDL_OPENGL_ES_DRIVER"
+	HintOpenglForceSrgbFramebuffer         = "SDL_OPENGL_FORCE_SRGB_FRAMEBUFFER" // Available since SDL 3.4.2.
 	HintOpenVRLibrary                      = "SDL_OPENVR_LIBRARY"
 	HintOrientations                       = "SDL_ORIENTATIONS"
 	HintPollSentinel                       = "SDL_POLL_SENTINEL"
@@ -172,6 +191,7 @@ const (
 	HintQuitOnLastWindowClose              = "SDL_QUIT_ON_LAST_WINDOW_CLOSE"
 	HintRenderDirect3DThreadSafe           = "SDL_RENDER_DIRECT3D_THREADSAFE"
 	HintRenderDirect3D11Debug              = "SDL_RENDER_DIRECT3D11_DEBUG"
+	HintRenderDirect3d11Warp               = "SDL_RENDER_DIRECT3D11_WARP" // Available since SDL 3.4.0.
 	HintRenderVulkanDebug                  = "SDL_RENDER_VULKAN_DEBUG"
 	HintRenderGPUDebug                     = "SDL_RENDER_GPU_DEBUG"
 	HintRenderGPULowPower                  = "SDL_RENDER_GPU_LOW_POWER"
@@ -182,6 +202,10 @@ const (
 	HintReturnKeyHidesIme                  = "SDL_RETURN_KEY_HIDES_IME"
 	HintRogGamepadMice                     = "SDL_ROG_GAMEPAD_MICE"
 	HintRogGamepadMiceExcluded             = "SDL_ROG_GAMEPAD_MICE_EXCLUDED"
+	HintPS2GSWidth                         = "SDL_PS2_GS_WIDTH"       // Available since SDL 3.4.0.
+	HintPS2GSHeight                        = "SDL_PS2_GS_HEIGHT"      // Available since SDL 3.4.0.
+	HintPS2GSProgressive                   = "SDL_PS2_GS_PROGRESSIVE" // Available since SDL 3.4.0.
+	HintPS2GSMode                          = "SDL_PS2_GS_MODE"        // Available since SDL 3.4.0.
 	HintRpiVideoLayer                      = "SDL_RPI_VIDEO_LAYER"
 	HintScreensaverInhibitActivityName     = "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME"
 	HintShutdownDBusOnQuit                 = "SDL_SHUTDOWN_DBUS_ON_QUIT"
@@ -202,6 +226,8 @@ const (
 	HintVideoForceEGL                      = "SDL_VIDEO_FORCE_EGL"
 	HintVideoMacFullscreenSpaces           = "SDL_VIDEO_MAC_FULLSCREEN_SPACES"
 	HintVideoMacFullscreenMenuVisibility   = "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY"
+	HintVideoMetalAutoResizeDrawable       = "SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE"   // Available since SDL 3.4.0.
+	HintVideoMatchExclusiveModeOnMove      = "SDL_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE" // Available since SDL 3.4.0.
 	HintVideoMinimizeOnFocusLoss           = "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS"
 	HintVideoOffscreenSaveFrames           = "SDL_VIDEO_OFFSCREEN_SAVE_FRAMES"
 	HintVideoSyncWindowOperations          = "SDL_VIDEO_SYNC_WINDOW_OPERATIONS"
@@ -211,6 +237,7 @@ const (
 	HintVideoWaylandPreferLibdecor         = "SDL_VIDEO_WAYLAND_PREFER_LIBDECOR"
 	HintVideoWaylandScaleToDisplay         = "SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY"
 	HintVideoWinD3DCompiler                = "SDL_VIDEO_WIN_D3DCOMPILER"
+	HintVideoX11ExternalWindowInput        = "SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT"
 	HintVideoX11NetWmBypassCompositor      = "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR"
 	HintVideoX11NetWmPing                  = "SDL_VIDEO_X11_NET_WM_PING"
 	HintVideoX11NoDirectColor              = "SDL_VIDEO_X11_NODIRECTCOLOR"
@@ -223,7 +250,7 @@ const (
 	HintVitaModulePath                     = "SDL_VITA_MODULE_PATH"
 	HintVitaPVRInit                        = "SDL_VITA_PVR_INIT"
 	HintVitaResolution                     = "SDL_VITA_RESOLUTION"
-	HintVitaPVROpenGL                      = "SDL_VITA_PVR_OpenGL"
+	HintVitaPVROpenGL                      = "SDL_VITA_PVR_OPENGL"
 	HintVitaTouchMouseDevice               = "SDL_VITA_TOUCH_MOUSE_DEVICE"
 	HintVulkanDisplay                      = "SDL_VULKAN_DISPLAY"
 	HintVulkanLibrary                      = "SDL_VULKAN_LIBRARY"
@@ -240,6 +267,7 @@ const (
 	HintWindowsEnableMessageloop           = "SDL_WINDOWS_ENABLE_MESSAGELOOP"
 	HintWindowsGameInput                   = "SDL_WINDOWS_GAMEINPUT"
 	HintWindowsRawKeyboard                 = "SDL_WINDOWS_RAW_KEYBOARD"
+	HintWindowsRawKeyboardExcludeHotkeys   = "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS" // Available since SDL 3.4.0.
 	HintWindowsForceSemaphoreKernel        = "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL"
 	HintWindowsIntresourceIcon             = "SDL_WINDOWS_INTRESOURCE_ICON"
 	HintWindowsIntresourceIconSmall        = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL"
@@ -254,6 +282,9 @@ const (
 	HintPenTouchEvents                     = "SDL_PEN_TOUCH_EVENTS"
 )
 
+// [HintCallback] is a callback used to send notifications of hint value changes.
+//
+// [HintCallback]: https://wiki.libsdl.org/SDL3/SDL_HintCallback
 type HintCallback uintptr
 
 func NewHintCallback(callback func(userdata unsafe.Pointer, name, oldValue, newValue string)) HintCallback {
@@ -265,35 +296,58 @@ func NewHintCallback(callback func(userdata unsafe.Pointer, name, oldValue, newV
 	return HintCallback(cb)
 }
 
-// SetHint sets a hint with normal priority.
+// [SetHint] sets a hint with normal priority.
+//
+// [SetHint]: https://wiki.libsdl.org/SDL3/SDL_SetHint
 func SetHint(name, value string) bool {
 	return sdlSetHint(name, value)
 }
 
+// [AddHintCallback] adds a function to watch a particular hint.
+//
+// [AddHintCallback]: https://wiki.libsdl.org/SDL3/SDL_AddHintCallback
 func AddHintCallback(name string, callback HintCallback, userdata unsafe.Pointer) bool {
 	return sdlAddHintCallback(name, callback, userdata)
 }
 
+// [GetHint] gets the value of a hint.
+//
+// [GetHint]: https://wiki.libsdl.org/SDL3/SDL_GetHint
 func GetHint(name string) string {
 	return sdlGetHint(name)
 }
 
+// [GetHintBoolean] gets the boolean value of a hint variable.
+//
+// [GetHintBoolean]: https://wiki.libsdl.org/SDL3/SDL_GetHintBoolean
 func GetHintBoolean(name string, defaultValue bool) bool {
 	return sdlGetHintBoolean(name, defaultValue)
 }
 
+// [RemoveHintCallback] removes a function watching a particular hint.
+//
+// [RemoveHintCallback]: https://wiki.libsdl.org/SDL3/SDL_RemoveHintCallback
 func RemoveHintCallback(name string, callback HintCallback, userdata unsafe.Pointer) {
 	sdlRemoveHintCallback(name, callback, userdata)
 }
 
+// [ResetHint] resets a hint to the default value.
+//
+// [ResetHint]: https://wiki.libsdl.org/SDL3/SDL_ResetHint
 func ResetHint(name string) bool {
 	return sdlResetHint(name)
 }
 
+// [ResetHints] resets all hints to the default values.
+//
+// [ResetHints]: https://wiki.libsdl.org/SDL3/SDL_ResetHints
 func ResetHints() {
 	sdlResetHints()
 }
 
+// [SetHintWithPriority] sets a hint with a specific priority.
+//
+// [SetHintWithPriority]: https://wiki.libsdl.org/SDL3/SDL_SetHintWithPriority
 func SetHintWithPriority(name string, value string, priority HintPriority) bool {
 	return sdlSetHintWithPriority(name, value, priority)
 }

@@ -1,5 +1,8 @@
 package sdl
 
+// [Sandbox] defines the application sandbox environment.
+//
+// [Sandbox]: https://wiki.libsdl.org/SDL3/SDL_Sandbox
 type Sandbox uint32
 
 const (
