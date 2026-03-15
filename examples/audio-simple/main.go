@@ -38,7 +38,7 @@ func main() {
 				length = additionalAmount
 			}
 
-			sdl.PutAudioStreamData(stream, audioData, length)
+			sdl.PutAudioStreamData(stream, &unsafe.Slice(audioData, audioLen)[dataIndex], length)
 
 			dataIndex += length
 			if dataIndex >= dataLen { // Loop the sound
