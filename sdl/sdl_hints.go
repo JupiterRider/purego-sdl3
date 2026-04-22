@@ -93,6 +93,7 @@ const (
 	HintJoystickFlightStickDevices         = "SDL_JOYSTICK_FLIGHTSTICK_DEVICES"
 	HintJoystickFlightStickDevicesExcluded = "SDL_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED"
 	HintJoystickGameInput                  = "SDL_JOYSTICK_GAMEINPUT"
+	HintJoystickGameInputRaw               = "SDL_JOYSTICK_GAMEINPUT_RAW" // Available since SDL 3.4.4.
 	HintJoystickGameCubeDevices            = "SDL_JOYSTICK_GAMECUBE_DEVICES"
 	HintJoystickGameCubeDevicesExcluded    = "SDL_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED"
 	HintJoystickHidApi                     = "SDL_JOYSTICK_HIDAPI"
@@ -268,6 +269,7 @@ const (
 	HintWindowsGameInput                   = "SDL_WINDOWS_GAMEINPUT"
 	HintWindowsRawKeyboard                 = "SDL_WINDOWS_RAW_KEYBOARD"
 	HintWindowsRawKeyboardExcludeHotkeys   = "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS" // Available since SDL 3.4.0.
+	HintWindowsRawKeyboardInpuSink         = "SDL_WINDOWS_RAW_KEYBOARD_INPUTSINK"       // Available since SDL 3.4.4.
 	HintWindowsForceSemaphoreKernel        = "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL"
 	HintWindowsIntresourceIcon             = "SDL_WINDOWS_INTRESOURCE_ICON"
 	HintWindowsIntresourceIconSmall        = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL"
