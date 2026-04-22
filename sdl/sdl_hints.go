@@ -269,7 +269,7 @@ const (
 	HintWindowsGameInput                   = "SDL_WINDOWS_GAMEINPUT"
 	HintWindowsRawKeyboard                 = "SDL_WINDOWS_RAW_KEYBOARD"
 	HintWindowsRawKeyboardExcludeHotkeys   = "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS" // Available since SDL 3.4.0.
-	HintWindowsRawKeyboardInpuSink         = "SDL_WINDOWS_RAW_KEYBOARD_INPUTSINK"       // Available since SDL 3.4.4.
+	HintWindowsRawKeyboardInputSink        = "SDL_WINDOWS_RAW_KEYBOARD_INPUTSINK"       // Available since SDL 3.4.4.
 	HintWindowsForceSemaphoreKernel        = "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL"
 	HintWindowsIntresourceIcon             = "SDL_WINDOWS_INTRESOURCE_ICON"
 	HintWindowsIntresourceIconSmall        = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL"
